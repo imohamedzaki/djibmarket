@@ -1,0 +1,194 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #f1f4fd;
+    /* font-family: "Cairo", sans-serif; */
+    font-family: "Poppins", sans-serif;
+    background: linear-gradient(90deg, #e3fff7 0%, #d9e7ff 100%);
+}
+
+.flex_style {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: space-between;
+}
+
+.width_49 {
+    width: 49%;
+}
+
+.width_100 {
+    width: 100%;
+}
+
+.logo_pattern {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    width: 25%;
+    opacity: 0.2;
+    z-index: -1;
+}
+
+.lang_title {
+    display: flex;
+}
+
+.lang_title a {
+    margin-left: auto;
+    font-family: "Cairo", sans-serif;
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #000;
+    text-decoration: none;
+    display: block;
+    /* text-align: right; */
+    margin-right: 1.5rem;
+    background-color: transparent;
+    padding: 0.3rem 0.6rem;
+    border-radius: 0.3rem;
+    transition: 0.3s all;
+    border: 1px solid transparent;
+}
+
+.lang_title a:hover {
+    background-color: #ffffffa2;
+    border: 1px solid #e3e8f7 !important;
+    box-shadow: -8px 12px 18px 0 #dadee8;
+}
+
+.main {
+    width: 70%;
+    margin: 0 auto;
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.main .tiny_logo {
+    width: 13%;
+}
+
+.top_main {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    margin-top: 1rem;
+}
+
+.top_main p {
+    font-weight: 300;
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.top_main h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    margin-top: 0.5rem;
+    color: #464646;
+}
+
+.top_main span {
+    margin: 0;
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 350;
+}
+
+.top_main span a {
+    font-weight: 500;
+    color: #000;
+}
+
+.form_class {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.z_form_group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.input_svg {
+    position: relative;
+}
+
+.input_svg svg {
+    position: absolute;
+    left: 0.9rem;
+    top: 0.7rem;
+}
+
+.z_form_group input {
+    padding: 1rem;
+    width: 100%;
+    border-radius: 0.5rem;
+    border: 1.5px solid transparent;
+    transition: 0.3s all;
+    padding-left: 2.8rem;
+    font-family: "Poppins", sans-serif;
+    line-height: 1rem;
+}
+
+.z_form_group label {
+    font-size: 0.8rem;
+    cursor: pointer;
+}
+
+.z_submit {
+    background: #36b6fd;
+    padding: 0.8rem;
+    border-radius: 0.5rem;
+    border: 1.5px solid transparent;
+    font-weight: bold;
+    font-family: "Poppins", sans-serif;
+    font-size: 1.2rem;
+    margin-top: 0.5rem;
+    transition: 0.3s all;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    color: #fff;
+}
+
+.z_submit svg {
+    margin-right: auto;
+    position: absolute;
+    opacity: 0.1;
+    left: 0;
+}
+
+.z_submit:hover {
+    background-color: #fff;
+    border-color: #869de3;
+    color: #5971bb;
+}
+.flex_wrap {
+    flex-wrap: wrap;
+}
+
+@media screen and (max-width: 976px) and (min-width: 400px) {
+    .z_form_group {
+        width: 100% !important;
+    }
+    .z_submit {
+        padding: 0.5rem;
+    }
+    .main .tiny_logo {
+        width: 20%;
+    }
+}

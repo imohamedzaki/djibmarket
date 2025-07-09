@@ -1,0 +1,402 @@
+/* Middle header start */
+.middle_header {
+    background-color: #8BC34A;
+    padding: .5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.main_logo {
+    width: 15%;
+}
+
+.middle_header_left {
+    max-width: 70%;
+}
+
+.middle_header_left_search {
+    width: 60%;
+    margin-right: auto;
+    margin-left: 1rem
+}
+
+.middle_header_right {
+    gap: 2rem;
+}
+
+.hala_account_header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .2rem;
+    font-size: .8rem;
+
+}
+
+.hala_account_header span {
+    font-weight: 300;
+
+}
+
+.hala_sub {
+    display: flex;
+    align-items: center;
+    gap: .3rem;
+    text-decoration: none;
+    background: transparent;
+    padding: .25rem .6rem;
+    border-radius: 2.5rem;
+    transition: .3s all;
+}
+
+.hala_sub:hover {
+    background-color: #ffffffa6;
+}
+
+.hala_sub span {
+    color: #000;
+    font-weight: bold;
+    font-size: 0.7rem;
+}
+
+.hala_sub svg {
+    stroke: #000;
+}
+
+
+.wishList_header {
+    display: flex;
+}
+
+.hrline {
+    border-left: 1px solid #00000029;
+    padding-left: 1rem;
+}
+
+.header_badge {
+    position: relative;
+}
+
+.header_badge span {
+    position: absolute;
+    top: -.35rem;
+    right: -.4rem;
+    background: #ffffffc9;
+    width: .8rem;
+    height: .8rem;
+    text-align: center;
+    border-radius: 2rem;
+    font-size: .6rem;
+    line-height: .8rem;
+}
+
+/* Middle header end */
+
+/* Bottom header start */
+
+.bottom_header {
+    background: #F8F8F8;
+    box-shadow: 0px 10px 60.4px 0px rgba(0, 0, 0, 0.11);
+    /* padding: .5rem; */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.bottom_header .hala_sub>span {
+    font-size: .8rem;
+    text-transform: uppercase;
+}
+
+.bottom_header .hala_sub:hover {
+    background-color: #a4b5e962;
+}
+
+/* Bottom header end */
+
+
+/* Main styles start */
+.top_main_part {
+    /* margin-top: 1.5rem; */
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    gap: 0rem;
+}
+
+.highlight_slider {
+    position: relative;
+    width: 73%;
+}
+
+.highlight_ads {
+    width: 408px;
+    height: 199px;
+    border-left: 2px solid #fff;
+}
+
+.highlight_ads img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.mega_deals {
+    background-color: #fff;
+    border-radius: .2rem;
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    overflow: hidden;
+}
+
+.dealItems {
+    display: flex;
+    justify-content: space-between;
+    gap: .2rem;
+    width: 100%;
+}
+
+.dealSingle {
+    border-left: 1px solid rgb(235, 235, 235);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.dealItems img {
+    width: 9rem;
+    object-fit: contain;
+    aspect-ratio: 16/9;
+}
+
+.counterWrapper {
+    width: 25%;
+    background: rgb(148, 152, 89);
+    background: linear-gradient(90deg, rgba(148, 152, 89, 1) 0%, rgba(241, 231, 215, 1) 100%);
+    margin: -1rem;
+    padding: 1rem;
+    margin-right: 0;
+    border-right: 1px solid #af954c40;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: .3rem;
+}
+
+.counterWrapper h2 {
+    font-weight: 600;
+    margin: 0;
+}
+
+.counterWrapper span {
+    font-size: .7rem;
+}
+
+/* .counterWrapper img {
+    width: 30%;
+} */
+
+.itemBadge {
+    background-color: #4caf50ad;
+    color: #fff;
+    padding: 0.1rem .5rem;
+    font-size: .8rem;
+    border-radius: 1rem;
+    width: 40%;
+    text-align: center;
+}
+
+.highlight_category {
+    background: #fff;
+    /* padding: 2rem; */
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    border-radius: .5rem;
+    overflow: hidden;
+    border: 1px solid #ddd;
+}
+
+.highlight_category_bg {
+    padding: 2rem;
+    position: relative;
+}
+
+.highlight_category_bg img {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    height: 100%;
+    object-fit: cover;
+}
+
+.highlight_category_bg h2,
+.highlight_category_bg a {
+    position: relative;
+    z-index: 2;
+}
+
+.highlight_category_bg h2 {
+    font-weight: 450;
+}
+
+.highlight_category_bg a {
+    background-color: #fff;
+    padding: .5rem 1rem;
+    text-decoration: none;
+    border-radius: .2rem;
+    font-weight: 500;
+    font-size: .8rem;
+    color: #000;
+    left: 1rem;
+    border: 2px solid #d1d1d1;
+    box-shadow: -3px 3px 18px 0 #b3b3b38a;
+    transition: .3s all;
+}
+
+.highlight_category_bg a:hover {
+    background-color: #d2cf6a;
+    border-color: #ffffff75;
+
+}
+
+.highlight_category_column {
+    width: 20%;
+    border-right: 1px solid #ddd;
+    padding-right: 0;
+}
+
+.highlight_category_item {
+    display: flex;
+    /* flex-direction: column; */
+    justify-content: space-between;
+    gap: .4rem;
+    width: 100%;
+    border-bottom: 1px solid #ddd;
+    padding: .8rem;
+}
+
+.highlight_category_item_details {
+    display: flex;
+    flex-direction: column;
+}
+
+.highlight_category_item_details h2 {
+    margin: 0;
+    margin-bottom: .5rem;
+    font-size: 1rem;
+}
+
+.highlight_category_item_details span {
+    font-size: .8rem;
+}
+
+.highlight_category_item img {
+    align-self: flex-end;
+    width: 4rem;
+    margin-top: 1rem;
+}
+
+.highlight_category_column:last-child,
+.highlight_category_item:last-child {
+    border: none;
+}
+
+
+
+/* Main styles end */
+
+
+/* Genral styles start */
+.flex_middle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: .5rem;
+}
+
+.flex_middle_no_gap {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.changeLangHref {
+    display: flex;
+    justify-content: center;
+    gap: .6rem;
+}
+
+.header_form_group {
+    display: flex;
+    flex-direction: column;
+    gap: .25rem;
+}
+
+.input_svg {
+    position: relative;
+}
+
+.input_svg svg {
+    position: absolute;
+    right: .9rem;
+    top: 22%;
+    stroke: #476b09;
+}
+
+.header_form_group input {
+    padding: .5rem;
+    width: 100%;
+    border-radius: .2rem;
+    border: 1.5px solid transparent;
+    transition: .3s all;
+    padding-right: 2.8rem;
+    font-family: "Poppins", sans-serif;
+    line-height: 1rem;
+    outline: 1.5px solid transparent;
+    font-size: .75rem;
+}
+
+.header_form_group input:focus {
+    outline: 1.5px solid #1b3ca0;
+}
+
+.height_100 {
+    height: 100%;
+}
+
+.width_100 {
+    width: 100%;
+}
+
+.overlay {
+    border-image: fill 0 linear-gradient(#0003, #000);
+    /* your gradient here */
+}
+
+.flex_column {
+    display: flex;
+    flex-direction: column;
+}
+
+.main_padding {
+    padding-left: 3rem;
+    padding-right: 3rem;
+}
+
+.main_width {
+    width: 93.5%;
+    margin: 2.5rem auto;
+}
+
+/* Genral styles end */

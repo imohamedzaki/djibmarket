@@ -1,0 +1,27 @@
+.breadcrumb li a {
+    background: none;
+    padding: 0;
+}
+/* .btn span {
+    color: #fff;
+} */
+/* .btn:hover span {
+    color: #fff;
+} */
+/* Vendor Avatar Initials Styling */
+.vendor-avatar-initials {
+    width: 76px;
+    height: 76px;
+    border-radius: 0.2rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    margin-bottom: 10px;
+}

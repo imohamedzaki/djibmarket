@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Site - Navbar & Mega Menu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/lucide.min.css">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="bg-yellow-300 py-2 px-4 md:px-8">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-4">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <i data-lucide="circle-dot" class="text-blue-700 mr-1" style="width: 24px; height: 24px;"></i>
+                    <span class="font-bold text-xl text-blue-700">shopr</span>
+                </div>
+                
+                <div class="flex items-center text-sm">
+                    <span class="mr-1">Deliver to</span>
+                    <div class="flex items-center font-semibold">
+                        <span>New York</span>
+                        <i data-lucide="chevron-down" style="width: 16px; height: 16px;"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex-1 mx-4 max-w-2xl hidden md:block">
+                <div class="relative">
+                    <input
+                        type="text"
+                        placeholder="What are you looking for?"
+                        class="w-full py-2 px-4 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                    <button class="absolute right-2 top-1/2 transform -translate-y-1/2">
+                        <i data-lucide="search" class="text-gray-500" style="width: 20px; height: 20px;"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-4 md:space-x-6">
+                <div class="flex items-center text-sm cursor-pointer">
+                    <span class="hidden md:inline mr-1">Log In</span>
+                    <i data-lucide="user" style="width: 20px; height: 20px;" class="md:ml-1"></i>
+                </div>
+                
+                <div class="cursor-pointer">
+                    <i data-lucide="heart" style="width: 20px; height: 20px;"></i>
+                </div>
+                
+                <div class="cursor-pointer">
+                    <i data-lucide="shopping-cart" style="width: 20px; height: 20px;"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation & Mega Menu Container -->
+    <div class="relative navbar-container">
+        <!-- Navigation Bar -->
+        <nav class="border-b border-gray-200 bg-white sticky top-0 z-50">
+            <div class="max-w-7xl mx-auto px-4 md:px-8 relative">
+                <div class="flex items-center">
+                    <!-- Left Scroll Button -->
+                    <button id="scrollLeftBtn" class="absolute left-0 z-10 h-full px-2 bg-gradient-to-r from-white via-white to-transparent hidden">
+                        <i data-lucide="chevron-left" style="width: 24px; height: 24px;" class="text-gray-600"></i>
+                    </button>
+                    
+                    <!-- Categories Container -->
+                    <div id="categoriesContainer" class="flex items-center space-x-1 md:space-x-6 overflow-x-auto scrollbar-hide py-3 scroll-smooth">
+                        <!-- Categories will be inserted here by JavaScript -->
+                    </div>
+                    
+                    <!-- Right Scroll Button -->
+                    <button id="scrollRightBtn" class="absolute right-0 z-10 h-full px-2 bg-gradient-to-l from-white via-white to-transparent hidden">
+                        <i data-lucide="chevron-right" style="width: 24px; height: 24px;" class="text-gray-600"></i>
+                    </button>
+                </div>
+            </div>
+        </nav>
+        
+        <!-- Mega Menu -->
+        <div id="megaMenu" class="absolute left-0 right-0 bg-white shadow-lg z-40 border-t border-gray-200 mega-menu hidden">
+            <!-- Mega menu content will be inserted here by JavaScript -->
+        </div>
+    </div>
+
+    <!-- Main Content (for demonstration) -->
+    <main class="py-16">
+        <div class="max-w-7xl mx-auto px-4 md:px-8">
+            <h1 class="text-3xl font-bold text-gray-900 mb-4">Welcome to our Shopping Site</h1>
+            <p class="text-gray-600">Hover over the navigation items to see the mega menu in action!</p>
+        </div>
+    </main>
+
+    <script src="menuData.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
