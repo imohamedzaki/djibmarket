@@ -29,6 +29,10 @@
                         icon="ni-building" />
                     <x-sidebar.single title="Categories" link="{{ route('admin.categories.index') }}"
                         icon="ni-list-fill" />
+                    <x-sidebar.single title="Brand Management" link="{{ route('admin.brands.index') }}"
+                        icon="ni-img-fill" />
+                    <x-sidebar.single title="Category Ads" link="{{ route('admin.category-ads.index') }}"
+                        icon="ni-img-fill" />
 
                     <x-sidebar.single title="Profile" link="{{ route('admin.profile.show') }}"
                         icon="ni-user-alt-fill" />

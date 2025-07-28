@@ -23,6 +23,8 @@ class UserAddress extends Model
         'state',
         'postal_code',
         'country',
+        'latitude',
+        'longitude',
         'is_default',
         'notes',
     ];
@@ -54,5 +56,34 @@ class UserAddress extends Model
         $address .= ' ' . $this->postal_code . ', ' . $this->country;
 
         return $address;
+    }
+
+    public function getCoordinatesAttribute(): ?string
+    {
+        if ($this->latitude && $this->longitude) {
+            return $this->latitude . ', ' . $this->longitude;
+        }
+        return null;
+    }
+
+    public function getGoogleMapsUrlAttribute(): ?string
+    {
+        if ($this->latitude && $this->longitude) {
+            return "https://www.google.com/maps?q={$this->latitude},{$this->longitude}";
+        }
+        return null;
+    }
+
+    public function getWhatsAppLocationUrlAttribute(): ?string
+    {
+        if ($this->latitude && $this->longitude) {
+            return "https://wa.me/?text=Check%20out%20my%20location:%20https://www.google.com/maps?q={$this->latitude},{$this->longitude}";
+        }
+        return null;
+    }
+
+    public function hasCoordinates(): bool
+    {
+        return !is_null($this->latitude) && !is_null($this->longitude);
     }
 }

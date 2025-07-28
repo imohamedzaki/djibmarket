@@ -37,6 +37,10 @@
         font-size: 10px;
     }
 
+    .dropdown-cart.dropdown-open {
+        z-index: 1000;
+    }
+
     .box-dropdown-cart.active .dropdown-arrow {
         transform: rotate(180deg);
     }

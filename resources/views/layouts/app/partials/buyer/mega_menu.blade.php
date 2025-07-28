@@ -446,10 +446,19 @@
     /* Promo image container */
     .mm-promo-container {
         position: relative;
-        height: 100%;
+        height: 300px;
+        /* Fixed height for consistent sizing */
+        min-height: 300px;
         border-radius: 0.5rem;
         overflow: hidden;
         box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    }
+
+    @media (min-width: 768px) {
+        .mm-promo-container {
+            height: 400px;
+            min-height: 400px;
+        }
     }
 
     .mm-promo-image {
@@ -473,6 +482,144 @@
         font-size: 2rem;
         line-height: 1.25;
         letter-spacing: -0.025em;
+    }
+
+    /* Slider styles */
+    .mm-slider {
+        position: relative;
+    }
+
+    .mm-slides-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+
+    .mm-slide {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+        pointer-events: none;
+        /* Disable clicks on inactive slides */
+    }
+
+    .mm-slide-active {
+        opacity: 1;
+        pointer-events: auto;
+        /* Enable clicks only on active slide */
+    }
+
+    .mm-slide-link {
+        display: block;
+        width: 100%;
+        height: 100%;
+        position: relative;
+        z-index: 1;
+    }
+
+    .mm-slider-controls {
+        position: absolute;
+        bottom: 1rem;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10;
+    }
+
+    .mm-dots {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+    }
+
+    .mm-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.5);
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .mm-dot:hover {
+        background-color: rgba(255, 255, 255, 0.8);
+    }
+
+    .mm-dot-active {
+        background-color: rgba(255, 255, 255, 1);
+    }
+
+    /* Skeleton loading effects */
+    .mm-skeleton {
+        background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+        background-size: 200% 100%;
+        animation: mm-skeleton-loading 1.5s infinite;
+    }
+
+    @keyframes mm-skeleton-loading {
+        0% {
+            background-position: 200% 0;
+        }
+
+        100% {
+            background-position: -200% 0;
+        }
+    }
+
+    .mm-image-container {
+        position: relative;
+        overflow: hidden;
+        height: 100%;
+    }
+
+    .mm-image-placeholder {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f8f9fa;
+        transition: opacity 0.3s ease;
+    }
+
+    .mm-image-placeholder.mm-hidden {
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .mm-image-error {
+        filter: grayscale(100%);
+        opacity: 0.6;
+    }
+
+    .mm-brand-image {
+        width: 100%;
+        height: 2rem;
+        object-fit: contain;
+        margin-bottom: 0.5rem;
+        transition: opacity 0.3s ease;
+    }
+
+    .mm-brand-image.mm-loading {
+        opacity: 0;
+    }
+
+    .mm-promo-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: opacity 0.3s ease;
+    }
+
+    .mm-promo-image.mm-loading {
+        opacity: 0;
     }
 
     /* Brand grid layout adjustments */
@@ -510,12 +657,7 @@
         transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
     }
 
-    .mm-brand-image {
-        width: 100%;
-        height: 2rem;
-        object-fit: contain;
-        margin-bottom: 0.5rem;
-    }
+
 
     .mm-brand-name {
         font-size: 0.75rem;
@@ -581,31 +723,13 @@
 <!-- Menu Data in HTML Format -->
 <div id="mm-menu-data" style="display: none">
     @php
-        $promoImages = [
-            'https://images.pexels.com/photos/1080721/pexels-photo-1080721.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-            'https://images.pexels.com/photos/3373739/pexels-photo-3373739.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-            'https://images.pexels.com/photos/235127/pexels-photo-235127.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-            'https://images.pexels.com/photos/163772/boys-children-dolls-kids-163772.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-            'https://images.pexels.com/photos/841130/pexels-photo-841130.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-            'https://images.pexels.com/photos/356056/pexels-photo-356056.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-            'https://images.pexels.com/photos/996329/pexels-photo-996329.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-            'https://images.pexels.com/photos/358070/pexels-photo-358070.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-            'https://images.pexels.com/photos/1552242/pexels-photo-1552242.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-            'https://images.pexels.com/photos/159711/books-bookstore-book-reading-159711.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-            'https://images.pexels.com/photos/416978/pexels-photo-416978.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-            'https://images.pexels.com/photos/4047146/pexels-photo-4047146.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-            'https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-            'https://images.pexels.com/photos/6238050/pexels-photo-6238050.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-            'https://images.pexels.com/photos/1457847/pexels-photo-1457847.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-        ];
+        $fallbackLogo = asset('assets/imgs/template/logo_only.png');
     @endphp
 
     @isset($megaMenuCategories)
         @foreach ($megaMenuCategories as $parentCategory)
             <div class="mm-category" data-id="{{ $parentCategory->slug }}" data-name="{{ $parentCategory->name }}"
-                data-link="{{ route('categories.show', $parentCategory) }}"
-                data-promo-image="{{ $promoImages[$loop->index % count($promoImages)] }}"
-                data-promo-title="{{ $parentCategory->name }}">
+                data-link="{{ route('categories.show', $parentCategory) }}" data-fallback-logo="{{ $fallbackLogo }}">
 
                 @foreach ($parentCategory->children as $childCategory)
                     <div class="mm-group" data-title="{{ $childCategory->name }}">
@@ -616,6 +740,18 @@
                             @endforeach
                         @endif
                     </div>
+                @endforeach
+
+                {{-- Include brands data --}}
+                @foreach ($parentCategory->topBrands as $brand)
+                    <div class="mm-brand" data-name="{{ $brand->name }}" data-image="{{ $brand->logo_url }}"
+                        data-link="{{ $brand->website }}"></div>
+                @endforeach
+
+                {{-- Include ads data --}}
+                @foreach ($parentCategory->ads as $ad)
+                    <div class="mm-ad" data-image="{{ $ad->image_url }}" data-link="{{ $ad->link_url }}"
+                        data-position="{{ $ad->position }}"></div>
                 @endforeach
 
             </div>
@@ -673,6 +809,9 @@
             this.navbarContainer = document.querySelector(".mm-navbar-container");
             this.menuData = this.loadMenuData();
 
+            // Make instance globally available for slider controls
+            window.megaMenuInstance = this;
+
             this.init();
         }
 
@@ -689,10 +828,10 @@
                     id: categoryEl.dataset.id,
                     name: categoryEl.dataset.name,
                     link: categoryEl.dataset.link,
-                    promoImage: categoryEl.dataset.promoImage,
-                    promoTitle: categoryEl.dataset.promoTitle,
+                    fallbackLogo: categoryEl.dataset.fallbackLogo,
                     groups: [],
                     brands: [],
+                    ads: [],
                 };
 
                 // Load groups
@@ -721,6 +860,16 @@
                         name: brandEl.dataset.name,
                         image: brandEl.dataset.image,
                         link: brandEl.dataset.link,
+                    });
+                });
+
+                // Load ads
+                const adElements = categoryEl.querySelectorAll(".mm-ad");
+                adElements.forEach((adEl) => {
+                    category.ads.push({
+                        image: adEl.dataset.image,
+                        link: adEl.dataset.link,
+                        position: parseInt(adEl.dataset.position),
                     });
                 });
 
@@ -862,10 +1011,22 @@
 
             // Re-initialize Lucide icons for any new content
             this.initializeLucideIcons();
+
+            // Initialize sliders for ads
+            this.initializeSliders();
         }
 
         // Hide mega menu
         hideMegaMenu() {
+            // Clear any auto-slide intervals
+            const sliders = this.megaMenu.querySelectorAll('.mm-slider');
+            sliders.forEach(slider => {
+                if (slider.autoSlideInterval) {
+                    clearInterval(slider.autoSlideInterval);
+                    slider.autoSlideInterval = null;
+                }
+            });
+
             this.megaMenu.classList.add("mm-hidden");
             this.megaMenu.classList.remove("mm-show");
         }
@@ -901,10 +1062,21 @@
             if (category.brands && category.brands.length > 0) {
                 brandsHTML = category.brands
                     .map(
-                        (brand) => `
-                  <a href="${brand.link}" class="mm-brand-item mm-group">
+                        (brand, index) => `
+                  <a href="${brand.link}" class="mm-brand-item" target="_blank">
                       <div class="mm-brand-container">
-                          <img src="${brand.image}" alt="${brand.name}" class="mm-brand-image" />
+                          <div class="mm-image-container">
+                              <div class="mm-image-placeholder mm-skeleton" id="mm-brand-placeholder-${category.id}-${index}">
+                                  <img src="${category.fallbackLogo}" alt="Loading..." style="height: 2rem; opacity: 0.3;" />
+                              </div>
+                              <img src="${brand.image}" 
+                                   alt="${brand.name}" 
+                                   class="mm-brand-image mm-loading" 
+                                   data-fallback="${category.fallbackLogo}"
+                                   data-placeholder-id="mm-brand-placeholder-${category.id}-${index}"
+                                   onload="this.classList.remove('mm-loading'); document.getElementById(this.dataset.placeholderId).classList.add('mm-hidden');"
+                                   onerror="this.src=this.dataset.fallback; this.classList.add('mm-image-error'); this.classList.remove('mm-loading'); document.getElementById(this.dataset.placeholderId).classList.add('mm-hidden');" />
+                          </div>
                       </div>
                       <span class="mm-brand-name">${brand.name}</span>
                   </a>
@@ -923,6 +1095,106 @@
                     `;
                 }
                 brandsHTML = placeholders;
+            }
+
+            // Generate ads HTML - either single image or slider for multiple ads
+            let adsHTML = "";
+            if (category.ads && category.ads.length > 0) {
+                if (category.ads.length === 1) {
+                    // Single ad
+                    const ad = category.ads[0];
+                    const adId = `mm-ad-${category.id}-0`;
+                    adsHTML = `
+                        <div class="mm-promo-container mm-image-container">
+                            <div class="mm-image-placeholder mm-skeleton" id="${adId}-placeholder">
+                                <img src="${category.fallbackLogo}" alt="Loading..." style="height: 60px; opacity: 0.3;" />
+                            </div>
+                            <a href="${ad.link}">
+                                <img src="${ad.image}" 
+                                     alt="${category.name}" 
+                                     class="mm-promo-image mm-loading"
+                                     data-fallback="${category.fallbackLogo}"
+                                     data-placeholder-id="${adId}-placeholder"
+                                     onload="this.classList.remove('mm-loading'); document.getElementById(this.dataset.placeholderId).classList.add('mm-hidden');"
+                                     onerror="this.src=this.dataset.fallback; this.classList.add('mm-image-error'); this.classList.remove('mm-loading'); document.getElementById(this.dataset.placeholderId).classList.add('mm-hidden');" />
+                            </a>
+                            <div class="mm-promo-overlay">
+                                <h2 class="mm-promo-title">${category.name}</h2>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    // Multiple ads - create slider
+                    const sliderId = `mm-ads-slider-${category.id}`;
+                    const adsSlides = category.ads
+                        .map(
+                            (ad, index) => {
+                                const adId = `mm-ad-${category.id}-${index}`;
+                                return `
+                        <div class="mm-slide ${index === 0 ? 'mm-slide-active' : ''}" data-slide="${index}" data-ad-link="${ad.link}">
+                            <div class="mm-image-container">
+                                <div class="mm-image-placeholder mm-skeleton" id="${adId}-placeholder">
+                                    <img src="${category.fallbackLogo}" alt="Loading..." style="height: 60px; opacity: 0.3;" />
+                                </div>
+                                <a href="${ad.link}" class="mm-slide-link">
+                                    <img src="${ad.image}" 
+                                         alt="${category.name}" 
+                                         class="mm-promo-image mm-loading"
+                                         data-fallback="${category.fallbackLogo}"
+                                         data-placeholder-id="${adId}-placeholder"
+                                         onload="this.classList.remove('mm-loading'); document.getElementById(this.dataset.placeholderId).classList.add('mm-hidden');"
+                                         onerror="this.src=this.dataset.fallback; this.classList.add('mm-image-error'); this.classList.remove('mm-loading'); document.getElementById(this.dataset.placeholderId).classList.add('mm-hidden');" />
+                                </a>
+                            </div>
+                            <div class="mm-promo-overlay">
+                                <h2 class="mm-promo-title">${category.name}</h2>
+                            </div>
+                        </div>
+                    `;
+                            }
+                        )
+                        .join("");
+
+                    const dotsHTML = category.ads
+                        .map(
+                            (_, index) => `
+                        <button class="mm-dot ${index === 0 ? 'mm-dot-active' : ''}" 
+                                onclick="window.megaMenuInstance && window.megaMenuInstance.goToSlide('${sliderId}', ${index})">
+                        </button>
+                    `
+                        )
+                        .join("");
+
+                    adsHTML = `
+                        <div class="mm-promo-container mm-slider" id="${sliderId}" data-current-slide="0">
+                            <div class="mm-slides-container">
+                                ${adsSlides}
+                            </div>
+                            <div class="mm-slider-controls">
+                                <div class="mm-dots">
+                                    ${dotsHTML}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            } else {
+                // Fallback to default logo
+                adsHTML = `
+                    <div class="mm-promo-container mm-image-container">
+                        <div class="mm-image-placeholder mm-skeleton" id="mm-fallback-${category.id}-placeholder">
+                            <img src="${category.fallbackLogo}" alt="Loading..." style="height: 60px; opacity: 0.3;" />
+                        </div>
+                        <img src="${category.fallbackLogo}" 
+                             alt="${category.name}" 
+                             class="mm-promo-image mm-loading mm-image-error"
+                             data-placeholder-id="mm-fallback-${category.id}-placeholder"
+                             onload="this.classList.remove('mm-loading'); document.getElementById(this.dataset.placeholderId).classList.add('mm-hidden');" />
+                        <div class="mm-promo-overlay">
+                            <h2 class="mm-promo-title">${category.name}</h2>
+                        </div>
+                    </div>
+                `;
             }
 
             return `
@@ -944,16 +1216,103 @@
                           </div>
                           
                           <div class="mm-md-col-span-3">
-                              <div class="mm-promo-container">
-                                  <img src="${category.promoImage}" alt="${category.name}" class="mm-promo-image" />
-                                  <div class="mm-promo-overlay">
-                                      <h2 class="mm-promo-title">${category.promoTitle}</h2>
-                                  </div>
-                              </div>
+                              ${adsHTML}
                           </div>
                       </div>
                   </div>
               `;
+        }
+
+        // Initialize sliders for ads
+        initializeSliders() {
+            const sliders = this.megaMenu.querySelectorAll('.mm-slider');
+
+            sliders.forEach(slider => {
+                const slides = slider.querySelectorAll('.mm-slide');
+                if (slides.length <= 1) return; // No need for auto-slide if only one slide
+
+                // Create closure to maintain currentSlide state
+                let currentSlide = parseInt(slider.getAttribute('data-current-slide')) || 0;
+                const totalSlides = slides.length;
+
+                // Auto-slide every 4 seconds
+                const autoSlide = setInterval(() => {
+                    // Remove active classes
+                    const activeSlide = slider.querySelector('.mm-slide-active');
+                    const activeDot = slider.querySelector('.mm-dot-active');
+
+                    if (activeSlide) activeSlide.classList.remove('mm-slide-active');
+                    if (activeDot) activeDot.classList.remove('mm-dot-active');
+
+                    // Move to next slide
+                    currentSlide = (currentSlide + 1) % totalSlides;
+
+                    // Add active classes
+                    const nextSlide = slides[currentSlide];
+                    const nextDot = slider.querySelectorAll('.mm-dot')[currentSlide];
+
+                    if (nextSlide) nextSlide.classList.add('mm-slide-active');
+                    if (nextDot) nextDot.classList.add('mm-dot-active');
+
+                    // Update slider data attribute
+                    slider.setAttribute('data-current-slide', currentSlide);
+                }, 4000);
+
+                // Store interval reference to clear it when menu is hidden
+                slider.autoSlideInterval = autoSlide;
+            });
+        }
+
+        // Go to specific slide in slider
+        goToSlide(sliderId, slideIndex) {
+            const slider = document.getElementById(sliderId);
+            if (!slider) return;
+
+            const slides = slider.querySelectorAll('.mm-slide');
+            const dots = slider.querySelectorAll('.mm-dot');
+
+            if (slides.length === 0 || slideIndex >= slides.length) return;
+
+            // Remove active classes from current slide and dot
+            const currentSlide = slider.querySelector('.mm-slide-active');
+            const currentDot = slider.querySelector('.mm-dot-active');
+
+            if (currentSlide) currentSlide.classList.remove('mm-slide-active');
+            if (currentDot) currentDot.classList.remove('mm-dot-active');
+
+            // Add active classes to target slide and dot
+            slides[slideIndex].classList.add('mm-slide-active');
+            dots[slideIndex].classList.add('mm-dot-active');
+
+            // Update slider data attribute
+            slider.setAttribute('data-current-slide', slideIndex);
+
+            // Clear and restart auto-slide interval if it exists
+            if (slider.autoSlideInterval) {
+                clearInterval(slider.autoSlideInterval);
+
+                // Restart auto-slide from current position
+                let currentSlide = slideIndex;
+                const totalSlides = slides.length;
+
+                slider.autoSlideInterval = setInterval(() => {
+                    // Remove active classes
+                    slides[currentSlide].classList.remove('mm-slide-active');
+                    const currentDot = slider.querySelector('.mm-dot-active');
+                    if (currentDot) currentDot.classList.remove('mm-dot-active');
+
+                    // Move to next slide
+                    currentSlide = (currentSlide + 1) % totalSlides;
+
+                    // Add active classes
+                    slides[currentSlide].classList.add('mm-slide-active');
+                    const nextDot = slider.querySelectorAll('.mm-dot')[currentSlide];
+                    if (nextDot) nextDot.classList.add('mm-dot-active');
+
+                    // Update slider data attribute
+                    slider.setAttribute('data-current-slide', currentSlide);
+                }, 4000);
+            }
         }
 
         // Check if scrolling is needed and show/hide scroll buttons

@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string('state')->nullable();
             $table->string('postal_code');
             $table->string('country');
+            $table->decimal('latitude', 10, 8)->nullable(); // Store latitude with high precision
+            $table->decimal('longitude', 11, 8)->nullable(); // Store longitude with high precision
             $table->boolean('is_default')->default(false);
             $table->text('notes')->nullable();
             $table->timestamps();

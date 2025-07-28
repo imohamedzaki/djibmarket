@@ -16,6 +16,8 @@ use App\Http\Controllers\Admin\AdminAdsCompanyController;
 use App\Http\Controllers\Admin\BusinessActivityController;
 use App\Http\Controllers\Admin\AdminNotificationBarController;
 use App\Http\Controllers\Admin\AdminAdController;
+use App\Http\Controllers\Admin\AdminBrandController;
+use App\Http\Controllers\Admin\AdminCategoryAdController;
 
 Route::prefix('admin')->name('admin.')->group(function () {
     // Base admin route check - redirect appropriately based on auth status
@@ -125,6 +127,17 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/export/csv', [App\Http\Controllers\Admin\AdminEmailController::class, 'export'])->name('export');
             Route::post('/clear-old', [App\Http\Controllers\Admin\AdminEmailController::class, 'clearOld'])->name('clear-old');
         });
+
+        // Brand Management Routes
+        Route::resource('brands', AdminBrandController::class);
+        Route::get('brands/{brand}/edit-data', [AdminBrandController::class, 'getEditData'])->name('brands.editData');
+        Route::delete('brands/{brand}/delete-logo', [AdminBrandController::class, 'deleteLogo'])->name('brands.deleteLogo');
+
+        // Category Ads Management Routes
+        Route::resource('category-ads', AdminCategoryAdController::class);
+        Route::get('category-ads/{categoryAd}/edit-data', [AdminCategoryAdController::class, 'getEditData'])->name('category-ads.editData');
+        Route::delete('category-ads/{categoryAd}/delete-image', [AdminCategoryAdController::class, 'deleteImage'])->name('category-ads.deleteImage');
+        Route::patch('category-ads/{categoryAd}/status', [AdminCategoryAdController::class, 'updateStatus'])->name('category-ads.updateStatus');
 
         // Coming Soon page for placeholder links
         Route::get('coming-soon', [ComingSoonController::class, 'indexAdmin'])

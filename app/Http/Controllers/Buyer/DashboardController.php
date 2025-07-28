@@ -140,6 +140,8 @@ class DashboardController extends Controller
             'state' => 'nullable|string|max:100',
             'postal_code' => 'required|string|max:20',
             'country' => 'required|string|max:100',
+            'latitude' => 'nullable|numeric|between:-90,90',
+            'longitude' => 'nullable|numeric|between:-180,180',
             'is_default' => 'boolean',
             'notes' => 'nullable|string|max:500',
         ]);
@@ -176,6 +178,8 @@ class DashboardController extends Controller
             'state' => 'nullable|string|max:100',
             'postal_code' => 'required|string|max:20',
             'country' => 'required|string|max:100',
+            'latitude' => 'nullable|numeric|between:-90,90',
+            'longitude' => 'nullable|numeric|between:-180,180',
             'is_default' => 'boolean',
             'notes' => 'nullable|string|max:500',
         ]);

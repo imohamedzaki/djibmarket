@@ -4,337 +4,553 @@
 
 @section('css')
     <style>
-        .dashboard-container {
-            background-color: #f8f9fa;
-            min-height: 100vh;
-            padding: 20px 0;
+        :root {
+            /* Primary Colors */
+            --primary-50: #eff6ff;
+            --primary-500: #3b82f6;
+            --primary-600: #2563eb;
+            --primary-700: #1d4ed8;
+
+            /* Neutral Colors */
+            --white: #ffffff;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-900: #111827;
+
+            /* Accent Colors */
+            --green-50: #f0fdf4;
+            --green-100: #dcfce7;
+            --green-600: #16a34a;
+            --green-800: #166534;
+            --purple-50: #faf5ff;
+            --purple-600: #9333ea;
+            --orange-50: #fff7ed;
+            --orange-600: #ea580c;
+            --yellow-100: #fef3c7;
+            --yellow-800: #92400e;
+
+            /* Spacing */
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+
+            /* Border radius */
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+
+            /* Shadows */
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
         }
 
-        .dashboard-sidebar {
-            background: white;
-            border-radius: 0.3rem;
-            /* box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            background-color: var(--gray-50);
+            color: var(--gray-900);
+            margin: 0;
             padding: 0;
-            height: fit-content;
-            position: sticky;
-            top: 20px;
-            border: 1px solid #eee;
+            line-height: 1.5;
         }
 
-        .dashboard-sidebar .sidebar-header {
-            padding: 25px;
-            border-bottom: 1px solid #eee;
-            text-align: center;
+        .dashboard-container {
+            min-height: 100vh;
+            background: var(--gray-50);
         }
 
-        .dashboard-sidebar .user-info {
+        /* Dashboard Layout */
+        .dashboard-wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .dashboard-sidebar {
+            width: 256px;
+            background: var(--white);
+            border-right: 1px solid var(--gray-200);
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            padding: var(--spacing-lg);
+            border-bottom: 1px solid var(--gray-200);
+            /* background: var(--primary-600); */
+            background: linear-gradient(90deg, #2e3ca563 0%, #81a7ff 100% 100%);
+            color: white;
+        }
+
+        .user-info {
             display: flex;
             align-items: center;
-            flex-direction: column;
+            gap: var(--spacing-sm);
         }
 
-        .dashboard-sidebar .user-avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+        .user-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-lg);
+            background: rgba(255, 255, 255, 0.2);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 20px;
             font-weight: 600;
-            margin-bottom: 15px;
+            color: white;
             overflow: hidden;
+            flex-shrink: 0;
         }
 
-        .dashboard-sidebar .user-avatar img {
+        .user-avatar img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
 
-        .dashboard-sidebar .user-name {
-            font-size: 18px;
+        .user-details {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .user-name {
+            font-size: 16px;
             font-weight: 600;
-            color: #333;
+            color: white;
             margin: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
-        .dashboard-sidebar .user-email {
-            font-size: 14px;
-            color: #666;
-            margin: 5px 0 0 0;
+        .user-email {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.8);
+            margin: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
-        .dashboard-sidebar .sidebar-menu {
+        .sidebar-menu {
             list-style: none;
-            padding: 0;
+            margin: 0;
+            padding: var(--spacing-lg) 0;
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+        }
+
+        .sidebar-menu li {
             margin: 0;
         }
 
-        .dashboard-sidebar .sidebar-menu li {
-            border-bottom: 1px solid #f0f0f0;
+        .sidebar-menu li {
+            margin: 0 var(--spacing-md);
         }
 
-        .dashboard-sidebar .sidebar-menu li:last-child {
-            border-bottom: none;
-        }
-
-        .dashboard-sidebar .sidebar-menu a {
+        .sidebar-menu a {
             display: flex;
             align-items: center;
-            padding: 15px 25px;
-            color: #555;
+            gap: var(--spacing-sm);
+            padding: 12px var(--spacing-md);
+            color: var(--gray-600);
             text-decoration: none;
-            transition: all 0.3s ease;
             font-size: 14px;
+            font-weight: 500;
+            border-radius: var(--radius-md);
+            transition: all 0.2s ease;
+            position: relative;
         }
 
-        .dashboard-sidebar .sidebar-menu a:hover,
-        .dashboard-sidebar .sidebar-menu a.active {
-            background-color: #f8f9fa;
-            color: #007bff;
-            text-decoration: none;
+        .sidebar-menu a:hover {
+            background: var(--gray-100);
+            color: var(--gray-700);
         }
 
-        .dashboard-sidebar .sidebar-menu a i {
-            margin-right: 12px;
+        .sidebar-menu a.active {
+            background: var(--primary-50);
+            color: var(--primary-700);
+            border-right: 3px solid var(--primary-600);
+        }
+
+        .sidebar-menu a i {
             width: 20px;
-            text-align: center;
             font-size: 16px;
+            flex-shrink: 0;
+            text-align: center;
         }
 
-        .dashboard-content {
-            background: white;
-            border-radius: 0.3rem;
-            /* box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); */
-            padding: 30px;
-            margin-left: 20px;
-            border: 1px solid #eee;
+        /* Main Content Area */
+        .dashboard-main {
+            flex: 1;
+            padding: var(--spacing-xl);
+            overflow-y: auto;
         }
 
+        .dashboard-content-inner {
+            max-width: 95%;
+            margin: 0 auto;
+        }
+
+        /* Dashboard Header */
         .dashboard-header {
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #eee;
+            margin-bottom: var(--spacing-xl);
         }
 
         .dashboard-header h1 {
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 600;
-            color: #333;
-            margin: 0;
+            color: var(--gray-900);
+            margin: 0 0 var(--spacing-xs) 0;
+            line-height: 1.2;
         }
 
         .dashboard-header p {
-            color: #666;
-            margin: 5px 0 0 0;
+            color: var(--gray-600);
+            margin: 0;
             font-size: 14px;
         }
 
+        /* Cards */
+        .card {
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: var(--spacing-lg);
+            overflow: hidden;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-md);
+            transition: box-shadow 0.2s ease;
+        }
+
+        .card-header {
+            background: var(--white);
+            border-bottom: 1px solid var(--gray-200);
+            padding: var(--spacing-lg);
+            font-weight: 600;
+            color: var(--gray-900);
+        }
+
+        .card-body {
+            padding: var(--spacing-lg);
+        }
+
+        /* Stats Grid */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-xl);
         }
 
         .stat-card {
-            background: white;
-            border-radius: 0.3rem;
-            padding: 25px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            transition: transform 0.3s ease;
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            box-shadow: var(--shadow-sm);
+            transition: all 0.2s ease;
+            position: relative;
         }
 
         .stat-card:hover {
-            transform: translateY(-2px);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .stat-card .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: var(--spacing-md);
         }
 
         .stat-card .stat-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-md);
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 15px;
             font-size: 20px;
-            color: white;
+            color: var(--white);
         }
 
         .stat-card.orders .stat-icon {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--primary-600);
         }
 
         .stat-card.pending .stat-icon {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            background: var(--orange-600);
         }
 
         .stat-card.completed .stat-icon {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            background: var(--green-600);
         }
 
         .stat-card.wishlist .stat-icon {
-            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            background: var(--purple-600);
         }
 
         .stat-card .stat-number {
-            font-size: 32px;
+            font-size: 24px;
             font-weight: 700;
-            color: #333;
-            margin: 0;
+            color: var(--gray-900);
+            margin: 0 0 var(--spacing-xs) 0;
+            line-height: 1;
         }
 
         .stat-card .stat-label {
-            font-size: 14px;
-            color: #666;
-            margin: 5px 0 0 0;
+            font-size: 12px;
+            color: var(--gray-600);
+            margin: 0;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
+        /* Alerts */
         .alert {
-            border-radius: 0.3rem;
-            border: none;
-            padding: 15px 20px;
-            margin-bottom: 20px;
+            border-radius: var(--radius-md);
+            border: 1px solid;
+            padding: var(--spacing-md) var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-sm);
         }
 
         .alert-success {
-            background-color: #d4edda;
-            color: #155724;
+            background: var(--green-50);
+            border-color: var(--green-100);
+            color: var(--green-800);
         }
 
         .alert-danger {
-            background-color: #f8d7da;
-            color: #721c24;
+            background: #fef2f2;
+            border-color: #fecaca;
+            color: #991b1b;
         }
 
-        @media (max-width: 768px) {
-            .dashboard-content {
-                margin-left: 0;
-                margin-top: 20px;
+        .alert-icon {
+            font-size: 16px;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .dashboard-wrapper {
+                flex-direction: column;
             }
 
             .dashboard-sidebar {
-                position: relative;
-                top: 0;
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid var(--gray-200);
+                padding: var(--spacing-md);
             }
+
+            .sidebar-menu {
+                flex-direction: row;
+                overflow-x: auto;
+                gap: var(--spacing-xs);
+                padding-bottom: var(--spacing-sm);
+            }
+
+            .sidebar-menu li {
+                flex-shrink: 0;
+            }
+
+            .sidebar-menu a {
+                white-space: nowrap;
+                padding: var(--spacing-sm) var(--spacing-md);
+            }
+
+            .dashboard-main {
+                padding: var(--spacing-lg);
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: var(--spacing-md);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .dashboard-main {
+                padding: var(--spacing-md);
+            }
+
+            .dashboard-header h1 {
+                font-size: 20px;
+            }
+
+            .card-header,
+            .card-body {
+                padding: var(--spacing-md);
+            }
+
+            .stat-card {
+                padding: var(--spacing-md);
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-md);
+            }
+        }
+
+        /* Custom Scrollbar */
+        .dashboard-main::-webkit-scrollbar,
+        .dashboard-sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .dashboard-main::-webkit-scrollbar-track,
+        .dashboard-sidebar::-webkit-scrollbar-track {
+            background: var(--gray-100);
+        }
+
+        .dashboard-main::-webkit-scrollbar-thumb,
+        .dashboard-sidebar::-webkit-scrollbar-thumb {
+            background: var(--gray-300);
+            border-radius: 3px;
+        }
+
+        .dashboard-main::-webkit-scrollbar-thumb:hover,
+        .dashboard-sidebar::-webkit-scrollbar-thumb:hover {
+            background: var(--gray-600);
         }
     </style>
 @endsection
 
 @section('content')
     <div class="dashboard-container">
-        <div class="container" style="max-width: 95%;">
-            <div class="row">
-                <!-- Sidebar -->
-                <div class="col-lg-3 col-md-4">
-                    <div class="dashboard-sidebar">
-                        <div class="sidebar-header">
-                            <div class="user-info">
-                                <div class="user-avatar">
-                                    @if (Auth::user()->avatar)
-                                        <img src="{{ asset(Auth::user()->avatar) }}" alt="{{ Auth::user()->name }}"
-                                            onerror="this.style.display='none'; this.parentNode.innerHTML='{{ Auth::user()->initials }}';">
-                                    @else
-                                        {{ Auth::user()->initials }}
-                                    @endif
-                                </div>
-                                <h4 class="user-name">{{ Auth::user()->name }}</h4>
-                                <p class="user-email">{{ Auth::user()->email }}</p>
-                            </div>
+        <div class="dashboard-wrapper">
+            <!-- Modern Sidebar -->
+            <div class="dashboard-sidebar">
+                <div class="sidebar-header">
+                    <div class="user-info">
+                        <div class="user-avatar">
+                            @if (Auth::user()->avatar)
+                                <img src="{{ asset(Auth::user()->avatar) }}" alt="{{ Auth::user()->name }}"
+                                    onerror="this.style.display='none'; this.parentNode.innerHTML='{{ Auth::user()->initials }}';">
+                            @else
+                                {{ Auth::user()->initials }}
+                            @endif
                         </div>
-                        <ul class="sidebar-menu">
-                            <li>
-                                <a href="{{ route('buyer.dashboard.index') }}"
-                                    class="{{ request()->routeIs('buyer.dashboard.index') ? 'active' : '' }}">
-                                    <i class="fas fa-tachometer-alt"></i>
-                                    Dashboard
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ route('buyer.dashboard.profile') }}"
-                                    class="{{ request()->routeIs('buyer.dashboard.profile') ? 'active' : '' }}">
-                                    <i class="fas fa-user"></i>
-                                    My Profile
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ route('buyer.dashboard.orders') }}"
-                                    class="{{ request()->routeIs('buyer.dashboard.orders*') ? 'active' : '' }}">
-                                    <i class="fas fa-shopping-bag"></i>
-                                    My Orders
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ route('buyer.dashboard.addresses') }}"
-                                    class="{{ request()->routeIs('buyer.dashboard.addresses') ? 'active' : '' }}">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                    Addresses
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ route('buyer.dashboard.wishlist') }}"
-                                    class="{{ request()->routeIs('buyer.dashboard.wishlist') ? 'active' : '' }}">
-                                    <i class="fas fa-heart"></i>
-                                    Wishlist
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ route('buyer.dashboard.tracking') }}"
-                                    class="{{ request()->routeIs('buyer.dashboard.tracking') ? 'active' : '' }}">
-                                    <i class="fas fa-truck"></i>
-                                    Order Tracking
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ route('buyer.dashboard.return-requests') }}"
-                                    class="{{ request()->routeIs('buyer.dashboard.return-requests') ? 'active' : '' }}">
-                                    <i class="fas fa-undo"></i>
-                                    Return Requests
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ route('buyer.dashboard.browsing-history') }}"
-                                    class="{{ request()->routeIs('buyer.dashboard.browsing-history') ? 'active' : '' }}">
-                                    <i class="fas fa-history"></i>
-                                    Browsing History
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ route('buyer.dashboard.cart') }}"
-                                    class="{{ request()->routeIs('buyer.dashboard.cart') ? 'active' : '' }}">
-                                    <i class="fas fa-shopping-cart"></i>
-                                    My Cart
-                                </a>
-                            </li>
-                        </ul>
+                        <div class="user-details">
+                            <h4 class="user-name">{{ Auth::user()->name }}</h4>
+                            <p class="user-email">{{ Auth::user()->email }}</p>
+                        </div>
                     </div>
                 </div>
+                <ul class="sidebar-menu">
+                    <li>
+                        <a href="{{ route('buyer.dashboard.index') }}"
+                            class="{{ request()->routeIs('buyer.dashboard.index') ? 'active' : '' }}">
+                            <i class="fas fa-layout-dashboard"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('buyer.dashboard.profile') }}"
+                            class="{{ request()->routeIs('buyer.dashboard.profile') ? 'active' : '' }}">
+                            <i class="fas fa-user"></i>
+                            <span>My Profile</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('buyer.dashboard.orders') }}"
+                            class="{{ request()->routeIs('buyer.dashboard.orders*') ? 'active' : '' }}">
+                            <i class="fas fa-package"></i>
+                            <span>My Orders</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('buyer.dashboard.addresses') }}"
+                            class="{{ request()->routeIs('buyer.dashboard.addresses') ? 'active' : '' }}">
+                            <i class="fas fa-map-pin"></i>
+                            <span>Addresses</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('buyer.dashboard.wishlist') }}"
+                            class="{{ request()->routeIs('buyer.dashboard.wishlist') ? 'active' : '' }}">
+                            <i class="fas fa-heart"></i>
+                            <span>Wishlist</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('buyer.dashboard.tracking') }}"
+                            class="{{ request()->routeIs('buyer.dashboard.tracking') ? 'active' : '' }}">
+                            <i class="fas fa-truck"></i>
+                            <span>Order Tracking</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('buyer.dashboard.return-requests') }}"
+                            class="{{ request()->routeIs('buyer.dashboard.return-requests') ? 'active' : '' }}">
+                            <i class="fas fa-rotate-left"></i>
+                            <span>Return Requests</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('buyer.dashboard.browsing-history') }}"
+                            class="{{ request()->routeIs('buyer.dashboard.browsing-history') ? 'active' : '' }}">
+                            <i class="fas fa-history"></i>
+                            <span>Browsing History</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('buyer.dashboard.cart') }}"
+                            class="{{ request()->routeIs('buyer.dashboard.cart') ? 'active' : '' }}">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>My Cart</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
 
-                <!-- Main Content -->
-                <div class="col-lg-9 col-md-8">
-                    <div class="dashboard-content">
-                        @if (session('success'))
-                            <div class="alert alert-success">
-                                {{ session('success') }}
-                            </div>
-                        @endif
+            <!-- Main Content Area -->
+            <div class="dashboard-main">
+                <div class="dashboard-content-inner">
+                    @if (session('success'))
+                        <div class="alert alert-success">
+                            <i class="fas fa-check-circle alert-icon"></i>
+                            <div>{{ session('success') }}</div>
+                        </div>
+                    @endif
 
-                        @if ($errors->any())
-                            <div class="alert alert-danger">
-                                <ul class="mb-0">
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation-circle alert-icon"></i>
+                            <div>
+                                <ul style="margin: 0; padding-left: 16px;">
                                     @foreach ($errors->all() as $error)
                                         <li>{{ $error }}</li>
                                     @endforeach
                                 </ul>
                             </div>
-                        @endif
+                        </div>
+                    @endif
 
-                        @yield('dashboard-content')
-                    </div>
+                    @yield('dashboard-content')
                 </div>
             </div>
         </div>

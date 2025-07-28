@@ -33,7 +33,16 @@ class AppServiceProvider extends ServiceProvider
 
         View::composer('layouts.app.partials.buyer.mega_menu', function ($view) {
             $megaMenuCategories = Category::whereNull('parent_id')
-                ->with(['children.children']) // Eager load children and grandchildren
+                ->with([
+                    'children.children', // Eager load children and grandchildren
+                    'topBrands', // Load top brands for each category
+                    'ads' => function ($query) {
+                        $query->where('active', true)
+                            ->where('starts_at', '<=', now())
+                            ->where('ends_at', '>=', now())
+                            ->orderBy('position');
+                    }
+                ])
                 ->get();
             $view->with('megaMenuCategories', $megaMenuCategories);
         });

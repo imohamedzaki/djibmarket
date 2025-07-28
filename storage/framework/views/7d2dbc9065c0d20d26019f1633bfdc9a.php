@@ -4,1391 +4,644 @@
             <div class="row">
                 <div class="col-xl-6 col-lg-5">
                     <h3 class="mb-5">Flash Deals</h3>
-                    <p class="font-base color-gray-500">Special products in this month.</p>
+                    <p class="font-base color-gray-500">Special products with limited time offers.</p>
                 </div>
                 <div class="col-xl-6 col-lg-7">
                     <ul class="nav nav-tabs nav-tabs-underline text-uppercase" role="tablist">
                         <li><a class="active" href="#tab-flash-all" data-bs-toggle="tab" data-index="1" role="tab"
-                                aria-controls="tab-flash-all" aria-selected="true">All</a></li>
-                        <li><a href="#tab-flash-bestseller" data-bs-toggle="tab" data-index="2" role="tab"
-                                aria-controls="tab-flash-bestseller" aria-selected="true">Best seller</a></li>
-                        <li><a href="#tab-flash-mostviewed" data-bs-toggle="tab" data-index="3" role="tab"
-                                aria-controls="tab-flash-mostviewed" aria-selected="true">Most viewed</a></li>
-                        <li><a href="#tab-flash-topbrands" data-bs-toggle="tab" data-index="4" role="tab"
-                                aria-controls="tab-flash-topbrands" aria-selected="true">Top Brands</a></li>
+                                aria-controls="tab-flash-all" aria-selected="true">All Products</a></li>
+                        <li><a href="#tab-flash-highest" data-bs-toggle="tab" data-index="2" role="tab"
+                                aria-controls="tab-flash-highest" aria-selected="true">Highest Discounts</a></li>
+                        <li><a href="#tab-flash-lowest" data-bs-toggle="tab" data-index="3" role="tab"
+                                aria-controls="tab-flash-lowest" aria-selected="true">Lowest Discounts</a></li>
                     </ul>
                 </div>
             </div>
         </div>
         <div class="tab-content">
             <div class="tab-pane fade active show" id="tab-flash-all" role="tabpanel" aria-labelledby="tab-all">
-                <div class="row">
-                    <div class="col-xl-5 col-lg-6 col-md-6 col-sm-12">
-                        <div class="card-grid-style-3 hover-show top-deals">
-                            <div class="card-grid-inner"><span class="label"><span
-                                        class="font-sm color-white">Top<br>Deals</span></span>
-                                <div class="box-top-deals">
-                                    <div class="top-deals-left">
-                                        <div class="image-box">
-                                            <div class="box-swiper">
-                                                <div class="swiper-container swiper-tab" data-index="1">
-                                                    <div class="swiper-wrapper pt-5">
-                                                        <div class="swiper-slide"><img
-                                                                src="assets/imgs/page/homepage1/screen.png"
-                                                                alt="Ecom"></div>
-                                                        <div class="swiper-slide"><img
-                                                                src="assets/imgs/page/homepage1/screen-2.png"
-                                                                alt="Ecom"></div>
-                                                        <div class="swiper-slide"><img
-                                                                src="assets/imgs/page/homepage1/screen-3.png"
-                                                                alt="Ecom"></div>
+                <?php if(isset($flashSalesProducts) && $flashSalesProducts->count() > 0): ?>
+                    
+                    
+                    <div class="row">
+                        <?php $__currentLoopData = $flashSalesProducts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <?php if($index == 0): ?>
+                                
+                                <div class="col-xl-5 col-lg-6 col-md-6 col-sm-12">
+                                    <div class="card-grid-style-3 hover-show top-deals">
+                                        <div class="card-grid-inner">
+                                            <span class="label">
+                                                <span class="font-sm color-white">
+                                                    <?php if($product->flash_sale_discount_type === 'percentage'): ?>
+                                                        <?php echo e($product->flash_sale_discount_value); ?>%<br>OFF
+                                                    <?php else: ?>
+                                                        <?php echo e(number_format($product->flash_sale_discount_value, 0)); ?><br>DJF
+                                                        OFF
+                                                    <?php endif; ?>
+                                                </span>
+                                            </span>
+                                            <div class="box-top-deals">
+                                                <div class="top-deals-left">
+                                                    <div class="image-box">
+                                                        <div class="box-swiper">
+                                                            <div class="swiper-container swiper-tab" data-index="1">
+                                                                <div class="swiper-wrapper pt-5">
+                                                                    <div class="swiper-slide">
+                                                                        <img src="<?php echo e($product->featured_image_url ?? asset('assets/imgs/page/homepage1/screen.png')); ?>"
+                                                                            alt="<?php echo e($product->title); ?>">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <div class="swiper-pagination swiper-pagination-2"></div>
+                                                    <div class="box-count box-count-square">
+                                                        <div class="deals-countdown"
+                                                            data-countdown="<?php echo e($product->flash_sale_end_at->format('Y/m/d H:i:s')); ?>">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="top-deals-right">
+                                                    <div class="info-right"></div>
+                                                    <span
+                                                        class="font-xs color-gray-500"><?php echo e($product->category->name ?? 'No Category'); ?></span><br>
+                                                    <a class="color-brand-3 font-sm-bold"
+                                                        href="<?php echo e(route('buyer.product.show', $product->slug)); ?>">
+                                                        <h5><?php echo e($product->title); ?></h5>
+                                                    </a>
+                                                    <div class="rating">
+                                                        <?php
+                                                            $averageRating = $product->reviews->avg('rating') ?? 0;
+                                                            $reviewCount = $product->reviews->count();
+                                                        ?>
+                                                        <?php for($i = 1; $i <= 5; $i++): ?>
+                                                            <img src="<?php echo e(asset('assets/imgs/template/icons/star.svg')); ?>"
+                                                                alt="Star"
+                                                                style="opacity: <?php echo e($i <= $averageRating ? '1' : '0.3'); ?>;">
+                                                        <?php endfor; ?>
+                                                        <span
+                                                            class="font-xs color-gray-500">(<?php echo e($reviewCount); ?>)</span>
+                                                    </div>
+                                                    <div class="price-info">
+                                                        <h3 class="color-brand-3 price-main d-inline-block">
+                                                            <?php echo e(number_format($product->flash_sale_discounted_price, 0)); ?>
+
+                                                            DJF
+                                                        </h3>
+                                                        <span class="color-gray-500 price-line">
+                                                            <?php echo e(number_format($product->price_regular, 0)); ?> DJF
+                                                        </span>
+                                                    </div>
+                                                    <div class="box-progress">
+                                                        <div class="progress-bar">
+                                                            <div class="progress-bar-inner"
+                                                                style="width: <?php echo e($product->stock_quantity > 0 ? ($product->stock_quantity / ($product->stock_quantity + 50)) * 100 : 0); ?>%">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                                                <span class="font-xs color-gray-500">Available: </span>
+                                                                <span
+                                                                    class="font-xs-bold color-gray-900"><?php echo e($product->stock_quantity); ?></span>
+                                                            </div>
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-end">
+                                                                <span class="font-xs color-gray-500">Discount: </span>
+                                                                <span class="font-xs-bold color-gray-900">
+                                                                    <?php echo e(number_format($product->price_regular - $product->flash_sale_discounted_price, 0)); ?>
+
+                                                                    DJF
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <ul class="list-features">
+                                                        <li>Flash Sale Price</li>
+                                                        <li>Limited Time Offer</li>
+                                                        <li><?php echo e($product->flash_sale_title); ?></li>
+                                                    </ul>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="box-count box-count-square">
-                                            <div class="deals-countdown" data-countdown="2023/09/25 00:00:00"></div>
-                                        </div>
-                                    </div>
-                                    <div class="top-deals-right">
-                                        <div class="info-right"></div><span
-                                            class="font-xs color-gray-500">Apple</span><br><a
-                                            class="color-brand-3 font-sm-bold" href="shop-single-product.html">
-                                            <h5>2022 Apple iMac with Retina 5K Display 8GB RAM, 256GB SSD</h5>
-                                        </a>
-                                        <div class="rating"><img src="assets/imgs/template/icons/star.svg"
-                                                alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                                alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                                alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                                alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                                alt="Ecom"><span class="font-xs color-gray-500">(65)</span></div>
-                                        <div class="price-info">
-                                            <h3 class="color-brand-3 price-main d-inline-block">$2856.3</h3><span
-                                                class="color-gray-500 price-line">$3856.3</span>
-                                        </div>
-                                        <div class="box-progress">
-                                            <div class="progress-bar">
-                                                <div class="progress-bar-inner"></div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-lg-6 col-md-6 col-sm-6 col-6"><span
-                                                        class="font-xs color-gray-500">Available: </span><span
-                                                        class="font-xs-bold color-gray-900">568</span></div>
-                                                <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-end"><span
-                                                        class="font-xs color-gray-500">Sold: </span><span
-                                                        class="font-xs-bold color-gray-900">289</span></div>
-                                            </div>
-                                        </div>
-                                        <ul class="list-features">
-                                            <li> 27-inch (diagonal) Retina 5K display</li>
-                                            <li>3.1GHz 6-core 10th-generation Intel Core i5</li>
-                                            <li>AMD Radeon Pro 5300 graphics</li>
-                                        </ul>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-5 col-lg-6 col-md-6 col-sm-12">
-                        <div class="card-grid-style-3 hover-show top-deals">
-                            <div class="card-grid-inner"><span class="label"><span
-                                        class="font-sm color-white">Top<br>Deals</span></span>
-                                <div class="box-top-deals">
-                                    <div class="top-deals-left">
-                                        <div class="image-box">
-                                            <div class="box-swiper">
-                                                <div class="swiper-container swiper-tab" data-index="1">
-                                                    <div class="swiper-wrapper pt-5">
-                                                        <div class="swiper-slide"><img
-                                                                src="assets/imgs/page/homepage1/screen-2.png"
-                                                                alt="Ecom"></div>
-                                                        <div class="swiper-slide"><img
-                                                                src="assets/imgs/page/homepage1/screen-3.png"
-                                                                alt="Ecom"></div>
-                                                        <div class="swiper-slide"><img
-                                                                src="assets/imgs/page/homepage1/screen.png"
-                                                                alt="Ecom"></div>
+                            <?php elseif($index == 1): ?>
+                                
+                                <div class="col-xl-5 col-lg-6 col-md-6 col-sm-12">
+                                    <div class="card-grid-style-3 hover-show top-deals">
+                                        <div class="card-grid-inner">
+                                            <span class="label">
+                                                <span class="font-sm color-white">
+                                                    <?php if($product->flash_sale_discount_type === 'percentage'): ?>
+                                                        <?php echo e($product->flash_sale_discount_value); ?>%<br>OFF
+                                                    <?php else: ?>
+                                                        <?php echo e(number_format($product->flash_sale_discount_value, 0)); ?><br>DJF
+                                                        OFF
+                                                    <?php endif; ?>
+                                                </span>
+                                            </span>
+                                            <div class="box-top-deals">
+                                                <div class="top-deals-left">
+                                                    <div class="image-box">
+                                                        <div class="box-swiper">
+                                                            <div class="swiper-container swiper-tab" data-index="1">
+                                                                <div class="swiper-wrapper pt-5">
+                                                                    <div class="swiper-slide">
+                                                                        <img src="<?php echo e($product->featured_image_url ?? asset('assets/imgs/page/homepage1/screen-2.png')); ?>"
+                                                                            alt="<?php echo e($product->title); ?>">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <div class="swiper-pagination swiper-pagination-2"></div>
+                                                    <div class="box-count box-count-square">
+                                                        <div class="deals-countdown"
+                                                            data-countdown="<?php echo e($product->flash_sale_end_at->format('Y/m/d H:i:s')); ?>">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="top-deals-right">
+                                                    <div class="info-right"></div>
+                                                    <span
+                                                        class="font-xs color-gray-500"><?php echo e($product->category->name ?? 'No Category'); ?></span><br>
+                                                    <a class="color-brand-3 font-sm-bold"
+                                                        href="<?php echo e(route('buyer.product.show', $product->slug)); ?>">
+                                                        <h5><?php echo e($product->title); ?></h5>
+                                                    </a>
+                                                    <div class="rating">
+                                                        <?php
+                                                            $averageRating = $product->reviews->avg('rating') ?? 0;
+                                                            $reviewCount = $product->reviews->count();
+                                                        ?>
+                                                        <?php for($i = 1; $i <= 5; $i++): ?>
+                                                            <img src="<?php echo e(asset('assets/imgs/template/icons/star.svg')); ?>"
+                                                                alt="Star"
+                                                                style="opacity: <?php echo e($i <= $averageRating ? '1' : '0.3'); ?>;">
+                                                        <?php endfor; ?>
+                                                        <span
+                                                            class="font-xs color-gray-500">(<?php echo e($reviewCount); ?>)</span>
+                                                    </div>
+                                                    <div class="price-info">
+                                                        <h3 class="color-brand-3 price-main d-inline-block">
+                                                            <?php echo e(number_format($product->flash_sale_discounted_price, 0)); ?>
+
+                                                            DJF
+                                                        </h3>
+                                                        <span class="color-gray-500 price-line">
+                                                            <?php echo e(number_format($product->price_regular, 0)); ?> DJF
+                                                        </span>
+                                                    </div>
+                                                    <div class="box-progress">
+                                                        <div class="progress-bar">
+                                                            <div class="progress-bar-inner"
+                                                                style="width: <?php echo e($product->stock_quantity > 0 ? ($product->stock_quantity / ($product->stock_quantity + 50)) * 100 : 0); ?>%">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                                                <span class="font-xs color-gray-500">Available: </span>
+                                                                <span
+                                                                    class="font-xs-bold color-gray-900"><?php echo e($product->stock_quantity); ?></span>
+                                                            </div>
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-end">
+                                                                <span class="font-xs color-gray-500">Discount: </span>
+                                                                <span class="font-xs-bold color-gray-900">
+                                                                    <?php echo e(number_format($product->price_regular - $product->flash_sale_discounted_price, 0)); ?>
+
+                                                                    DJF
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <ul class="list-features">
+                                                        <li>Flash Sale Price</li>
+                                                        <li>Limited Time Offer</li>
+                                                        <li><?php echo e($product->flash_sale_title); ?></li>
+                                                    </ul>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="box-count box-count-square">
-                                            <div class="deals-countdown" data-countdown="2023/09/25 00:00:00"></div>
-                                        </div>
                                     </div>
-                                    <div class="top-deals-right">
-                                        <div class="info-right"></div><span
-                                            class="font-xs color-gray-500">Apple</span><br><a
-                                            class="color-brand-3 font-sm-bold" href="shop-single-product.html">
-                                            <h5>Apple MacBook Air with Apple M1 Chip 13-inch, 8GB RAM</h5>
-                                        </a>
-                                        <div class="rating"><img src="assets/imgs/template/icons/star.svg"
-                                                alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                                alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                                alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                                alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                                alt="Ecom"><span class="font-xs color-gray-500">(65)</span></div>
-                                        <div class="price-info">
-                                            <h3 class="color-brand-3 price-main d-inline-block">$2856.3</h3><span
-                                                class="color-gray-500 price-line">$3856.3</span>
-                                        </div>
-                                        <div class="box-progress">
-                                            <div class="progress-bar">
-                                                <div class="progress-bar-inner"></div>
+                                </div>
+                            <?php elseif($index == 2): ?>
+                                
+                                <div class="col-lg-2 col-md-6 d-none d-xl-block col-sm-12">
+                                    <div class="grid-banner-height">
+                                        <span class="lbl-new-arrival color-brand-3">Flash</span>
+                                        <h4 class="font-24 mt-10 mb-5">Deals</h4>
+                                        <p class="font-16">Limited Time</p>
+                                    </div>
+                                </div>
+                            <?php else: ?>
+                                
+                                <div class="col-lg-3 col-md-6 col-sm-6">
+                                    <div class="card-grid-style-3 hover-show hover-hide-show-cart">
+                                        <div class="card-grid-inner">
+                                            <div class="tools">
+                                                <a class="btn btn-wishlist btn-tooltip mb-10" href="#"
+                                                    aria-label="Add To Wishlist"></a>
+                                                <a class="btn btn-compare btn-tooltip mb-10" href="#"
+                                                    aria-label="Compare"></a>
+                                                <a class="btn btn-quickview btn-tooltip" aria-label="Quick view"
+                                                    href="#ModalQuickview" data-bs-toggle="modal"></a>
                                             </div>
-                                            <div class="row">
-                                                <div class="col-lg-6 col-md-6 col-sm-6 col-6"><span
-                                                        class="font-xs color-gray-500">Available: </span><span
-                                                        class="font-xs-bold color-gray-900">568</span></div>
-                                                <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-end"><span
-                                                        class="font-xs color-gray-500">Sold: </span><span
-                                                        class="font-xs-bold color-gray-900">289</span></div>
+                                            <div class="image-box">
+                                                <span class="label bg-brand-2">
+                                                    <?php if($product->flash_sale_discount_type === 'percentage'): ?>
+                                                        -<?php echo e($product->flash_sale_discount_value); ?>%
+                                                    <?php else: ?>
+                                                        -<?php echo e(number_format($product->flash_sale_discount_value, 0)); ?>
+
+                                                        DJF
+                                                    <?php endif; ?>
+                                                </span>
+                                                <a href="<?php echo e(route('buyer.product.show', $product->slug)); ?>">
+                                                    <img src="<?php echo e($product->featured_image_url ?? asset('assets/imgs/page/homepage1/imgsp1.png')); ?>"
+                                                        alt="<?php echo e($product->title); ?>">
+                                                </a>
+                                            </div>
+                                            <div class="box-count">
+                                                <div class="deals-countdown"
+                                                    data-countdown="<?php echo e($product->flash_sale_end_at->format('Y/m/d H:i:s')); ?>">
+                                                </div>
+                                            </div>
+                                            <div class="info-right">
+                                                <span
+                                                    class="font-xs color-gray-500"><?php echo e($product->category->name ?? 'No Category'); ?></span><br>
+                                                <a class="color-brand-3 font-sm-bold"
+                                                    href="<?php echo e(route('buyer.product.show', $product->slug)); ?>">
+                                                    <?php echo e(Str::limit($product->title, 50)); ?>
+
+                                                </a>
+                                                <div class="rating">
+                                                    <?php
+                                                        $averageRating = $product->reviews->avg('rating') ?? 0;
+                                                        $reviewCount = $product->reviews->count();
+                                                    ?>
+                                                    <?php for($i = 1; $i <= 5; $i++): ?>
+                                                        <img src="<?php echo e(asset('assets/imgs/template/icons/star.svg')); ?>"
+                                                            alt="Star"
+                                                            style="opacity: <?php echo e($i <= $averageRating ? '1' : '0.3'); ?>;">
+                                                    <?php endfor; ?>
+                                                    <span class="font-xs color-gray-500"> (<?php echo e($reviewCount); ?>)</span>
+                                                </div>
+                                                <div class="price-info">
+                                                    <strong class="font-lg-bold color-brand-3 price-main">
+                                                        <?php echo e(number_format($product->flash_sale_discounted_price, 0)); ?>
+
+                                                        DJF
+                                                    </strong>
+                                                    <span class="color-gray-500 price-line">
+                                                        <?php echo e(number_format($product->price_regular, 0)); ?> DJF
+                                                    </span>
+                                                </div>
+                                                <div class="box-progress box-progress-small">
+                                                    <div class="progress-bar">
+                                                        <div class="progress-bar-inner"
+                                                            style="width: <?php echo e($product->stock_quantity > 0 ? ($product->stock_quantity / ($product->stock_quantity + 30)) * 100 : 0); ?>%">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                                                            <span class="font-xs color-gray-500">Available:</span>
+                                                            <span
+                                                                class="font-xs-bold color-gray-900"><?php echo e($product->stock_quantity); ?></span>
+                                                        </div>
+                                                        <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-end">
+                                                            <span class="font-xs color-gray-500">Sold:</span>
+                                                            <span
+                                                                class="font-xs-bold color-gray-900"><?php echo e(rand(10, 50)); ?></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="mt-20 box-add-cart">
+                                                    <a class="btn btn-cart" href="#">Add To Cart</a>
+                                                </div>
+                                                <ul class="list-features">
+                                                    <li>Flash Sale until
+                                                        <?php echo e($product->flash_sale_end_at->format('M d, Y')); ?></li>
+                                                </ul>
                                             </div>
                                         </div>
-                                        <ul class="list-features">
-                                            <li> 27-inch (diagonal) Retina 5K display</li>
-                                            <li>3.1GHz 6-core 10th-generation Intel Core i5</li>
-                                            <li>AMD Radeon Pro 5300 graphics</li>
-                                        </ul>
                                     </div>
                                 </div>
+                            <?php endif; ?>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    </div>
+                <?php else: ?>
+                    
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="text-center py-5">
+                                <div class="mb-4">
+                                    <svg width="80" height="80" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg" style="opacity: 0.4;">
+                                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="#ff4757" stroke-width="1.5"
+                                            stroke-linecap="round" stroke-linejoin="round" />
+                                        <circle cx="12" cy="12" r="1" fill="#ff4757" />
+                                    </svg>
+                                </div>
+                                <h4 class="color-gray-500 mb-3">No Flash Deals Available</h4>
+                                <p class="color-gray-500">Check back later for exciting flash deals and special offers!
+                                </p>
+                                
+                                
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-2 col-md-6 d-none d-xl-block col-sm-12">
-                        <div class="grid-banner-height"><span class="lbl-new-arrival color-brand-3">New
-                                Arrivals</span>
-                            <h4 class="font-24 mt-10 mb-5">Xiaomi Redmi Serial 12</h4>
-                            <p class="font-16">Special Sale</p>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-6">
-                        <div class="card-grid-style-3 hover-show hover-hide-show-cart">
-                            <div class="card-grid-inner">
-                                <div class="tools"><a class="btn btn-wishlist btn-tooltip mb-10"
-                                        href="shop-wishlist.html" aria-label="Add To Wishlist"></a><a
-                                        class="btn btn-compare btn-tooltip mb-10" href="shop-compare.html"
-                                        aria-label="Compare"></a><a class="btn btn-quickview btn-tooltip"
-                                        aria-label="Quick view" href="#ModalQuickview" data-bs-toggle="modal"></a>
-                                </div>
-                                <div class="image-box"><span class="label bg-brand-2">-17%</span><a
-                                        href="shop-single-product.html"><img
-                                            src="assets/imgs/page/homepage1/imgsp1.png" alt="Ecom"></a></div>
-                                <div class="box-count">
-                                    <div class="deals-countdown" data-countdown="2023/09/25 00:00:00"></div>
-                                </div>
-                                <div class="info-right"><span class="font-xs color-gray-500">Apple</span><br><a
-                                        class="color-brand-3 font-sm-bold" href="#">HP 22 All-in-One PC, Intel
-                                        Pentium Silver J5040, 4GB RAM</a>
-                                    <div class="rating"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><span class="font-xs color-gray-500"> (65)</span></div>
-                                    <div class="price-info"><strong
-                                            class="font-lg-bold color-brand-3 price-main">$2856.3</strong><span
-                                            class="color-gray-500 price-line">$3225.6</span></div>
-                                    <div class="box-progress box-progress-small">
-                                        <div class="progress-bar">
-                                            <div class="progress-bar-inner"></div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-lg-6 col-md-6 col-sm-6 col-6"><span
-                                                    class="font-xs color-gray-500">Available:</span><span
-                                                    class="font-xs-bold color-gray-900">568</span></div>
-                                            <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-end"><span
-                                                    class="font-xs color-gray-500">Sold:</span><span
-                                                    class="font-xs-bold color-gray-900">289</span></div>
-                                        </div>
-                                    </div>
-                                    <div class="mt-20 box-add-cart"><a class="btn btn-cart" href="shop-cart.html">Add
-                                            To Cart</a></div>
-                                    <ul class="list-features">
-                                        <li> 2-day Delivery. Free shipping</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-6">
-                        <div class="card-grid-style-3 hover-show hover-hide-show-cart">
-                            <div class="card-grid-inner">
-                                <div class="tools"><a class="btn btn-wishlist btn-tooltip mb-10"
-                                        href="shop-wishlist.html" aria-label="Add To Wishlist"></a><a
-                                        class="btn btn-compare btn-tooltip mb-10" href="shop-compare.html"
-                                        aria-label="Compare"></a><a class="btn btn-quickview btn-tooltip"
-                                        aria-label="Quick view" href="#ModalQuickview" data-bs-toggle="modal"></a>
-                                </div>
-                                <div class="image-box"><span class="label bg-brand-2">-17%</span><a
-                                        href="shop-single-product.html"><img
-                                            src="assets/imgs/page/homepage1/imgsp3.png" alt="Ecom"></a></div>
-                                <div class="box-count">
-                                    <div class="deals-countdown" data-countdown="2023/09/25 00:00:00"></div>
-                                </div>
-                                <div class="info-right"><span class="font-xs color-gray-500">Gateway</span><br><a
-                                        class="color-brand-3 font-sm-bold" href="#">Gateway 23.8&quot;
-                                        All-in-one Desktop, Fully Adjustable Stand</a>
-                                    <div class="rating"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><span class="font-xs color-gray-500"> (65)</span></div>
-                                    <div class="price-info"><strong
-                                            class="font-lg-bold color-brand-3 price-main">$2856.3</strong><span
-                                            class="color-gray-500 price-line">$3225.6</span></div>
-                                    <div class="box-progress box-progress-small">
-                                        <div class="progress-bar">
-                                            <div class="progress-bar-inner"></div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-lg-6 col-md-6 col-sm-6 col-6"><span
-                                                    class="font-xs color-gray-500">Available:</span><span
-                                                    class="font-xs-bold color-gray-900">568</span></div>
-                                            <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-end"><span
-                                                    class="font-xs color-gray-500">Sold:</span><span
-                                                    class="font-xs-bold color-gray-900">289</span></div>
-                                        </div>
-                                    </div>
-                                    <div class="mt-20 box-add-cart"><a class="btn btn-cart" href="shop-cart.html">Add
-                                            To Cart</a></div>
-                                    <ul class="list-features">
-                                        <li> 2-day Delivery. Free shipping</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-6">
-                        <div class="card-grid-style-3 hover-show hover-hide-show-cart">
-                            <div class="card-grid-inner">
-                                <div class="tools"><a class="btn btn-wishlist btn-tooltip mb-10"
-                                        href="shop-wishlist.html" aria-label="Add To Wishlist"></a><a
-                                        class="btn btn-compare btn-tooltip mb-10" href="shop-compare.html"
-                                        aria-label="Compare"></a><a class="btn btn-quickview btn-tooltip"
-                                        aria-label="Quick view" href="#ModalQuickview" data-bs-toggle="modal"></a>
-                                </div>
-                                <div class="image-box"><span class="label bg-brand-2">-17%</span><a
-                                        href="shop-single-product.html"><img
-                                            src="assets/imgs/page/homepage1/imgsp5.png" alt="Ecom"></a></div>
-                                <div class="box-count">
-                                    <div class="deals-countdown" data-countdown="2023/09/25 00:00:00"></div>
-                                </div>
-                                <div class="info-right"><span class="font-xs color-gray-500">HP</span><br><a
-                                        class="color-brand-3 font-sm-bold" href="#">HP 24 All-in-One PC, Intel
-                                        Core i3-1115G4, 4GB RAM</a>
-                                    <div class="rating"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><span class="font-xs color-gray-500"> (65)</span></div>
-                                    <div class="price-info"><strong
-                                            class="font-lg-bold color-brand-3 price-main">$2856.3</strong><span
-                                            class="color-gray-500 price-line">$3225.6</span></div>
-                                    <div class="box-progress box-progress-small">
-                                        <div class="progress-bar">
-                                            <div class="progress-bar-inner"></div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-lg-6 col-md-6 col-sm-6 col-6"><span
-                                                    class="font-xs color-gray-500">Available:</span><span
-                                                    class="font-xs-bold color-gray-900">568</span></div>
-                                            <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-end"><span
-                                                    class="font-xs color-gray-500">Sold:</span><span
-                                                    class="font-xs-bold color-gray-900">289</span></div>
-                                        </div>
-                                    </div>
-                                    <div class="mt-20 box-add-cart"><a class="btn btn-cart" href="shop-cart.html">Add
-                                            To Cart</a></div>
-                                    <ul class="list-features">
-                                        <li> 2-day Delivery. Free shipping</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-6">
-                        <div class="card-grid-style-3 hover-show hover-hide-show-cart">
-                            <div class="card-grid-inner">
-                                <div class="tools"><a class="btn btn-wishlist btn-tooltip mb-10"
-                                        href="shop-wishlist.html" aria-label="Add To Wishlist"></a><a
-                                        class="btn btn-compare btn-tooltip mb-10" href="shop-compare.html"
-                                        aria-label="Compare"></a><a class="btn btn-quickview btn-tooltip"
-                                        aria-label="Quick view" href="#ModalQuickview" data-bs-toggle="modal"></a>
-                                </div>
-                                <div class="image-box"><span class="label bg-brand-2">-17%</span><a
-                                        href="shop-single-product.html"><img
-                                            src="assets/imgs/page/homepage1/imgsp6.png" alt="Ecom"></a></div>
-                                <div class="box-count">
-                                    <div class="deals-countdown" data-countdown="2023/09/25 00:00:00"></div>
-                                </div>
-                                <div class="info-right"><span class="font-xs color-gray-500">Dell</span><br><a
-                                        class="color-brand-3 font-sm-bold" href="#">Dell Optiplex 9020 Small
-                                        Form Business Desktop Tower PC</a>
-                                    <div class="rating"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><span class="font-xs color-gray-500"> (65)</span></div>
-                                    <div class="price-info"><strong
-                                            class="font-lg-bold color-brand-3 price-main">$2856.3</strong><span
-                                            class="color-gray-500 price-line">$3225.6</span></div>
-                                    <div class="box-progress box-progress-small">
-                                        <div class="progress-bar">
-                                            <div class="progress-bar-inner"></div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-lg-6 col-md-6 col-sm-6 col-6"><span
-                                                    class="font-xs color-gray-500">Available:</span><span
-                                                    class="font-xs-bold color-gray-900">568</span></div>
-                                            <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-end"><span
-                                                    class="font-xs color-gray-500">Sold:</span><span
-                                                    class="font-xs-bold color-gray-900">289</span></div>
-                                        </div>
-                                    </div>
-                                    <div class="mt-20 box-add-cart"><a class="btn btn-cart" href="shop-cart.html">Add
-                                            To Cart</a></div>
-                                    <ul class="list-features">
-                                        <li> 2-day Delivery. Free shipping</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <?php endif; ?>
             </div>
-            <div class="tab-pane fade" id="tab-flash-bestseller" role="tabpanel"
-                aria-labelledby="tab-flash-bestseller">
-                <div class="row">
-                    <div class="col-xl-5 col-lg-6 col-md-6 col-sm-12">
-                        <div class="card-grid-style-3 hover-show top-deals">
-                            <div class="card-grid-inner"><span class="label"><span
-                                        class="font-sm color-white">Top<br>Deals</span></span>
-                                <div class="box-top-deals">
-                                    <div class="top-deals-left">
-                                        <div class="image-box">
-                                            <div class="box-swiper">
-                                                <div class="swiper-container swiper-tab" data-index="2">
-                                                    <div class="swiper-wrapper pt-5">
-                                                        <div class="swiper-slide"><img
-                                                                src="assets/imgs/page/homepage1/screen-3.png"
-                                                                alt="Ecom"></div>
-                                                        <div class="swiper-slide"><img
-                                                                src="assets/imgs/page/homepage1/screen-2.png"
-                                                                alt="Ecom"></div>
-                                                        <div class="swiper-slide"><img
-                                                                src="assets/imgs/page/homepage1/screen.png"
-                                                                alt="Ecom"></div>
+
+            
+            <div class="tab-pane fade" id="tab-flash-highest" role="tabpanel">
+                <?php if(isset($flashSalesProducts) && $flashSalesProducts->count() > 0): ?>
+                    <div class="row">
+                        <?php
+                            // Sort by highest discount percentage
+                            $highestDiscountProducts = $flashSalesProducts->sortByDesc(function ($product) {
+                                if ($product->flash_sale_discount_type === 'percentage') {
+                                    return $product->flash_sale_discount_value;
+                                } else {
+                                    // Calculate percentage for fixed amount discounts
+                                    return ($product->flash_sale_discount_value / $product->price_regular) * 100;
+                                }
+                            });
+                        ?>
+                        <?php $__currentLoopData = $highestDiscountProducts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <?php if($index < 8): ?>
+                                
+                                <?php if($index < 2): ?>
+                                    
+                                    <div class="col-xl-5 col-lg-6 col-md-6 col-sm-12">
+                                        
+                                        <div class="card-grid-style-3 hover-show top-deals">
+                                            <div class="card-grid-inner">
+                                                <span class="label">
+                                                    <span class="font-sm color-white">
+                                                        <?php if($product->flash_sale_discount_type === 'percentage'): ?>
+                                                            <?php echo e($product->flash_sale_discount_value); ?>%<br>OFF
+                                                        <?php else: ?>
+                                                            <?php echo e(number_format($product->flash_sale_discount_value, 0)); ?><br>DJF
+                                                            OFF
+                                                        <?php endif; ?>
+                                                    </span>
+                                                </span>
+                                                
+                                                <div class="box-top-deals">
+                                                    <div class="top-deals-left">
+                                                        <div class="image-box">
+                                                            <div class="box-swiper">
+                                                                <div class="swiper-container swiper-tab"
+                                                                    data-index="2">
+                                                                    <div class="swiper-wrapper pt-5">
+                                                                        <div class="swiper-slide">
+                                                                            <img src="<?php echo e($product->featured_image_url ?? asset('assets/imgs/page/homepage1/screen.png')); ?>"
+                                                                                alt="<?php echo e($product->title); ?>">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="box-count box-count-square">
+                                                            <div class="deals-countdown"
+                                                                data-countdown="<?php echo e($product->flash_sale_end_at->format('Y/m/d H:i:s')); ?>">
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <div class="swiper-pagination swiper-pagination-2"></div>
+                                                    <div class="top-deals-right">
+                                                        <div class="info-right"></div>
+                                                        <span
+                                                            class="font-xs color-gray-500"><?php echo e($product->category->name ?? 'No Category'); ?></span><br>
+                                                        <a class="color-brand-3 font-sm-bold"
+                                                            href="<?php echo e(route('buyer.product.show', $product->slug)); ?>">
+                                                            <h5><?php echo e($product->title); ?></h5>
+                                                        </a>
+                                                        <div class="price-info">
+                                                            <h3 class="color-brand-3 price-main d-inline-block">
+                                                                <?php echo e(number_format($product->flash_sale_discounted_price, 0)); ?>
+
+                                                                DJF
+                                                            </h3>
+                                                            <span class="color-gray-500 price-line">
+                                                                <?php echo e(number_format($product->price_regular, 0)); ?> DJF
+                                                            </span>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="box-count box-count-square">
-                                            <div class="deals-countdown" data-countdown="2023/09/25 00:00:00"></div>
+                                    </div>
+                                <?php elseif($index == 2): ?>
+                                    
+                                    <div class="col-lg-2 col-md-6 d-none d-xl-block col-sm-12">
+                                        <div class="grid-banner-height">
+                                            <span class="lbl-new-arrival color-brand-3">Best</span>
+                                            <h4 class="font-24 mt-10 mb-5">Discounts</h4>
+                                            <p class="font-16">Highest Savings</p>
                                         </div>
                                     </div>
-                                    <div class="top-deals-right">
-                                        <div class="info-right"></div><span
-                                            class="font-xs color-gray-500">Apple</span><br><a
-                                            class="color-brand-3 font-sm-bold" href="shop-single-product.html">
-                                            <h5>2022 Apple iMac with Retina 5K Display 8GB RAM, 256GB SSD</h5>
-                                        </a>
-                                        <div class="rating"><img src="assets/imgs/template/icons/star.svg"
-                                                alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                                alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                                alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                                alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                                alt="Ecom"><span class="font-xs color-gray-500">(65)</span></div>
-                                        <div class="price-info">
-                                            <h3 class="color-brand-3 price-main d-inline-block">$2856.3</h3><span
-                                                class="color-gray-500 price-line">$3856.3</span>
-                                        </div>
-                                        <div class="box-progress">
-                                            <div class="progress-bar">
-                                                <div class="progress-bar-inner"></div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-lg-6 col-md-6 col-sm-6 col-6"><span
-                                                        class="font-xs color-gray-500">Available: </span><span
-                                                        class="font-xs-bold color-gray-900">568</span></div>
-                                                <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-end"><span
-                                                        class="font-xs color-gray-500">Sold: </span><span
-                                                        class="font-xs-bold color-gray-900">289</span></div>
-                                            </div>
-                                        </div>
-                                        <ul class="list-features">
-                                            <li> 27-inch (diagonal) Retina 5K display</li>
-                                            <li>3.1GHz 6-core 10th-generation Intel Core i5</li>
-                                            <li>AMD Radeon Pro 5300 graphics</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-5 col-lg-6 col-md-6 col-sm-12">
-                        <div class="card-grid-style-3 hover-show top-deals">
-                            <div class="card-grid-inner"><span class="label"><span
-                                        class="font-sm color-white">Top<br>Deals</span></span>
-                                <div class="box-top-deals">
-                                    <div class="top-deals-left">
-                                        <div class="image-box">
-                                            <div class="box-swiper">
-                                                <div class="swiper-container swiper-tab" data-index="2">
-                                                    <div class="swiper-wrapper pt-5">
-                                                        <div class="swiper-slide"><img
-                                                                src="assets/imgs/page/homepage1/screen-2.png"
-                                                                alt="Ecom"></div>
-                                                        <div class="swiper-slide"><img
-                                                                src="assets/imgs/page/homepage1/screen-3.png"
-                                                                alt="Ecom"></div>
-                                                        <div class="swiper-slide"><img
-                                                                src="assets/imgs/page/homepage1/screen.png"
-                                                                alt="Ecom"></div>
+                                <?php else: ?>
+                                    
+                                    <div class="col-lg-3 col-md-6 col-sm-6">
+                                        <div class="card-grid-style-3 hover-show hover-hide-show-cart">
+                                            <div class="card-grid-inner">
+                                                <div class="image-box">
+                                                    <span class="label bg-brand-2">
+                                                        <?php if($product->flash_sale_discount_type === 'percentage'): ?>
+                                                            -<?php echo e($product->flash_sale_discount_value); ?>%
+                                                        <?php else: ?>
+                                                            -<?php echo e(number_format($product->flash_sale_discount_value, 0)); ?>
+
+                                                            DJF
+                                                        <?php endif; ?>
+                                                    </span>
+                                                    <a href="<?php echo e(route('buyer.product.show', $product->slug)); ?>">
+                                                        <img src="<?php echo e($product->featured_image_url ?? asset('assets/imgs/page/homepage1/imgsp1.png')); ?>"
+                                                            alt="<?php echo e($product->title); ?>">
+                                                    </a>
+                                                </div>
+                                                <div class="info-right">
+                                                    <a class="color-brand-3 font-sm-bold"
+                                                        href="<?php echo e(route('buyer.product.show', $product->slug)); ?>">
+                                                        <?php echo e(Str::limit($product->title, 50)); ?>
+
+                                                    </a>
+                                                    <div class="price-info">
+                                                        <strong class="font-lg-bold color-brand-3 price-main">
+                                                            <?php echo e(number_format($product->flash_sale_discounted_price, 0)); ?>
+
+                                                            DJF
+                                                        </strong>
+                                                        <span class="color-gray-500 price-line">
+                                                            <?php echo e(number_format($product->price_regular, 0)); ?> DJF
+                                                        </span>
                                                     </div>
-                                                    <div class="swiper-pagination swiper-pagination-2"></div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="box-count box-count-square">
-                                            <div class="deals-countdown" data-countdown="2023/09/25 00:00:00"></div>
-                                        </div>
                                     </div>
-                                    <div class="top-deals-right">
-                                        <div class="info-right"></div><span
-                                            class="font-xs color-gray-500">Apple</span><br><a
-                                            class="color-brand-3 font-sm-bold" href="shop-single-product.html">
-                                            <h5>2022 Apple iMac with Retina 5K Display 8GB RAM, 256GB SSD</h5>
-                                        </a>
-                                        <div class="rating"><img src="assets/imgs/template/icons/star.svg"
-                                                alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                                alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                                alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                                alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                                alt="Ecom"><span class="font-xs color-gray-500">(65)</span></div>
-                                        <div class="price-info">
-                                            <h3 class="color-brand-3 price-main d-inline-block">$2856.3</h3><span
-                                                class="color-gray-500 price-line">$3856.3</span>
-                                        </div>
-                                        <div class="box-progress">
-                                            <div class="progress-bar">
-                                                <div class="progress-bar-inner"></div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-lg-6 col-md-6 col-sm-6 col-6"><span
-                                                        class="font-xs color-gray-500">Available: </span><span
-                                                        class="font-xs-bold color-gray-900">568</span></div>
-                                                <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-end"><span
-                                                        class="font-xs color-gray-500">Sold: </span><span
-                                                        class="font-xs-bold color-gray-900">289</span></div>
-                                            </div>
-                                        </div>
-                                        <ul class="list-features">
-                                            <li> 27-inch (diagonal) Retina 5K display</li>
-                                            <li>3.1GHz 6-core 10th-generation Intel Core i5</li>
-                                            <li>AMD Radeon Pro 5300 graphics</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                                <?php endif; ?>
+                            <?php endif; ?>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </div>
-                    <div class="col-lg-2 col-md-6 d-none d-xl-block col-sm-12">
-                        <div class="grid-banner-height"><span class="lbl-new-arrival color-brand-3">New
-                                Arrivals</span>
-                            <h4 class="font-24 mt-10 mb-5">Xiaomi Redmi Serial 12</h4>
-                            <p class="font-16">Special Sale</p>
+                <?php else: ?>
+                    <div class="text-center py-5">
+                        <div class="mb-4">
+                            <svg width="80" height="80" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg" style="opacity: 0.4;">
+                                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="#ff4757" stroke-width="1.5"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                                <circle cx="12" cy="12" r="1" fill="#ff4757" />
+                            </svg>
                         </div>
+                        <h4 class="color-gray-500 mb-3">No Flash Deals Available</h4>
+                        <p class="color-gray-500">Check back later for exciting flash deals with highest discounts!</p>
                     </div>
-                    <div class="col-lg-3 col-md-6 col-sm-6">
-                        <div class="card-grid-style-3 hover-show hover-hide-show-cart">
-                            <div class="card-grid-inner">
-                                <div class="tools"><a class="btn btn-wishlist btn-tooltip mb-10"
-                                        href="shop-wishlist.html" aria-label="Add To Wishlist"></a><a
-                                        class="btn btn-compare btn-tooltip mb-10" href="shop-compare.html"
-                                        aria-label="Compare"></a><a class="btn btn-quickview btn-tooltip"
-                                        aria-label="Quick view" href="#ModalQuickview" data-bs-toggle="modal"></a>
-                                </div>
-                                <div class="image-box"><span class="label bg-brand-2">-17%</span><a
-                                        href="shop-single-product.html"><img
-                                            src="assets/imgs/page/homepage1/imgsp2.png" alt="Ecom"></a></div>
-                                <div class="box-count">
-                                    <div class="deals-countdown" data-countdown="2023/09/25 00:00:00"></div>
-                                </div>
-                                <div class="info-right"><span class="font-xs color-gray-500">Apple</span><br><a
-                                        class="color-brand-3 font-sm-bold" href="#">2022 Apple iMac with Retina
-                                        5K Display 8GB RAM, 256GB SSD</a>
-                                    <div class="rating"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><span class="font-xs color-gray-500"> (65)</span></div>
-                                    <div class="price-info"><strong
-                                            class="font-lg-bold color-brand-3 price-main">$2856.3</strong><span
-                                            class="color-gray-500 price-line">$3225.6</span></div>
-                                    <div class="box-progress box-progress-small">
-                                        <div class="progress-bar">
-                                            <div class="progress-bar-inner"></div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-lg-6 col-md-6 col-sm-6 col-6"><span
-                                                    class="font-xs color-gray-500">Available:</span><span
-                                                    class="font-xs-bold color-gray-900">568</span></div>
-                                            <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-end"><span
-                                                    class="font-xs color-gray-500">Sold:</span><span
-                                                    class="font-xs-bold color-gray-900">289</span></div>
-                                        </div>
-                                    </div>
-                                    <div class="mt-20 box-add-cart"><a class="btn btn-cart" href="shop-cart.html">Add
-                                            To Cart</a></div>
-                                    <ul class="list-features">
-                                        <li> 2-day Delivery. Free shipping</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-6">
-                        <div class="card-grid-style-3 hover-show hover-hide-show-cart">
-                            <div class="card-grid-inner">
-                                <div class="tools"><a class="btn btn-wishlist btn-tooltip mb-10"
-                                        href="shop-wishlist.html" aria-label="Add To Wishlist"></a><a
-                                        class="btn btn-compare btn-tooltip mb-10" href="shop-compare.html"
-                                        aria-label="Compare"></a><a class="btn btn-quickview btn-tooltip"
-                                        aria-label="Quick view" href="#ModalQuickview" data-bs-toggle="modal"></a>
-                                </div>
-                                <div class="image-box"><span class="label bg-brand-2">-17%</span><a
-                                        href="shop-single-product.html"><img
-                                            src="assets/imgs/page/homepage1/imgsp4.png" alt="Ecom"></a></div>
-                                <div class="box-count">
-                                    <div class="deals-countdown" data-countdown="2023/09/25 00:00:00"></div>
-                                </div>
-                                <div class="info-right"><span class="font-xs color-gray-500">Apple</span><br><a
-                                        class="color-brand-3 font-sm-bold" href="#">2022 Apple iMac with Retina
-                                        5K Display 8GB RAM, 256GB SSD</a>
-                                    <div class="rating"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><span class="font-xs color-gray-500"> (65)</span></div>
-                                    <div class="price-info"><strong
-                                            class="font-lg-bold color-brand-3 price-main">$2856.3</strong><span
-                                            class="color-gray-500 price-line">$3225.6</span></div>
-                                    <div class="box-progress box-progress-small">
-                                        <div class="progress-bar">
-                                            <div class="progress-bar-inner"></div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-lg-6 col-md-6 col-sm-6 col-6"><span
-                                                    class="font-xs color-gray-500">Available:</span><span
-                                                    class="font-xs-bold color-gray-900">568</span></div>
-                                            <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-end"><span
-                                                    class="font-xs color-gray-500">Sold:</span><span
-                                                    class="font-xs-bold color-gray-900">289</span></div>
-                                        </div>
-                                    </div>
-                                    <div class="mt-20 box-add-cart"><a class="btn btn-cart" href="shop-cart.html">Add
-                                            To Cart</a></div>
-                                    <ul class="list-features">
-                                        <li> 2-day Delivery. Free shipping</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-6">
-                        <div class="card-grid-style-3 hover-show hover-hide-show-cart">
-                            <div class="card-grid-inner">
-                                <div class="tools"><a class="btn btn-wishlist btn-tooltip mb-10"
-                                        href="shop-wishlist.html" aria-label="Add To Wishlist"></a><a
-                                        class="btn btn-compare btn-tooltip mb-10" href="shop-compare.html"
-                                        aria-label="Compare"></a><a class="btn btn-quickview btn-tooltip"
-                                        aria-label="Quick view" href="#ModalQuickview" data-bs-toggle="modal"></a>
-                                </div>
-                                <div class="image-box"><span class="label bg-brand-2">-17%</span><a
-                                        href="shop-single-product.html"><img
-                                            src="assets/imgs/page/homepage1/imgsp3.png" alt="Ecom"></a></div>
-                                <div class="box-count">
-                                    <div class="deals-countdown" data-countdown="2023/09/25 00:00:00"></div>
-                                </div>
-                                <div class="info-right"><span class="font-xs color-gray-500">Apple</span><br><a
-                                        class="color-brand-3 font-sm-bold" href="#">2022 Apple iMac with Retina
-                                        5K Display 8GB RAM, 256GB SSD</a>
-                                    <div class="rating"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><span class="font-xs color-gray-500"> (65)</span></div>
-                                    <div class="price-info"><strong
-                                            class="font-lg-bold color-brand-3 price-main">$2856.3</strong><span
-                                            class="color-gray-500 price-line">$3225.6</span></div>
-                                    <div class="box-progress box-progress-small">
-                                        <div class="progress-bar">
-                                            <div class="progress-bar-inner"></div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-lg-6 col-md-6 col-sm-6 col-6"><span
-                                                    class="font-xs color-gray-500">Available:</span><span
-                                                    class="font-xs-bold color-gray-900">568</span></div>
-                                            <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-end"><span
-                                                    class="font-xs color-gray-500">Sold:</span><span
-                                                    class="font-xs-bold color-gray-900">289</span></div>
-                                        </div>
-                                    </div>
-                                    <div class="mt-20 box-add-cart"><a class="btn btn-cart" href="shop-cart.html">Add
-                                            To Cart</a></div>
-                                    <ul class="list-features">
-                                        <li> 2-day Delivery. Free shipping</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-6">
-                        <div class="card-grid-style-3 hover-show hover-hide-show-cart">
-                            <div class="card-grid-inner">
-                                <div class="tools"><a class="btn btn-wishlist btn-tooltip mb-10"
-                                        href="shop-wishlist.html" aria-label="Add To Wishlist"></a><a
-                                        class="btn btn-compare btn-tooltip mb-10" href="shop-compare.html"
-                                        aria-label="Compare"></a><a class="btn btn-quickview btn-tooltip"
-                                        aria-label="Quick view" href="#ModalQuickview" data-bs-toggle="modal"></a>
-                                </div>
-                                <div class="image-box"><span class="label bg-brand-2">-17%</span><a
-                                        href="shop-single-product.html"><img
-                                            src="assets/imgs/page/homepage1/imgsp7.png" alt="Ecom"></a></div>
-                                <div class="box-count">
-                                    <div class="deals-countdown" data-countdown="2023/09/25 00:00:00"></div>
-                                </div>
-                                <div class="info-right"><span class="font-xs color-gray-500">Apple</span><br><a
-                                        class="color-brand-3 font-sm-bold" href="#">2022 Apple iMac with Retina
-                                        5K Display 8GB RAM, 256GB SSD</a>
-                                    <div class="rating"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><span class="font-xs color-gray-500"> (65)</span></div>
-                                    <div class="price-info"><strong
-                                            class="font-lg-bold color-brand-3 price-main">$2856.3</strong><span
-                                            class="color-gray-500 price-line">$3225.6</span></div>
-                                    <div class="box-progress box-progress-small">
-                                        <div class="progress-bar">
-                                            <div class="progress-bar-inner"></div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-lg-6 col-md-6 col-sm-6 col-6"><span
-                                                    class="font-xs color-gray-500">Available:</span><span
-                                                    class="font-xs-bold color-gray-900">568</span></div>
-                                            <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-end"><span
-                                                    class="font-xs color-gray-500">Sold:</span><span
-                                                    class="font-xs-bold color-gray-900">289</span></div>
-                                        </div>
-                                    </div>
-                                    <div class="mt-20 box-add-cart"><a class="btn btn-cart" href="shop-cart.html">Add
-                                            To Cart</a></div>
-                                    <ul class="list-features">
-                                        <li> 2-day Delivery. Free shipping</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <?php endif; ?>
             </div>
-            <div class="tab-pane fade" id="tab-flash-mostviewed" role="tabpanel"
-                aria-labelledby="tab-flash-mostviewed">
-                <div class="row">
-                    <div class="col-xl-5 col-lg-6 col-md-6 col-sm-12">
-                        <div class="card-grid-style-3 hover-show top-deals">
-                            <div class="card-grid-inner"><span class="label"><span
-                                        class="font-sm color-white">Top<br>Deals</span></span>
-                                <div class="box-top-deals">
-                                    <div class="top-deals-left">
-                                        <div class="image-box">
-                                            <div class="box-swiper">
-                                                <div class="swiper-container swiper-tab" data-index="3">
-                                                    <div class="swiper-wrapper pt-5">
-                                                        <div class="swiper-slide"><img
-                                                                src="assets/imgs/page/homepage1/screen-2.png"
-                                                                alt="Ecom"></div>
-                                                        <div class="swiper-slide"><img
-                                                                src="assets/imgs/page/homepage1/screen.png"
-                                                                alt="Ecom"></div>
-                                                        <div class="swiper-slide"><img
-                                                                src="assets/imgs/page/homepage1/screen.png"
-                                                                alt="Ecom"></div>
+
+            
+            <div class="tab-pane fade" id="tab-flash-lowest" role="tabpanel">
+                <?php if(isset($flashSalesProducts) && $flashSalesProducts->count() > 0): ?>
+                    <div class="row">
+                        <?php
+                            // Sort by lowest discount percentage
+                            $lowestDiscountProducts = $flashSalesProducts->sortBy(function ($product) {
+                                if ($product->flash_sale_discount_type === 'percentage') {
+                                    return $product->flash_sale_discount_value;
+                                } else {
+                                    // Calculate percentage for fixed amount discounts
+                                    return ($product->flash_sale_discount_value / $product->price_regular) * 100;
+                                }
+                            });
+                        ?>
+                        <?php $__currentLoopData = $lowestDiscountProducts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <?php if($index < 8): ?>
+                                
+                                <?php if($index < 2): ?>
+                                    
+                                    <div class="col-xl-5 col-lg-6 col-md-6 col-sm-12">
+                                        <div class="card-grid-style-3 hover-show top-deals">
+                                            <div class="card-grid-inner">
+                                                <span class="label">
+                                                    <span class="font-sm color-white">
+                                                        <?php if($product->flash_sale_discount_type === 'percentage'): ?>
+                                                            <?php echo e($product->flash_sale_discount_value); ?>%<br>OFF
+                                                        <?php else: ?>
+                                                            <?php echo e(number_format($product->flash_sale_discount_value, 0)); ?><br>DJF
+                                                            OFF
+                                                        <?php endif; ?>
+                                                    </span>
+                                                </span>
+                                                <div class="box-top-deals">
+                                                    <div class="top-deals-left">
+                                                        <div class="image-box">
+                                                            <div class="box-swiper">
+                                                                <div class="swiper-container swiper-tab"
+                                                                    data-index="3">
+                                                                    <div class="swiper-wrapper pt-5">
+                                                                        <div class="swiper-slide">
+                                                                            <img src="<?php echo e($product->featured_image_url ?? asset('assets/imgs/page/homepage1/screen.png')); ?>"
+                                                                                alt="<?php echo e($product->title); ?>">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="box-count box-count-square">
+                                                            <div class="deals-countdown"
+                                                                data-countdown="<?php echo e($product->flash_sale_end_at->format('Y/m/d H:i:s')); ?>">
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <div class="swiper-pagination swiper-pagination-2"></div>
+                                                    <div class="top-deals-right">
+                                                        <div class="info-right"></div>
+                                                        <span
+                                                            class="font-xs color-gray-500"><?php echo e($product->category->name ?? 'No Category'); ?></span><br>
+                                                        <a class="color-brand-3 font-sm-bold"
+                                                            href="<?php echo e(route('buyer.product.show', $product->slug)); ?>">
+                                                            <h5><?php echo e($product->title); ?></h5>
+                                                        </a>
+                                                        <div class="price-info">
+                                                            <h3 class="color-brand-3 price-main d-inline-block">
+                                                                <?php echo e(number_format($product->flash_sale_discounted_price, 0)); ?>
+
+                                                                DJF
+                                                            </h3>
+                                                            <span class="color-gray-500 price-line">
+                                                                <?php echo e(number_format($product->price_regular, 0)); ?> DJF
+                                                            </span>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="box-count box-count-square">
-                                            <div class="deals-countdown" data-countdown="2023/09/25 00:00:00"></div>
+                                    </div>
+                                <?php elseif($index == 2): ?>
+                                    
+                                    <div class="col-lg-2 col-md-6 d-none d-xl-block col-sm-12">
+                                        <div class="grid-banner-height">
+                                            <span class="lbl-new-arrival color-brand-3">Great</span>
+                                            <h4 class="font-24 mt-10 mb-5">Values</h4>
+                                            <p class="font-16">Still Discounted</p>
                                         </div>
                                     </div>
-                                    <div class="top-deals-right">
-                                        <div class="info-right"></div><span
-                                            class="font-xs color-gray-500">Apple</span><br><a
-                                            class="color-brand-3 font-sm-bold" href="shop-single-product.html">
-                                            <h5>2022 Apple iMac with Retina 5K Display 8GB RAM, 256GB SSD</h5>
-                                        </a>
-                                        <div class="rating"><img src="assets/imgs/template/icons/star.svg"
-                                                alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                                alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                                alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                                alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                                alt="Ecom"><span class="font-xs color-gray-500">(65)</span></div>
-                                        <div class="price-info">
-                                            <h3 class="color-brand-3 price-main d-inline-block">$2856.3</h3><span
-                                                class="color-gray-500 price-line">$3856.3</span>
-                                        </div>
-                                        <div class="box-progress">
-                                            <div class="progress-bar">
-                                                <div class="progress-bar-inner"></div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-lg-6 col-md-6 col-sm-6 col-6"><span
-                                                        class="font-xs color-gray-500">Available: </span><span
-                                                        class="font-xs-bold color-gray-900">568</span></div>
-                                                <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-end"><span
-                                                        class="font-xs color-gray-500">Sold: </span><span
-                                                        class="font-xs-bold color-gray-900">289</span></div>
-                                            </div>
-                                        </div>
-                                        <ul class="list-features">
-                                            <li> 27-inch (diagonal) Retina 5K display</li>
-                                            <li>3.1GHz 6-core 10th-generation Intel Core i5</li>
-                                            <li>AMD Radeon Pro 5300 graphics</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-5 col-lg-6 col-md-6 col-sm-12">
-                        <div class="card-grid-style-3 hover-show top-deals">
-                            <div class="card-grid-inner"><span class="label"><span
-                                        class="font-sm color-white">Top<br>Deals</span></span>
-                                <div class="box-top-deals">
-                                    <div class="top-deals-left">
-                                        <div class="image-box">
-                                            <div class="box-swiper">
-                                                <div class="swiper-container swiper-tab" data-index="3">
-                                                    <div class="swiper-wrapper pt-5">
-                                                        <div class="swiper-slide"><img
-                                                                src="assets/imgs/page/homepage1/screen-3.png"
-                                                                alt="Ecom"></div>
-                                                        <div class="swiper-slide"><img
-                                                                src="assets/imgs/page/homepage1/screen.png"
-                                                                alt="Ecom"></div>
-                                                        <div class="swiper-slide"><img
-                                                                src="assets/imgs/page/homepage1/screen.png"
-                                                                alt="Ecom"></div>
+                                <?php else: ?>
+                                    
+                                    <div class="col-lg-3 col-md-6 col-sm-6">
+                                        <div class="card-grid-style-3 hover-show hover-hide-show-cart">
+                                            <div class="card-grid-inner">
+                                                <div class="image-box">
+                                                    <span class="label bg-brand-2">
+                                                        <?php if($product->flash_sale_discount_type === 'percentage'): ?>
+                                                            -<?php echo e($product->flash_sale_discount_value); ?>%
+                                                        <?php else: ?>
+                                                            -<?php echo e(number_format($product->flash_sale_discount_value, 0)); ?>
+
+                                                            DJF
+                                                        <?php endif; ?>
+                                                    </span>
+                                                    <a href="<?php echo e(route('buyer.product.show', $product->slug)); ?>">
+                                                        <img src="<?php echo e($product->featured_image_url ?? asset('assets/imgs/page/homepage1/imgsp1.png')); ?>"
+                                                            alt="<?php echo e($product->title); ?>">
+                                                    </a>
+                                                </div>
+                                                <div class="info-right">
+                                                    <a class="color-brand-3 font-sm-bold"
+                                                        href="<?php echo e(route('buyer.product.show', $product->slug)); ?>">
+                                                        <?php echo e(Str::limit($product->title, 50)); ?>
+
+                                                    </a>
+                                                    <div class="price-info">
+                                                        <strong class="font-lg-bold color-brand-3 price-main">
+                                                            <?php echo e(number_format($product->flash_sale_discounted_price, 0)); ?>
+
+                                                            DJF
+                                                        </strong>
+                                                        <span class="color-gray-500 price-line">
+                                                            <?php echo e(number_format($product->price_regular, 0)); ?> DJF
+                                                        </span>
                                                     </div>
-                                                    <div class="swiper-pagination swiper-pagination-2"></div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="box-count box-count-square">
-                                            <div class="deals-countdown" data-countdown="2023/09/25 00:00:00"></div>
-                                        </div>
                                     </div>
-                                    <div class="top-deals-right">
-                                        <div class="info-right"></div><span
-                                            class="font-xs color-gray-500">Apple</span><br><a
-                                            class="color-brand-3 font-sm-bold" href="shop-single-product.html">
-                                            <h5>2022 Apple iMac with Retina 5K Display 8GB RAM, 256GB SSD</h5>
-                                        </a>
-                                        <div class="rating"><img src="assets/imgs/template/icons/star.svg"
-                                                alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                                alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                                alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                                alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                                alt="Ecom"><span class="font-xs color-gray-500">(65)</span></div>
-                                        <div class="price-info">
-                                            <h3 class="color-brand-3 price-main d-inline-block">$2856.3</h3><span
-                                                class="color-gray-500 price-line">$3856.3</span>
-                                        </div>
-                                        <div class="box-progress">
-                                            <div class="progress-bar">
-                                                <div class="progress-bar-inner"></div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-lg-6 col-md-6 col-sm-6 col-6"><span
-                                                        class="font-xs color-gray-500">Available: </span><span
-                                                        class="font-xs-bold color-gray-900">568</span></div>
-                                                <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-end"><span
-                                                        class="font-xs color-gray-500">Sold: </span><span
-                                                        class="font-xs-bold color-gray-900">289</span></div>
-                                            </div>
-                                        </div>
-                                        <ul class="list-features">
-                                            <li> 27-inch (diagonal) Retina 5K display</li>
-                                            <li>3.1GHz 6-core 10th-generation Intel Core i5</li>
-                                            <li>AMD Radeon Pro 5300 graphics</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                                <?php endif; ?>
+                            <?php endif; ?>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </div>
-                    <div class="col-lg-2 col-md-6 d-none d-xl-block col-sm-12">
-                        <div class="grid-banner-height"><span class="lbl-new-arrival color-brand-3">New
-                                Arrivals</span>
-                            <h4 class="font-24 mt-10 mb-5">Xiaomi Redmi Serial 12</h4>
-                            <p class="font-16">Special Sale</p>
+                <?php else: ?>
+                    <div class="text-center py-5">
+                        <div class="mb-4">
+                            <svg width="80" height="80" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg" style="opacity: 0.4;">
+                                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="#ff4757" stroke-width="1.5"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                                <circle cx="12" cy="12" r="1" fill="#ff4757" />
+                            </svg>
                         </div>
+                        <h4 class="color-gray-500 mb-3">No Flash Deals Available</h4>
+                        <p class="color-gray-500">Check back later for exciting flash deals with great values!</p>
                     </div>
-                    <div class="col-lg-3 col-md-6 col-sm-6">
-                        <div class="card-grid-style-3 hover-show hover-hide-show-cart">
-                            <div class="card-grid-inner">
-                                <div class="tools"><a class="btn btn-wishlist btn-tooltip mb-10"
-                                        href="shop-wishlist.html" aria-label="Add To Wishlist"></a><a
-                                        class="btn btn-compare btn-tooltip mb-10" href="shop-compare.html"
-                                        aria-label="Compare"></a><a class="btn btn-quickview btn-tooltip"
-                                        aria-label="Quick view" href="#ModalQuickview" data-bs-toggle="modal"></a>
-                                </div>
-                                <div class="image-box"><span class="label bg-brand-2">-17%</span><a
-                                        href="shop-single-product.html"><img
-                                            src="assets/imgs/page/homepage1/imgsp1.png" alt="Ecom"></a></div>
-                                <div class="box-count">
-                                    <div class="deals-countdown" data-countdown="2023/09/25 00:00:00"></div>
-                                </div>
-                                <div class="info-right"><span class="font-xs color-gray-500">Apple</span><br><a
-                                        class="color-brand-3 font-sm-bold" href="#">2022 Apple iMac with Retina
-                                        5K Display 8GB RAM, 256GB SSD</a>
-                                    <div class="rating"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><span class="font-xs color-gray-500"> (65)</span></div>
-                                    <div class="price-info"><strong
-                                            class="font-lg-bold color-brand-3 price-main">$2856.3</strong><span
-                                            class="color-gray-500 price-line">$3225.6</span></div>
-                                    <div class="box-progress box-progress-small">
-                                        <div class="progress-bar">
-                                            <div class="progress-bar-inner"></div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-lg-6 col-md-6 col-sm-6 col-6"><span
-                                                    class="font-xs color-gray-500">Available:</span><span
-                                                    class="font-xs-bold color-gray-900">568</span></div>
-                                            <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-end"><span
-                                                    class="font-xs color-gray-500">Sold:</span><span
-                                                    class="font-xs-bold color-gray-900">289</span></div>
-                                        </div>
-                                    </div>
-                                    <div class="mt-20 box-add-cart"><a class="btn btn-cart" href="shop-cart.html">Add
-                                            To Cart</a></div>
-                                    <ul class="list-features">
-                                        <li> 2-day Delivery. Free shipping</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-6">
-                        <div class="card-grid-style-3 hover-show hover-hide-show-cart">
-                            <div class="card-grid-inner">
-                                <div class="tools"><a class="btn btn-wishlist btn-tooltip mb-10"
-                                        href="shop-wishlist.html" aria-label="Add To Wishlist"></a><a
-                                        class="btn btn-compare btn-tooltip mb-10" href="shop-compare.html"
-                                        aria-label="Compare"></a><a class="btn btn-quickview btn-tooltip"
-                                        aria-label="Quick view" href="#ModalQuickview" data-bs-toggle="modal"></a>
-                                </div>
-                                <div class="image-box"><span class="label bg-brand-2">-17%</span><a
-                                        href="shop-single-product.html"><img
-                                            src="assets/imgs/page/homepage1/imgsp3.png" alt="Ecom"></a></div>
-                                <div class="box-count">
-                                    <div class="deals-countdown" data-countdown="2023/09/25 00:00:00"></div>
-                                </div>
-                                <div class="info-right"><span class="font-xs color-gray-500">Apple</span><br><a
-                                        class="color-brand-3 font-sm-bold" href="#">2022 Apple iMac with Retina
-                                        5K Display 8GB RAM, 256GB SSD</a>
-                                    <div class="rating"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><span class="font-xs color-gray-500"> (65)</span></div>
-                                    <div class="price-info"><strong
-                                            class="font-lg-bold color-brand-3 price-main">$2856.3</strong><span
-                                            class="color-gray-500 price-line">$3225.6</span></div>
-                                    <div class="box-progress box-progress-small">
-                                        <div class="progress-bar">
-                                            <div class="progress-bar-inner"></div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-lg-6 col-md-6 col-sm-6 col-6"><span
-                                                    class="font-xs color-gray-500">Available:</span><span
-                                                    class="font-xs-bold color-gray-900">568</span></div>
-                                            <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-end"><span
-                                                    class="font-xs color-gray-500">Sold:</span><span
-                                                    class="font-xs-bold color-gray-900">289</span></div>
-                                        </div>
-                                    </div>
-                                    <div class="mt-20 box-add-cart"><a class="btn btn-cart" href="shop-cart.html">Add
-                                            To Cart</a></div>
-                                    <ul class="list-features">
-                                        <li> 2-day Delivery. Free shipping</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-6">
-                        <div class="card-grid-style-3 hover-show hover-hide-show-cart">
-                            <div class="card-grid-inner">
-                                <div class="tools"><a class="btn btn-wishlist btn-tooltip mb-10"
-                                        href="shop-wishlist.html" aria-label="Add To Wishlist"></a><a
-                                        class="btn btn-compare btn-tooltip mb-10" href="shop-compare.html"
-                                        aria-label="Compare"></a><a class="btn btn-quickview btn-tooltip"
-                                        aria-label="Quick view" href="#ModalQuickview" data-bs-toggle="modal"></a>
-                                </div>
-                                <div class="image-box"><span class="label bg-brand-2">-17%</span><a
-                                        href="shop-single-product.html"><img
-                                            src="assets/imgs/page/homepage1/imgsp4.png" alt="Ecom"></a></div>
-                                <div class="box-count">
-                                    <div class="deals-countdown" data-countdown="2023/09/25 00:00:00"></div>
-                                </div>
-                                <div class="info-right"><span class="font-xs color-gray-500">Apple</span><br><a
-                                        class="color-brand-3 font-sm-bold" href="#">2022 Apple iMac with Retina
-                                        5K Display 8GB RAM, 256GB SSD</a>
-                                    <div class="rating"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><span class="font-xs color-gray-500"> (65)</span></div>
-                                    <div class="price-info"><strong
-                                            class="font-lg-bold color-brand-3 price-main">$2856.3</strong><span
-                                            class="color-gray-500 price-line">$3225.6</span></div>
-                                    <div class="box-progress box-progress-small">
-                                        <div class="progress-bar">
-                                            <div class="progress-bar-inner"></div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-lg-6 col-md-6 col-sm-6 col-6"><span
-                                                    class="font-xs color-gray-500">Available:</span><span
-                                                    class="font-xs-bold color-gray-900">568</span></div>
-                                            <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-end"><span
-                                                    class="font-xs color-gray-500">Sold:</span><span
-                                                    class="font-xs-bold color-gray-900">289</span></div>
-                                        </div>
-                                    </div>
-                                    <div class="mt-20 box-add-cart"><a class="btn btn-cart"
-                                            href="shop-cart.html">Add To Cart</a></div>
-                                    <ul class="list-features">
-                                        <li> 2-day Delivery. Free shipping</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-6">
-                        <div class="card-grid-style-3 hover-show hover-hide-show-cart">
-                            <div class="card-grid-inner">
-                                <div class="tools"><a class="btn btn-wishlist btn-tooltip mb-10"
-                                        href="shop-wishlist.html" aria-label="Add To Wishlist"></a><a
-                                        class="btn btn-compare btn-tooltip mb-10" href="shop-compare.html"
-                                        aria-label="Compare"></a><a class="btn btn-quickview btn-tooltip"
-                                        aria-label="Quick view" href="#ModalQuickview" data-bs-toggle="modal"></a>
-                                </div>
-                                <div class="image-box"><span class="label bg-brand-2">-17%</span><a
-                                        href="shop-single-product.html"><img
-                                            src="assets/imgs/page/homepage1/imgsp6.png" alt="Ecom"></a></div>
-                                <div class="box-count">
-                                    <div class="deals-countdown" data-countdown="2023/09/25 00:00:00"></div>
-                                </div>
-                                <div class="info-right"><span class="font-xs color-gray-500">Apple</span><br><a
-                                        class="color-brand-3 font-sm-bold" href="#">2022 Apple iMac with
-                                        Retina 5K Display 8GB RAM, 256GB SSD</a>
-                                    <div class="rating"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><span class="font-xs color-gray-500"> (65)</span></div>
-                                    <div class="price-info"><strong
-                                            class="font-lg-bold color-brand-3 price-main">$2856.3</strong><span
-                                            class="color-gray-500 price-line">$3225.6</span></div>
-                                    <div class="box-progress box-progress-small">
-                                        <div class="progress-bar">
-                                            <div class="progress-bar-inner"></div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-lg-6 col-md-6 col-sm-6 col-6"><span
-                                                    class="font-xs color-gray-500">Available:</span><span
-                                                    class="font-xs-bold color-gray-900">568</span></div>
-                                            <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-end"><span
-                                                    class="font-xs color-gray-500">Sold:</span><span
-                                                    class="font-xs-bold color-gray-900">289</span></div>
-                                        </div>
-                                    </div>
-                                    <div class="mt-20 box-add-cart"><a class="btn btn-cart"
-                                            href="shop-cart.html">Add To Cart</a></div>
-                                    <ul class="list-features">
-                                        <li> 2-day Delivery. Free shipping</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="tab-pane fade" id="tab-flash-topbrands" role="tabpanel"
-                aria-labelledby="tab-flash-topbrands">
-                <div class="row">
-                    <div class="col-xl-5 col-lg-6 col-md-6 col-sm-12">
-                        <div class="card-grid-style-3 hover-show top-deals">
-                            <div class="card-grid-inner"><span class="label"><span
-                                        class="font-sm color-white">Top<br>Deals</span></span>
-                                <div class="box-top-deals">
-                                    <div class="top-deals-left">
-                                        <div class="image-box">
-                                            <div class="box-swiper">
-                                                <div class="swiper-container swiper-tab" data-index="4">
-                                                    <div class="swiper-wrapper pt-5">
-                                                        <div class="swiper-slide"><img
-                                                                src="assets/imgs/page/homepage1/screen-3.png"
-                                                                alt="Ecom"></div>
-                                                        <div class="swiper-slide"><img
-                                                                src="assets/imgs/page/homepage1/screen.png"
-                                                                alt="Ecom"></div>
-                                                        <div class="swiper-slide"><img
-                                                                src="assets/imgs/page/homepage1/screen.png"
-                                                                alt="Ecom"></div>
-                                                    </div>
-                                                    <div class="swiper-pagination swiper-pagination-2"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="box-count box-count-square">
-                                            <div class="deals-countdown" data-countdown="2023/09/25 00:00:00"></div>
-                                        </div>
-                                    </div>
-                                    <div class="top-deals-right">
-                                        <div class="info-right"></div><span
-                                            class="font-xs color-gray-500">Apple</span><br><a
-                                            class="color-brand-3 font-sm-bold" href="shop-single-product.html">
-                                            <h5>2022 Apple iMac with Retina 5K Display 8GB RAM, 256GB SSD</h5>
-                                        </a>
-                                        <div class="rating"><img src="assets/imgs/template/icons/star.svg"
-                                                alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                                alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                                alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                                alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                                alt="Ecom"><span class="font-xs color-gray-500">(65)</span>
-                                        </div>
-                                        <div class="price-info">
-                                            <h3 class="color-brand-3 price-main d-inline-block">$2856.3</h3><span
-                                                class="color-gray-500 price-line">$3856.3</span>
-                                        </div>
-                                        <div class="box-progress">
-                                            <div class="progress-bar">
-                                                <div class="progress-bar-inner"></div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-lg-6 col-md-6 col-sm-6 col-6"><span
-                                                        class="font-xs color-gray-500">Available: </span><span
-                                                        class="font-xs-bold color-gray-900">568</span></div>
-                                                <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-end"><span
-                                                        class="font-xs color-gray-500">Sold: </span><span
-                                                        class="font-xs-bold color-gray-900">289</span></div>
-                                            </div>
-                                        </div>
-                                        <ul class="list-features">
-                                            <li> 27-inch (diagonal) Retina 5K display</li>
-                                            <li>3.1GHz 6-core 10th-generation Intel Core i5</li>
-                                            <li>AMD Radeon Pro 5300 graphics</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-5 col-lg-6 col-md-6 col-sm-12">
-                        <div class="card-grid-style-3 hover-show top-deals">
-                            <div class="card-grid-inner"><span class="label"><span
-                                        class="font-sm color-white">Top<br>Deals</span></span>
-                                <div class="box-top-deals">
-                                    <div class="top-deals-left">
-                                        <div class="image-box">
-                                            <div class="box-swiper">
-                                                <div class="swiper-container swiper-tab" data-index="4">
-                                                    <div class="swiper-wrapper pt-5">
-                                                        <div class="swiper-slide"><img
-                                                                src="assets/imgs/page/homepage1/screen.png"
-                                                                alt="Ecom"></div>
-                                                        <div class="swiper-slide"><img
-                                                                src="assets/imgs/page/homepage1/screen.png"
-                                                                alt="Ecom"></div>
-                                                        <div class="swiper-slide"><img
-                                                                src="assets/imgs/page/homepage1/screen.png"
-                                                                alt="Ecom"></div>
-                                                    </div>
-                                                    <div class="swiper-pagination swiper-pagination-2"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="box-count box-count-square">
-                                            <div class="deals-countdown" data-countdown="2023/09/25 00:00:00"></div>
-                                        </div>
-                                    </div>
-                                    <div class="top-deals-right">
-                                        <div class="info-right"></div><span
-                                            class="font-xs color-gray-500">Apple</span><br><a
-                                            class="color-brand-3 font-sm-bold" href="shop-single-product.html">
-                                            <h5>2022 Apple iMac with Retina 5K Display 8GB RAM, 256GB SSD</h5>
-                                        </a>
-                                        <div class="rating"><img src="assets/imgs/template/icons/star.svg"
-                                                alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                                alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                                alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                                alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                                alt="Ecom"><span class="font-xs color-gray-500">(65)</span>
-                                        </div>
-                                        <div class="price-info">
-                                            <h3 class="color-brand-3 price-main d-inline-block">$2856.3</h3><span
-                                                class="color-gray-500 price-line">$3856.3</span>
-                                        </div>
-                                        <div class="box-progress">
-                                            <div class="progress-bar">
-                                                <div class="progress-bar-inner"></div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-lg-6 col-md-6 col-sm-6 col-6"><span
-                                                        class="font-xs color-gray-500">Available: </span><span
-                                                        class="font-xs-bold color-gray-900">568</span></div>
-                                                <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-end"><span
-                                                        class="font-xs color-gray-500">Sold: </span><span
-                                                        class="font-xs-bold color-gray-900">289</span></div>
-                                            </div>
-                                        </div>
-                                        <ul class="list-features">
-                                            <li> 27-inch (diagonal) Retina 5K display</li>
-                                            <li>3.1GHz 6-core 10th-generation Intel Core i5</li>
-                                            <li>AMD Radeon Pro 5300 graphics</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-2 col-md-6 d-none d-xl-block col-sm-12">
-                        <div class="grid-banner-height"><span class="lbl-new-arrival color-brand-3">New
-                                Arrivals</span>
-                            <h4 class="font-24 mt-10 mb-5">Xiaomi Redmi Serial 12</h4>
-                            <p class="font-16">Special Sale</p>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-6">
-                        <div class="card-grid-style-3 hover-show hover-hide-show-cart">
-                            <div class="card-grid-inner">
-                                <div class="tools"><a class="btn btn-wishlist btn-tooltip mb-10"
-                                        href="shop-wishlist.html" aria-label="Add To Wishlist"></a><a
-                                        class="btn btn-compare btn-tooltip mb-10" href="shop-compare.html"
-                                        aria-label="Compare"></a><a class="btn btn-quickview btn-tooltip"
-                                        aria-label="Quick view" href="#ModalQuickview" data-bs-toggle="modal"></a>
-                                </div>
-                                <div class="image-box"><span class="label bg-brand-2">-17%</span><a
-                                        href="shop-single-product.html"><img
-                                            src="assets/imgs/page/homepage1/imgsp1.png" alt="Ecom"></a></div>
-                                <div class="box-count">
-                                    <div class="deals-countdown" data-countdown="2023/09/25 00:00:00"></div>
-                                </div>
-                                <div class="info-right"><span class="font-xs color-gray-500">Apple</span><br><a
-                                        class="color-brand-3 font-sm-bold" href="#">2022 Apple iMac with
-                                        Retina 5K Display 8GB RAM, 256GB SSD</a>
-                                    <div class="rating"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><span class="font-xs color-gray-500"> (65)</span></div>
-                                    <div class="price-info"><strong
-                                            class="font-lg-bold color-brand-3 price-main">$2856.3</strong><span
-                                            class="color-gray-500 price-line">$3225.6</span></div>
-                                    <div class="box-progress box-progress-small">
-                                        <div class="progress-bar">
-                                            <div class="progress-bar-inner"></div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-lg-6 col-md-6 col-sm-6 col-6"><span
-                                                    class="font-xs color-gray-500">Available:</span><span
-                                                    class="font-xs-bold color-gray-900">568</span></div>
-                                            <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-end"><span
-                                                    class="font-xs color-gray-500">Sold:</span><span
-                                                    class="font-xs-bold color-gray-900">289</span></div>
-                                        </div>
-                                    </div>
-                                    <div class="mt-20 box-add-cart"><a class="btn btn-cart"
-                                            href="shop-cart.html">Add To Cart</a></div>
-                                    <ul class="list-features">
-                                        <li> 2-day Delivery. Free shipping</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-6">
-                        <div class="card-grid-style-3 hover-show hover-hide-show-cart">
-                            <div class="card-grid-inner">
-                                <div class="tools"><a class="btn btn-wishlist btn-tooltip mb-10"
-                                        href="shop-wishlist.html" aria-label="Add To Wishlist"></a><a
-                                        class="btn btn-compare btn-tooltip mb-10" href="shop-compare.html"
-                                        aria-label="Compare"></a><a class="btn btn-quickview btn-tooltip"
-                                        aria-label="Quick view" href="#ModalQuickview" data-bs-toggle="modal"></a>
-                                </div>
-                                <div class="image-box"><span class="label bg-brand-2">-17%</span><a
-                                        href="shop-single-product.html"><img
-                                            src="assets/imgs/page/homepage1/imgsp2.png" alt="Ecom"></a></div>
-                                <div class="box-count">
-                                    <div class="deals-countdown" data-countdown="2023/09/25 00:00:00"></div>
-                                </div>
-                                <div class="info-right"><span class="font-xs color-gray-500">Apple</span><br><a
-                                        class="color-brand-3 font-sm-bold" href="#">2022 Apple iMac with
-                                        Retina 5K Display 8GB RAM, 256GB SSD</a>
-                                    <div class="rating"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><span class="font-xs color-gray-500"> (65)</span></div>
-                                    <div class="price-info"><strong
-                                            class="font-lg-bold color-brand-3 price-main">$2856.3</strong><span
-                                            class="color-gray-500 price-line">$3225.6</span></div>
-                                    <div class="box-progress box-progress-small">
-                                        <div class="progress-bar">
-                                            <div class="progress-bar-inner"></div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-lg-6 col-md-6 col-sm-6 col-6"><span
-                                                    class="font-xs color-gray-500">Available:</span><span
-                                                    class="font-xs-bold color-gray-900">568</span></div>
-                                            <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-end"><span
-                                                    class="font-xs color-gray-500">Sold:</span><span
-                                                    class="font-xs-bold color-gray-900">289</span></div>
-                                        </div>
-                                    </div>
-                                    <div class="mt-20 box-add-cart"><a class="btn btn-cart"
-                                            href="shop-cart.html">Add To Cart</a></div>
-                                    <ul class="list-features">
-                                        <li> 2-day Delivery. Free shipping</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-6">
-                        <div class="card-grid-style-3 hover-show hover-hide-show-cart">
-                            <div class="card-grid-inner">
-                                <div class="tools"><a class="btn btn-wishlist btn-tooltip mb-10"
-                                        href="shop-wishlist.html" aria-label="Add To Wishlist"></a><a
-                                        class="btn btn-compare btn-tooltip mb-10" href="shop-compare.html"
-                                        aria-label="Compare"></a><a class="btn btn-quickview btn-tooltip"
-                                        aria-label="Quick view" href="#ModalQuickview" data-bs-toggle="modal"></a>
-                                </div>
-                                <div class="image-box"><span class="label bg-brand-2">-17%</span><a
-                                        href="shop-single-product.html"><img
-                                            src="assets/imgs/page/homepage1/imgsp3.png" alt="Ecom"></a></div>
-                                <div class="box-count">
-                                    <div class="deals-countdown" data-countdown="2023/09/25 00:00:00"></div>
-                                </div>
-                                <div class="info-right"><span class="font-xs color-gray-500">Apple</span><br><a
-                                        class="color-brand-3 font-sm-bold" href="#">2022 Apple iMac with
-                                        Retina 5K Display 8GB RAM, 256GB SSD</a>
-                                    <div class="rating"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><span class="font-xs color-gray-500"> (65)</span></div>
-                                    <div class="price-info"><strong
-                                            class="font-lg-bold color-brand-3 price-main">$2856.3</strong><span
-                                            class="color-gray-500 price-line">$3225.6</span></div>
-                                    <div class="box-progress box-progress-small">
-                                        <div class="progress-bar">
-                                            <div class="progress-bar-inner"></div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-lg-6 col-md-6 col-sm-6 col-6"><span
-                                                    class="font-xs color-gray-500">Available:</span><span
-                                                    class="font-xs-bold color-gray-900">568</span></div>
-                                            <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-end"><span
-                                                    class="font-xs color-gray-500">Sold:</span><span
-                                                    class="font-xs-bold color-gray-900">289</span></div>
-                                        </div>
-                                    </div>
-                                    <div class="mt-20 box-add-cart"><a class="btn btn-cart"
-                                            href="shop-cart.html">Add To Cart</a></div>
-                                    <ul class="list-features">
-                                        <li> 2-day Delivery. Free shipping</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-6">
-                        <div class="card-grid-style-3 hover-show hover-hide-show-cart">
-                            <div class="card-grid-inner">
-                                <div class="tools"><a class="btn btn-wishlist btn-tooltip mb-10"
-                                        href="shop-wishlist.html" aria-label="Add To Wishlist"></a><a
-                                        class="btn btn-compare btn-tooltip mb-10" href="shop-compare.html"
-                                        aria-label="Compare"></a><a class="btn btn-quickview btn-tooltip"
-                                        aria-label="Quick view" href="#ModalQuickview" data-bs-toggle="modal"></a>
-                                </div>
-                                <div class="image-box"><span class="label bg-brand-2">-17%</span><a
-                                        href="shop-single-product.html"><img
-                                            src="assets/imgs/page/homepage1/imgsp4.png" alt="Ecom"></a></div>
-                                <div class="box-count">
-                                    <div class="deals-countdown" data-countdown="2023/09/25 00:00:00"></div>
-                                </div>
-                                <div class="info-right"><span class="font-xs color-gray-500">Apple</span><br><a
-                                        class="color-brand-3 font-sm-bold" href="#">2022 Apple iMac with
-                                        Retina 5K Display 8GB RAM, 256GB SSD</a>
-                                    <div class="rating"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><img src="assets/imgs/template/icons/star.svg"
-                                            alt="Ecom"><span class="font-xs color-gray-500"> (65)</span></div>
-                                    <div class="price-info"><strong
-                                            class="font-lg-bold color-brand-3 price-main">$2856.3</strong><span
-                                            class="color-gray-500 price-line">$3225.6</span></div>
-                                    <div class="box-progress box-progress-small">
-                                        <div class="progress-bar">
-                                            <div class="progress-bar-inner"></div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-lg-6 col-md-6 col-sm-6 col-6"><span
-                                                    class="font-xs color-gray-500">Available:</span><span
-                                                    class="font-xs-bold color-gray-900">568</span></div>
-                                            <div class="col-lg-6 col-md-6 col-sm-6 col-6 text-end"><span
-                                                    class="font-xs color-gray-500">Sold:</span><span
-                                                    class="font-xs-bold color-gray-900">289</span></div>
-                                        </div>
-                                    </div>
-                                    <div class="mt-20 box-add-cart"><a class="btn btn-cart"
-                                            href="shop-cart.html">Add To Cart</a></div>
-                                    <ul class="list-features">
-                                        <li> 2-day Delivery. Free shipping</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <?php endif; ?>
             </div>
         </div>
     </div>

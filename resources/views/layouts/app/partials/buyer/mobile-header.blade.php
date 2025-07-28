@@ -73,8 +73,7 @@
                         </div>
                         <ul class="mobile-menu">
                             <li><a href="{{ route('buyer.dashboard.index') }}">My Account</a></li>
-                            <li><a href="{{ route('buyer.dashboard.orders') }}">Order Tracking</a></li>
-                            <li><a href="{{ route('buyer.dashboard.my_orders') }}">My Orders</a></li>
+                            <li><a href="{{ route('buyer.dashboard.orders') }}">My Orders</a></li>
                             <li><a href="{{ route('buyer.dashboard.wishlist') }}">My Wishlist</a></li>
                             <li><a href="{{ route('buyer.dashboard.profile') }}">Setting</a></li>
                             <li>

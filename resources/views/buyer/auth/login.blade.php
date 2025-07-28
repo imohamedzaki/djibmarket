@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zxx" class="js">
+<html lang="en">
 
 <head>
     <meta charset="utf-8">
@@ -10,418 +10,617 @@
     <!-- Fav Icon  -->
     <link rel="shortcut icon" href="{{ asset('assets/imgs/template') }}/favicon.png">
     <!-- Page Title  -->
-    <title>DjibMarket</title>
+    <title>DjibMarket - Buyer Login</title>
     <!-- StyleSheets  -->
     <link rel="stylesheet" href="{{ asset('assets/shared') }}/css/dashlite.css?ver=3.2.2">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
-        body {
-            background: linear-gradient(90deg, #e3fff7 0%, #d9e7ff 100%) !important;
-        }
-
-        .card {
-            background: rgba(255, 255, 255, 0.85) !important;
-            backdrop-filter: blur(10px) !important;
-            border: none !important;
-            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.05) !important;
-            border-radius: 12px !important;
-            transition: transform 0.3s ease, box-shadow 0.3s ease !important;
-        }
-
-        .card:hover {
-            transform: translateY(-5px) !important;
-            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.08) !important;
-        }
-
-        .card-inner {
-            border-radius: 0 0 12px 12px !important;
-        }
-
-        .custom_guard {
-            position: relative;
-            background: linear-gradient(45deg, #61e4bc 0%, #7cbeff 100%) !important;
-            color: #ffffff !important;
-            padding: .6rem !important;
-            text-align: center;
-            font-weight: bold;
-            text-transform: uppercase;
+        * {
             margin: 0;
-            border-bottom: none !important;
-            border-radius: 12px 12px 0 0 !important;
-            box-shadow: 0 3px 10px rgba(100, 200, 255, 0.2) !important;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        .custom_guard::before {
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(90deg, #e3fff7 0%, #d9e7ff 100%) !important;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1.5;
+        }
+
+        .auth-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            max-width: 1100px;
+            width: 100%;
+            min-height: 650px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            position: relative;
+        }
+
+        /* Left Side - Form */
+        .auth-form-section {
+            padding: 3rem 2.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+
+        .back-link {
+            position: absolute;
+            top: 2rem;
+            left: 2.5rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #6b7280;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .back-link:hover {
+            color: #374151;
+            transform: translateX(-2px);
+        }
+
+        .brand-section {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .brand-logo {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-radius: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .brand-logo img {
+            width: 32px;
+            mix-blend-mode: screen;
+            filter: brightness(0) invert(1);
+        }
+
+        .page-title {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.025em;
+        }
+
+        .page-subtitle {
+            color: #6b7280;
+            font-size: 1rem;
+            font-weight: 400;
+        }
+
+        .login-form {
+            space-y: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
             display: block;
-            content: '';
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 1.5px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            background: #ffffff;
+            color: #111827;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #10b981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+
+        .form-input.error {
+            border-color: #ef4444;
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+        }
+
+        .form-input:disabled {
+            background-color: #f3f4f6;
+            color: #6b7280;
+            cursor: not-allowed;
+            border-color: #d1d5db;
+        }
+
+        .form-input::placeholder {
+            color: #9ca3af;
+        }
+
+        .error-message {
+            color: #ef4444;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
+
+        .warning-message {
+            color: #f59e0b;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
+
+        .info-message {
+            color: #10b981;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
+
+        .password-section {
+            position: relative;
+        }
+
+        .forgot-link {
+            display: block;
+            text-align: right;
+            color: #10b981;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-top: 0.5rem;
+            transition: color 0.2s ease;
+        }
+
+        .forgot-link:hover {
+            color: #059669;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border: none;
+            padding: 0.875rem 1rem;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .loading-spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .signup-section {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .signup-text {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+
+        .signup-link {
+            color: #10b981;
+            text-decoration: none;
+            font-weight: 600;
+            margin-left: 0.25rem;
+            transition: color 0.2s ease;
+        }
+
+        .signup-link:hover {
+            color: #059669;
+            text-decoration: underline;
+        }
+
+        /* Right Side - Image */
+        .auth-image-section {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .image-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.8) 0%, #06b6d4 100%);
+            z-index: 1;
+        }
+
+        .image-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: white;
+            padding: 2rem;
+            max-width: 91%;
+        }
+
+        .buyer-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1.5rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: 'Inter';
+            color: #fff;
+            width: 100%;
+        }
+
+        .hero-subtitle {
+            font-size: 1.125rem;
+            opacity: 0.9;
+            line-height: 1.6;
+            font-weight: 400;
+            position: relative;
+            top: 2rem;
+        }
+
+        .background-image {
+            position: absolute;
+            inset: 0;
             width: 100%;
             height: 100%;
+            object-fit: cover;
+            z-index: 0;
+        }
+
+        .floating-elements {
             position: absolute;
-            top: 0;
-            left: 0;
-            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='100%25' width='100%25'%3E%3Cdefs%3E%3Cpattern id='doodad' width='30' height='30' viewBox='0 0 40 40' patternUnits='userSpaceOnUse' patternTransform='rotate(135)'%3E%3Crect width='100%25' height='100%25' fill='rgba(65, 153, 225,0)'/%3E%3Ccircle cx='-15' cy='15' r='1' fill='rgba(255, 255, 255,0.6)'/%3E%3Ccircle cx='-5' cy='25' r='1' fill='rgba(255, 255, 255,0.6)'/%3E%3Ccircle cx='5' cy='15' r='1' fill='rgba(255, 255, 255,0.6)'/%3E%3Ccircle cx='25' cy='15' r='1' fill='rgba(255, 255, 255,0.6)'/%3E%3Ccircle cx='15' cy='25' r='1' fill='rgba(255, 255, 255,0.6)'/%3E%3Ccircle cx='35' cy='25' r='1' fill='rgba(255, 255, 255,0.6)'/%3E%3Ccircle cx='15' cy='15' r='1' fill='rgba(255, 255, 255,1)'/%3E%3Ccircle cx='35' cy='15' r='1' fill='rgba(255, 255, 255,1)'/%3E%3Ccircle cx='5' cy='25' r='1' fill='rgba(255, 255, 255,1)'/%3E%3Ccircle cx='25' cy='25' r='1' fill='rgba(255, 255, 255,1)'/%3E%3C/pattern%3E%3C/defs%3E%3Crect fill='url(%23doodad)' height='200%25' width='200%25'/%3E%3C/svg%3E ");
-            background-size: cover;
-            opacity: .3;
-            border-radius: 12px 12px 0 0 !important;
+            inset: 0;
+            z-index: 1;
         }
 
-        .custom_guard span {
-            position: relative;
-            letter-spacing: 5px;
+        .floating-element {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
         }
 
-        .btn-primary {
-            background: linear-gradient(45deg, #4ad4a5 0%, #56a8ff 100%) !important;
-            border: none !important;
-            box-shadow: 0 5px 15px rgba(86, 168, 255, 0.3) !important;
+        .floating-element:nth-child(1) {
+            top: 20%;
+            left: 20%;
+            animation-delay: 0s;
         }
 
-        .btn-primary:hover {
-            box-shadow: 0 8px 20px rgba(86, 168, 255, 0.5) !important;
+        .floating-element:nth-child(2) {
+            top: 60%;
+            right: 20%;
+            animation-delay: 2s;
         }
 
-        .form-control {
-            background-color: rgba(255, 255, 255, 0.8) !important;
-            border: 1px solid rgba(94, 116, 143, 0.3) !important;
+        .floating-element:nth-child(3) {
+            bottom: 20%;
+            left: 30%;
+            animation-delay: 4s;
         }
 
-        .form-control:focus {
-            border-color: rgba(86, 168, 255, 0.5) !important;
-            box-shadow: 0 0 0 3px rgba(86, 168, 255, 0.1) !important;
+        /* Animations */
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
-        a {
-            color: #4BB8D5 !important;
-            transition: color 0.3s ease !important;
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-20px) rotate(180deg);
+            }
         }
 
-        a:hover {
-            color: #56a8ff !important;
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .nk-footer {
-            background: rgba(255, 255, 255, 0.6) !important;
-            backdrop-filter: blur(5px) !important;
-            margin-top: 30px;
-            border-top: 1px solid rgba(94, 116, 143, 0.3) !important;
+        /* Page animations */
+        .auth-container {
+            animation: fadeInUp 0.6s ease-out;
         }
 
-        .nav-link {
-            color: #5C93B1 !important;
-            transition: color 0.3s ease !important;
+        .brand-section {
+            animation: fadeInUp 0.8s ease-out 0.2s both;
         }
 
-        .nav-link:hover {
-            color: #56a8ff !important;
+        .login-form .form-group:nth-of-type(1) {
+            animation: fadeInUp 0.6s ease-out 0.4s both;
         }
 
-        .text-soft {
-            color: #71A6D1 !important;
+        .login-form .form-group:nth-of-type(2) {
+            animation: fadeInUp 0.6s ease-out 0.5s both;
+        }
+
+        .submit-btn {
+            animation: fadeInUp 0.6s ease-out 0.6s both;
+        }
+
+        .signup-section {
+            animation: fadeInUp 0.6s ease-out 0.7s both;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .auth-container {
+                grid-template-columns: 1fr;
+                margin: 1rem;
+                border-radius: 16px;
+                min-height: auto;
+            }
+
+            .auth-form-section {
+                padding: 2rem 1.5rem;
+                order: 1;
+            }
+
+            .auth-image-section {
+                min-height: 200px;
+                order: 2;
+            }
+
+            .back-link {
+                top: 1rem;
+                left: 1.5rem;
+            }
+
+            .page-title {
+                font-size: 1.5rem;
+            }
+
+            .hero-title {
+                font-size: 1.5rem;
+            }
+
+            .image-content {
+                padding: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .auth-container {
+                margin: 0.5rem;
+            }
+
+            .auth-form-section {
+                padding: 1.5rem 1rem;
+            }
+
+            .brand-section {
+                margin-bottom: 2rem;
+            }
         }
     </style>
 </head>
 
-<body class="nk-body bg-white npc-default pg-auth">
-    <div class="nk-app-root">
-        <!-- main @s -->
-        <div class="nk-main">
-            <!-- wrap @s -->
-            <div class="nk-wrap nk-wrap-nosidebar">
-                <!-- content @s -->
-                <div class="nk-content ">
-                    <div class="nk-block nk-block-middle nk-auth-body wide-xs">
-                        <div class="brand-logo pb-4 text-center">
-                            <a href="{{ route('buyer.home') }}" class="logo-link">
-                                <img class="logo-light logo-img logo-img-lg"
-                                    src="{{ asset('assets/imgs/template/logo_only.png') }}"
-                                    srcset="{{ asset('assets/imgs/template/logo_only.png') }}" alt="logo">
-                                <img class="logo-dark logo-img logo-img-lg"
-                                    src="{{ asset('assets/imgs/template/logo_only.png') }}"
-                                    srcset="{{ asset('assets/imgs/template/logo_only.png') }}" alt="logo-dark">
-                            </a>
-                        </div>
-                        <div class="card card-bordered" style="overflow: hidden">
-                            <p class="custom_guard">
-                                <span>Buyer</span>
-                            </p>
-                            <div class="card-inner card-inner-lg">
-                                <div class="nk-block-head">
-                                    <div class="nk-block-head-content">
-                                        <h4 class="nk-block-title">Sign-In</h4>
-                                        <div class="nk-block-des">
-                                            <p>Access the DjibMarket panel using your email and passcode.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <x-auth-session-status class="mb-4" :status="session('status')" />
-                                <form action="{{ route('login') }}" method="post">
-                                    @csrf
-                                    <div class="form-group">
-                                        <div class="form-label-group">
-                                            <label class="form-label" for="email">Email</label>
-                                        </div>
-                                        <div class="form-control-wrap">
-                                            <input type="text" class="form-control form-control-lg" id="email"
-                                                name="email" placeholder="Enter your email address">
-                                        </div>
-                                        <x-input-error :messages="$errors->get('email')" class="mt-2" />
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="form-label-group">
-                                            <label class="form-label" for="password">Passcode</label>
-                                            <a class="link link-primary link-sm"
-                                                href="{{ route('password.request') }}">Forgot Code?</a>
-                                        </div>
-                                        <div class="form-control-wrap">
-                                            <a href="#" class="form-icon form-icon-right passcode-switch lg"
-                                                data-target="password">
-                                                <em class="passcode-icon icon-show icon ni ni-eye"></em>
-                                                <em class="passcode-icon icon-hide icon ni ni-eye-off"></em>
-                                            </a>
-                                            <input type="password" class="form-control form-control-lg"
-                                                id="password" placeholder="Enter your passcode" name="password">
-                                        </div>
-                                        <x-input-error :messages="$errors->get('password')" class="mt-2" />
-                                    </div>
-                                    <div class="form-group">
-                                        <button id="submitButton"
-                                            class="submitButton btn btn-lg btn-primary btn-block d-flex align-items-center justify-content-center">
-                                            <span class="button-text">Sign in</span>
-                                            <div id="loadingSpinner"
-                                                class="loadingSpinner spinner-border spinner-border-sm text-light ms-2 d-none"
-                                                role="status">
-                                                <span class="visually-hidden">Loading...</span>
-                                            </div>
-                                        </button>
-                                    </div>
-                                </form>
-                                <div class="form-note-s2 text-center pt-4"> New on our platform? <a
-                                        href="{{ route('register') }}">Create an account</a>
-                                </div>
-                                {{-- <div class="text-center pt-4 pb-3">
-                                    <h6 class="overline-title overline-title-sap"><span>OR</span></h6>
-                                </div>
-                                <ul class="nav justify-center gx-4">
-                                    <li class="nav-item"><a class="nav-link" href="#">Facebook</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="#">Google</a></li>
-                                </ul> --}}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="nk-footer nk-auth-footer-full">
-                        <div class="container wide-lg">
-                            <div class="row g-3">
-                                <div class="col-lg-6 order-lg-last">
-                                    <ul class="nav nav-sm justify-content-center justify-content-lg-end">
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#">Terms & Condition</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#">Privacy Policy</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#">Help</a>
-                                        </li>
-                                        <li class="nav-item dropup">
-                                            <a class="dropdown-toggle dropdown-indicator has-indicator nav-link"
-                                                data-bs-toggle="dropdown" data-offset="0,10"><span>English</span></a>
-                                            <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
-                                                <ul class="language-list">
-                                                    <li>
-                                                        <a href="#" class="language-item">
-                                                            <img src="./images/flags/english.png" alt=""
-                                                                class="language-flag">
-                                                            <span class="language-name">English</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#" class="language-item">
-                                                            <img src="./images/flags/spanish.png" alt=""
-                                                                class="language-flag">
-                                                            <span class="language-name">Español</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#" class="language-item">
-                                                            <img src="./images/flags/french.png" alt=""
-                                                                class="language-flag">
-                                                            <span class="language-name">Français</span>
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="#" class="language-item">
-                                                            <img src="./images/flags/turkey.png" alt=""
-                                                                class="language-flag">
-                                                            <span class="language-name">Türkçe</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="nk-block-content text-center text-lg-left">
-                                        <p class="text-soft">&copy; {{ date('Y') }} DjibMarket. All Rights
-                                            Reserved.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+<body>
+    <div class="auth-container">
+        <!-- Left Side - Login Form -->
+        <div class="auth-form-section">
+            <a href="{{ route('buyer.home') }}" class="back-link">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m12 19-7-7 7-7"></path>
+                    <path d="m19 12H5"></path>
+                </svg>
+                Back to home
+            </a>
 
+            <div class="brand-section">
+                <div class="brand-logo">
+                    <img src="{{ asset('assets/imgs/template/logo_only.png') }}" alt="DjibMarket Logo">
                 </div>
-                <!-- wrap @e -->
+                <h1 class="page-title">Welcome back</h1>
+                <p class="page-subtitle">Sign in to your buyer account</p>
             </div>
-            <!-- content @e -->
-        </div>
-        <!-- main @e -->
-    </div>
-    <!-- app-root @e -->
-    <!-- JavaScript -->
 
-    {{-- <script src="{{ asset('assets/js/jquery.min.js') }}"></script> --}}
+            <x-auth-session-status class="mb-4" :status="session('status')" />
+
+            {{-- Display success messages --}}
+            @if (session('success'))
+                <div class="info-message mb-4">{{ session('success') }}</div>
+            @endif
+
+            {{-- Display error messages --}}
+            @if (session('error'))
+                <div class="error-message mb-4">{{ session('error') }}</div>
+            @endif
+
+            {{-- Display info messages --}}
+            @if (session('info'))
+                <div class="info-message mb-4">{{ session('info') }}</div>
+            @endif
+
+            <form action="{{ route('login') }}" method="post" id="loginForm" class="login-form">
+                @csrf
+
+                <div class="form-group">
+                    <label class="form-label" for="email">Email Address</label>
+                    <input type="email" class="form-input {{ $errors->get('email') ? 'error' : '' }}" id="email"
+                        name="email" placeholder="Enter your email address" value="{{ old('email') }}" required>
+                    @if ($errors->get('email'))
+                        <div class="error-message">{!! $errors->get('email')[0] !!}</div>
+                    @endif
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password">Password</label>
+                    <div class="password-section">
+                        <input type="password" class="form-input {{ $errors->get('password') ? 'error' : '' }}"
+                            id="password" name="password" placeholder="Enter your password" required>
+                        @if ($errors->get('password'))
+                            <div class="error-message">{{ $errors->get('password')[0] }}</div>
+                        @endif
+                        <a href="{{ route('password.request') }}" class="forgot-link">Forgot password?</a>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submitButton">
+                    <span class="button-text">Sign in to your account</span>
+                    <div class="loading-spinner" id="loadingSpinner" style="display: none;"></div>
+                </button>
+            </form>
+
+            <div class="signup-section">
+                <span class="signup-text">Don't have an account?</span>
+                <a href="{{ route('register') }}" class="signup-link">Create account</a>
+            </div>
+        </div>
+
+        <!-- Right Side - Image Section -->
+        <div class="auth-image-section">
+            <img src="{{ asset('assets/imgs/template/logo_only.png') }}" alt="Buyer Dashboard"
+                class="background-image">
+            <div class="image-overlay"></div>
+
+            <div class="floating-elements">
+                <div class="floating-element"></div>
+                <div class="floating-element"></div>
+                <div class="floating-element"></div>
+            </div>
+
+            <div class="image-content">
+                <div class="buyer-badge">Buyer Portal</div>
+                <h2 class="hero-title">Discover Amazing Products</h2>
+                <p class="hero-subtitle">Join thousands of satisfied customers and explore the best products from local sellers on DjibMarket</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
     <script src="{{ asset('assets/shared') }}/js/bundle.js?ver=3.2.2"></script>
-    <script src="{{ asset('assets/shared') }}/js/scripts.js?ver=3.2.2"></script>
     <script>
-        // Disable submit button on form submit
-        $('form').on('submit', function(e) {
-            var submitButton = $('.submitButton');
+        // Form submission handling
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            const submitButton = document.getElementById('submitButton');
+            const buttonText = submitButton.querySelector('.button-text');
+            const loadingSpinner = document.getElementById('loadingSpinner');
 
             // Disable the button
-            submitButton.prop('disabled', true);
+            submitButton.disabled = true;
 
-            // Change the button text
-            // submitButton.find('.button-text').text('Submitting...');
-
-            // Show the loading spinner
-            $('.loadingSpinner').removeClass('d-none');
+            // Show loading spinner
+            loadingSpinner.style.display = 'block';
+            buttonText.style.display = 'none';
         });
+
+        // Input focus effects
+        const inputs = document.querySelectorAll('.form-input');
+        inputs.forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.classList.add('focused');
+            });
+
+            input.addEventListener('blur', function() {
+                this.parentElement.classList.remove('focused');
+            });
+
+            // Remove error state on input
+            input.addEventListener('input', function() {
+                if (this.classList.contains('error')) {
+                    this.classList.remove('error');
+                    const errorMsg = this.parentElement.querySelector('.error-message');
+                    if (errorMsg) {
+                        errorMsg.style.display = 'none';
+                    }
+                }
+            });
+        });
+
+        // Add smooth scroll behavior
+        document.documentElement.style.scrollBehavior = 'smooth';
     </script>
-
-    <!-- select region modal -->
-    <div class="modal fade" tabindex="-1" role="dialog" id="region">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <a href="#" class="close" data-bs-dismiss="modal"><em class="icon ni ni-cross-sm"></em></a>
-                <div class="modal-body modal-body-md">
-                    <h5 class="title mb-4">Select Your Country</h5>
-                    <div class="nk-country-region">
-                        <ul class="country-list text-center gy-2">
-                            <li>
-                                <a href="#" class="country-item">
-                                    <img src="./images/flags/arg.png" alt="" class="country-flag">
-                                    <span class="country-name">Argentina</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="country-item">
-                                    <img src="./images/flags/aus.png" alt="" class="country-flag">
-                                    <span class="country-name">Australia</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="country-item">
-                                    <img src="./images/flags/bangladesh.png" alt="" class="country-flag">
-                                    <span class="country-name">Bangladesh</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="country-item">
-                                    <img src="./images/flags/canada.png" alt="" class="country-flag">
-                                    <span class="country-name">Canada <small>(English)</small></span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="country-item">
-                                    <img src="./images/flags/china.png" alt="" class="country-flag">
-                                    <span class="country-name">Centrafricaine</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="country-item">
-                                    <img src="./images/flags/china.png" alt="" class="country-flag">
-                                    <span class="country-name">China</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="country-item">
-                                    <img src="./images/flags/french.png" alt="" class="country-flag">
-                                    <span class="country-name">France</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="country-item">
-                                    <img src="./images/flags/germany.png" alt="" class="country-flag">
-                                    <span class="country-name">Germany</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="country-item">
-                                    <img src="./images/flags/iran.png" alt="" class="country-flag">
-                                    <span class="country-name">Iran</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="country-item">
-                                    <img src="./images/flags/italy.png" alt="" class="country-flag">
-                                    <span class="country-name">Italy</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="country-item">
-                                    <img src="./images/flags/mexico.png" alt="" class="country-flag">
-                                    <span class="country-name">México</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="country-item">
-                                    <img src="./images/flags/philipine.png" alt="" class="country-flag">
-                                    <span class="country-name">Philippines</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="country-item">
-                                    <img src="./images/flags/portugal.png" alt="" class="country-flag">
-                                    <span class="country-name">Portugal</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="country-item">
-                                    <img src="./images/flags/s-africa.png" alt="" class="country-flag">
-                                    <span class="country-name">South Africa</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="country-item">
-                                    <img src="./images/flags/spanish.png" alt="" class="country-flag">
-                                    <span class="country-name">Spain</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="country-item">
-                                    <img src="./images/flags/switzerland.png" alt="" class="country-flag">
-                                    <span class="country-name">Switzerland</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="country-item">
-                                    <img src="./images/flags/uk.png" alt="" class="country-flag">
-                                    <span class="country-name">United Kingdom</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="country-item">
-                                    <img src="./images/flags/english.png" alt="" class="country-flag">
-                                    <span class="country-name">United State</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div><!-- .modal-content -->
-        </div><!-- .modla-dialog -->
-    </div><!-- .modal -->
-
+</body>
 
 </html>

@@ -82,6 +82,16 @@ class Product extends Model
         return 'slug';
     }
 
+    public function setStatusAttribute($value)
+    {
+        if ($value === 'published') {
+            $this->attributes['status'] = ProductStatus::Active->value;
+        } else {
+            $this->attributes['status'] = $value;
+        }
+    }
+
+
     // Relationships
     public function seller(): BelongsTo
     {

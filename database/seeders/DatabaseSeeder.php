@@ -23,6 +23,8 @@ class DatabaseSeeder extends Seeder
             SellerSeeder::class,
             AdminSeeder::class,
             SellerAdsSeeder::class,
+            TopBrandsSeeder::class,
+            CategoryAdsSeeder::class,
         ]);
     }
 }

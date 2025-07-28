@@ -188,15 +188,22 @@ unset($__defined_vars); ?>
 
             <!-- Add to Cart Button -->
             <div class="product-actions">
-                <button class="btn-add-cart" onclick="window.addToCart(<?php echo e($product->id); ?>, 1, this)" type="button">
-                    <span class="btn-text">Add To Cart</span>
-                    <span class="btn-loading">
-                        <svg class="spinner" width="16" height="16" viewBox="0 0 24 24">
-                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"
-                                fill="none" stroke-dasharray="31.416" stroke-dashoffset="31.416"></circle>
-                        </svg>
-                    </span>
-                </button>
+                <?php if(isset($product->is_in_cart) && $product->is_in_cart): ?>
+                    <button class="btn-add-cart btn-in-cart" type="button" disabled>
+                        <span class="btn-text">✓ Added</span>
+                    </button>
+                <?php else: ?>
+                    <button class="btn-add-cart" onclick="window.addToCart(<?php echo e($product->id); ?>, 1, this)"
+                        type="button">
+                        <span class="btn-text">Add To Cart</span>
+                        <span class="btn-loading">
+                            <svg class="spinner" width="16" height="16" viewBox="0 0 24 24">
+                                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"
+                                    fill="none" stroke-dasharray="31.416" stroke-dashoffset="31.416"></circle>
+                            </svg>
+                        </span>
+                    </button>
+                <?php endif; ?>
             </div>
 
             <!-- Product Features -->
@@ -674,6 +681,18 @@ unset($__defined_vars); ?>
 
     .btn-add-cart.loading .btn-loading {
         opacity: 1;
+    }
+
+    /* Added to Cart Button State */
+    .btn-add-cart.btn-in-cart {
+        background: linear-gradient(135deg, #10b981, #059669);
+        cursor: default;
+    }
+
+    .btn-add-cart.btn-in-cart:hover {
+        background: linear-gradient(135deg, #10b981, #059669);
+        transform: none;
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
     }
 
     .spinner {

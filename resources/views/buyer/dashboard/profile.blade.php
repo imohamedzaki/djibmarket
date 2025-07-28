@@ -6,165 +6,155 @@
         <p>Manage your personal information and account settings.</p>
     </div>
 
-    <div class="row">
-        <div class="col-lg-8">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0">Personal Information</h5>
+    <div class="profile-layout">
+        <!-- Main Profile Form -->
+        <div class="profile-main">
+            <div class="profile-card">
+                <div class="profile-card-header">
+                    <h3 class="card-title">Personal Information</h3>
+                    <p class="card-description">Update your personal details and contact information</p>
                 </div>
-                <div class="card-body">
+                <div class="profile-card-content">
                     <form action="{{ route('buyer.dashboard.profile.update') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
 
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group mb-3">
-                                    <label for="name" class="form-label">Full Name *</label>
-                                    <input type="text" class="form-control" id="name" name="name"
-                                        value="{{ old('name', Auth::user()->name) }}" required>
-                                </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="name" class="form-label">Full Name *</label>
+                                <input type="text" class="form-control" id="name" name="name"
+                                    value="{{ old('name', Auth::user()->name) }}" required>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group mb-3">
-                                    <label for="email" class="form-label">Email Address *</label>
-                                    <input type="email" class="form-control" id="email" name="email"
-                                        value="{{ old('email', Auth::user()->email) }}" required>
-                                </div>
+                            <div class="form-group">
+                                <label for="email" class="form-label">Email Address *</label>
+                                <input type="email" class="form-control" id="email" name="email"
+                                    value="{{ old('email', Auth::user()->email) }}" required>
                             </div>
                         </div>
 
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group mb-3">
-                                    <label for="phone" class="form-label">Phone Number</label>
-                                    <input type="text" class="form-control" id="phone" name="phone"
-                                        value="{{ old('phone', Auth::user()->phone) }}">
-                                </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="phone" class="form-label">Phone Number</label>
+                                <input type="text" class="form-control" id="phone" name="phone"
+                                    value="{{ old('phone', Auth::user()->phone) }}">
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group mb-3">
-                                    <label for="date_of_birth" class="form-label">Date of Birth</label>
-                                    <input type="date" class="form-control" id="date_of_birth" name="date_of_birth"
-                                        value="{{ old('date_of_birth', Auth::user()->date_of_birth?->format('Y-m-d')) }}">
-                                </div>
+                            <div class="form-group">
+                                <label for="date_of_birth" class="form-label">Date of Birth</label>
+                                <input type="date" class="form-control" id="date_of_birth" name="date_of_birth"
+                                    value="{{ old('date_of_birth', Auth::user()->date_of_birth?->format('Y-m-d')) }}">
                             </div>
                         </div>
 
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group mb-3">
-                                    <label for="gender" class="form-label">Gender</label>
-                                    <select class="form-control" id="gender" name="gender">
-                                        <option value="">Select Gender</option>
-                                        <option value="male"
-                                            {{ old('gender', Auth::user()->gender) == 'male' ? 'selected' : '' }}>Male
-                                        </option>
-                                        <option value="female"
-                                            {{ old('gender', Auth::user()->gender) == 'female' ? 'selected' : '' }}>Female
-                                        </option>
-                                        <option value="other"
-                                            {{ old('gender', Auth::user()->gender) == 'other' ? 'selected' : '' }}>Other
-                                        </option>
-                                    </select>
-                                </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="gender" class="form-label">Gender</label>
+                                <select class="form-control" id="gender" name="gender">
+                                    <option value="">Select Gender</option>
+                                    <option value="male"
+                                        {{ old('gender', Auth::user()->gender) == 'male' ? 'selected' : '' }}>Male</option>
+                                    <option value="female"
+                                        {{ old('gender', Auth::user()->gender) == 'female' ? 'selected' : '' }}>Female
+                                    </option>
+                                    <option value="other"
+                                        {{ old('gender', Auth::user()->gender) == 'other' ? 'selected' : '' }}>Other
+                                    </option>
+                                </select>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group mb-3">
-                                    <label for="city" class="form-label">City</label>
-                                    <input type="text" class="form-control" id="city" name="city"
-                                        value="{{ old('city', Auth::user()->city) }}">
-                                </div>
+                            <div class="form-group">
+                                <label for="city" class="form-label">City</label>
+                                <input type="text" class="form-control" id="city" name="city"
+                                    value="{{ old('city', Auth::user()->city) }}">
                             </div>
                         </div>
 
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group mb-3">
-                                    <label for="country" class="form-label">Country</label>
-                                    <input type="text" class="form-control" id="country" name="country"
-                                        value="{{ old('country', Auth::user()->country) }}">
-                                </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="country" class="form-label">Country</label>
+                                <input type="text" class="form-control" id="country" name="country"
+                                    value="{{ old('country', Auth::user()->country) }}">
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group mb-3">
-                                    <label for="postal_code" class="form-label">Postal Code</label>
-                                    <input type="text" class="form-control" id="postal_code" name="postal_code"
-                                        value="{{ old('postal_code', Auth::user()->postal_code) }}">
-                                </div>
+                            <div class="form-group">
+                                <label for="postal_code" class="form-label">Postal Code</label>
+                                <input type="text" class="form-control" id="postal_code" name="postal_code"
+                                    value="{{ old('postal_code', Auth::user()->postal_code) }}">
                             </div>
                         </div>
 
-                        <div class="form-group mb-3">
+                        <div class="form-group">
                             <label for="bio" class="form-label">Bio</label>
                             <textarea class="form-control" id="bio" name="bio" rows="3" placeholder="Tell us about yourself...">{{ old('bio', Auth::user()->bio) }}</textarea>
                         </div>
 
-                        <div class="form-group mb-3">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="newsletter_subscription"
+                        <div class="form-group">
+                            <div class="form-checkbox">
+                                <input class="checkbox-input" type="checkbox" id="newsletter_subscription"
                                     name="newsletter_subscription" value="1"
                                     {{ old('newsletter_subscription', Auth::user()->newsletter_subscription) ? 'checked' : '' }}>
-                                <label class="form-check-label" for="newsletter_subscription">
+                                <label class="checkbox-label" for="newsletter_subscription">
                                     Subscribe to newsletter and promotional emails
                                 </label>
                             </div>
                         </div>
 
-                        <div class="d-flex justify-content-end">
-                            <button type="submit" class="btn btn-primary">Update Profile</button>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-1"></i>
+                                Update Profile
+                            </button>
                         </div>
                     </form>
                 </div>
             </div>
 
-            <!-- Change Password -->
-            <div class="card mt-4">
-                <div class="card-header">
-                    <h5 class="mb-0">Change Password</h5>
+            <!-- Change Password Card -->
+            <div class="profile-card">
+                <div class="profile-card-header">
+                    <h3 class="card-title">Change Password</h3>
+                    <p class="card-description">Update your password to keep your account secure</p>
                 </div>
-                <div class="card-body">
+                <div class="profile-card-content">
                     <form action="{{ route('buyer.dashboard.profile.update') }}" method="POST">
                         @csrf
                         @method('PUT')
 
-                        <div class="form-group mb-3">
+                        <div class="form-group">
                             <label for="current_password" class="form-label">Current Password</label>
                             <input type="password" class="form-control" id="current_password" name="current_password">
                         </div>
 
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group mb-3">
-                                    <label for="password" class="form-label">New Password</label>
-                                    <input type="password" class="form-control" id="password" name="password">
-                                </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="password" class="form-label">New Password</label>
+                                <input type="password" class="form-control" id="password" name="password">
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group mb-3">
-                                    <label for="password_confirmation" class="form-label">Confirm New Password</label>
-                                    <input type="password" class="form-control" id="password_confirmation"
-                                        name="password_confirmation">
-                                </div>
+                            <div class="form-group">
+                                <label for="password_confirmation" class="form-label">Confirm New Password</label>
+                                <input type="password" class="form-control" id="password_confirmation"
+                                    name="password_confirmation">
                             </div>
                         </div>
 
-                        <div class="d-flex justify-content-end">
-                            <button type="submit" class="btn btn-warning">Change Password</button>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-warning">
+                                <i class="fas fa-key me-1"></i>
+                                Change Password
+                            </button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
 
-        <div class="col-lg-4">
-            <!-- Profile Picture -->
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0">Profile Picture</h5>
+        <!-- Profile Sidebar -->
+        <div class="profile-sidebar">
+            <!-- Profile Picture Card -->
+            <div class="profile-card">
+                <div class="profile-card-header">
+                    <h3 class="card-title">Profile Picture</h3>
+                    <p class="card-description">Upload a new profile picture</p>
                 </div>
-                <div class="card-body text-center">
-                    <div class="profile-picture-container mb-3">
+                <div class="profile-card-content profile-picture-section">
+                    <div class="profile-picture-container">
                         <div class="profile-picture">
                             @if (Auth::user()->avatar)
                                 <img src="{{ asset(Auth::user()->avatar) }}" alt="{{ Auth::user()->name }}"
@@ -178,13 +168,9 @@
                                     {{ Auth::user()->initials }}
                                 </div>
                             @endif
-                            {{-- Debug info (remove in production) --}}
-                            {{-- @if (config('app.debug'))
-                                <small class="text-muted mt-2 d-block">Avatar path:
-                                    {{ Auth::user()->avatar ?? 'No avatar' }}</small>
-                                <small class="text-muted d-block">Full URL:
-                                    {{ Auth::user()->avatar ? asset(Auth::user()->avatar) : 'No URL' }}</small>
-                            @endif --}}
+                        </div>
+                        <div class="picture-overlay">
+                            <i class="fas fa-camera"></i>
                         </div>
                     </div>
 
@@ -197,132 +183,446 @@
                         <input type="hidden" name="name" value="{{ Auth::user()->name }}">
                         <input type="hidden" name="email" value="{{ Auth::user()->email }}">
 
-                        <div class="form-group mb-3">
+                        <div class="form-group">
                             <input type="file" class="form-control" id="avatar" name="avatar" accept="image/*"
                                 onchange="previewImage(this)">
-                            <small class="text-muted">Max file size: 2MB. Supported formats: JPG, PNG, GIF</small>
+                            <small class="help-text">Max file size: 2MB. Supported formats: JPG, PNG, GIF</small>
                         </div>
 
-                        <button type="submit" class="btn btn-outline-primary btn-sm">Update Picture</button>
+                        <button type="submit" class="btn btn-outline-primary btn-sm btn-block">
+                            <i class="fas fa-upload me-1"></i>
+                            Update Picture
+                        </button>
                     </form>
                 </div>
             </div>
 
-            <!-- Account Stats -->
-            <div class="card mt-4">
-                <div class="card-header">
-                    <h5 class="mb-0">Account Statistics</h5>
+            <!-- Account Stats Card -->
+            <div class="profile-card">
+                <div class="profile-card-header">
+                    <h3 class="card-title">Account Statistics</h3>
+                    <p class="card-description">Your account overview</p>
                 </div>
-                <div class="card-body">
-                    <div class="stat-item d-flex justify-content-between mb-2">
-                        <span>Member Since:</span>
-                        <strong>{{ Auth::user()->created_at->format('M Y') }}</strong>
-                    </div>
-                    <div class="stat-item d-flex justify-content-between mb-2">
-                        <span>Total Orders:</span>
-                        <strong>{{ Auth::user()->orders()->count() }}</strong>
-                    </div>
-                    <div class="stat-item d-flex justify-content-between mb-2">
-                        <span>Wishlist Items:</span>
-                        <strong>{{ Auth::user()->wishlist()->count() }}</strong>
-                    </div>
-                    <div class="stat-item d-flex justify-content-between">
-                        <span>Account Status:</span>
-                        <span class="badge badge-success">{{ ucfirst(Auth::user()->status) }}</span>
+                <div class="profile-card-content">
+                    <div class="stats-list">
+                        <div class="stat-item">
+                            <div class="stat-icon">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-label">Member Since</span>
+                                <span class="stat-value">{{ Auth::user()->created_at->format('M Y') }}</span>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon">
+                                <i class="fas fa-shopping-bag"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-label">Total Orders</span>
+                                <span class="stat-value">{{ Auth::user()->orders()->count() }}</span>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-label">Wishlist Items</span>
+                                <span class="stat-value">{{ Auth::user()->wishlist()->count() }}</span>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon">
+                                <i class="fas fa-user-check"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-label">Account Status</span>
+                                <span class="status-badge status-success">{{ ucfirst(Auth::user()->status) }}</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-@endsection
-<style>
-    .profile-picture-container {
-        position: relative;
-        display: inline-block;
-    }
 
-    .profile-picture {
-        width: 120px;
-        height: 120px;
-        border-radius: 50%;
-        overflow: hidden;
-        margin: 0 auto;
-        border: 4px solid #f0f0f0;
-    }
+    <style>
+        /* Profile Layout */
+        .profile-layout {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: var(--spacing-xl);
+        }
 
-    .profile-picture img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
+        .profile-main {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-lg);
+        }
 
-    .avatar-placeholder {
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 36px;
-        font-weight: 600;
-    }
+        .profile-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-lg);
+        }
 
-    .stat-item {
-        padding: 8px 0;
-        border-bottom: 1px solid #f0f0f0;
-    }
+        /* Profile Cards */
+        .profile-card {
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+        }
 
-    .stat-item:last-child {
-        border-bottom: none;
-    }
+        .profile-card:hover {
+            box-shadow: var(--shadow-md);
+            transition: box-shadow 0.2s ease;
+        }
 
-    .form-label {
-        font-weight: 600;
-        color: #333;
-        margin-bottom: 8px;
-    }
+        .profile-card-header {
+            padding: var(--spacing-lg);
+            border-bottom: 1px solid var(--gray-200);
+            background: var(--gray-50);
+        }
 
-    .form-control {
-        border-radius: 0.3rem;
-        border: 1px solid #ddd;
-        padding: 12px 15px;
-        transition: all 0.3s ease;
-    }
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin: 0 0 var(--spacing-xs) 0;
+        }
 
-    .form-control:focus {
-        border-color: #007bff;
-        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-    }
+        .card-description {
+            font-size: 14px;
+            color: var(--gray-600);
+            margin: 0;
+        }
 
-    .btn {
-        border-radius: 0.3rem;
-        padding: 10px 20px;
-        font-weight: 500;
-    }
-</style>
-<script>
-    function previewImage(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
+        .profile-card-content {
+            padding: var(--spacing-lg);
+        }
 
-            reader.onload = function(e) {
-                var preview = document.getElementById('profile-preview');
-                if (preview.tagName === 'IMG') {
-                    preview.src = e.target.result;
-                } else {
-                    // Replace placeholder with image
-                    var img = document.createElement('img');
-                    img.src = e.target.result;
-                    img.id = 'profile-preview';
-                    img.style.width = '100%';
-                    img.style.height = '100%';
-                    img.style.objectFit = 'cover';
-                    preview.parentNode.replaceChild(img, preview);
-                }
+        /* Form Styles */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-md);
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-xs);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .form-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--gray-700);
+        }
+
+        .form-control {
+            padding: var(--spacing-sm) var(--spacing-md);
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            background: var(--white);
+            transition: all 0.2s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-600);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-checkbox {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .checkbox-input {
+            width: 16px;
+            height: 16px;
+            border-radius: var(--radius-sm);
+        }
+
+        .checkbox-label {
+            font-size: 14px;
+            color: var(--gray-700);
+            cursor: pointer;
+        }
+
+        .help-text {
+            font-size: 12px;
+            color: var(--gray-600);
+            margin-top: var(--spacing-xs);
+        }
+
+        /* Button Styles */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            padding: var(--spacing-sm) var(--spacing-md);
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: var(--radius-md);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border: 1px solid;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: var(--primary-600);
+            border-color: var(--primary-600);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-700);
+            border-color: var(--primary-700);
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .btn-outline-primary {
+            background: transparent;
+            border-color: var(--primary-600);
+            color: var(--primary-600);
+        }
+
+        .btn-outline-primary:hover {
+            background: var(--primary-600);
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .btn-warning {
+            background: var(--orange-600);
+            border-color: var(--orange-600);
+            color: var(--white);
+        }
+
+        .btn-warning:hover {
+            background: #d97706;
+            border-color: #d97706;
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .btn-sm {
+            padding: var(--spacing-xs) var(--spacing-sm);
+            font-size: 12px;
+        }
+
+        .btn-block {
+            width: 100%;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: var(--spacing-lg);
+        }
+
+        /* Profile Picture Section */
+        .profile-picture-section {
+            text-align: center;
+        }
+
+        .profile-picture-container {
+            position: relative;
+            display: inline-block;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .profile-picture {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto;
+            border: 4px solid var(--gray-200);
+            position: relative;
+        }
+
+        .profile-picture img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .avatar-placeholder {
+            width: 100%;
+            height: 100%;
+            background: var(--primary-600);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            font-weight: 600;
+        }
+
+        .picture-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            border-radius: 50%;
+            color: var(--white);
+            font-size: 20px;
+        }
+
+        .profile-picture-container:hover .picture-overlay {
+            opacity: 1;
+        }
+
+        /* Stats List */
+        .stats-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-sm) 0;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .stat-item:last-child {
+            border-bottom: none;
+        }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-md);
+            background: var(--gray-100);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray-600);
+            flex-shrink: 0;
+        }
+
+        .stat-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-xs);
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--gray-600);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .stat-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gray-900);
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: 9999px;
+            font-size: 11px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .status-badge.status-success {
+            background: var(--green-100);
+            color: var(--green-800);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .profile-layout {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-lg);
             }
 
-            reader.readAsDataURL(input.files[0]);
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
         }
-    }
-</script>
+
+        @media (max-width: 640px) {
+
+            .profile-card-header,
+            .profile-card-content {
+                padding: var(--spacing-md);
+            }
+
+            .profile-picture {
+                width: 100px;
+                height: 100px;
+            }
+
+            .avatar-placeholder {
+                font-size: 28px;
+            }
+
+            .form-actions {
+                justify-content: stretch;
+            }
+
+            .form-actions .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+
+    <script>
+        function previewImage(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function(e) {
+                    var preview = document.getElementById('profile-preview');
+                    if (preview.tagName === 'IMG') {
+                        preview.src = e.target.result;
+                        preview.style.display = 'block';
+                        var fallback = document.getElementById('profile-preview-fallback');
+                        if (fallback) fallback.style.display = 'none';
+                    } else {
+                        // Replace placeholder with image
+                        var img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.id = 'profile-preview';
+                        img.style.width = '100%';
+                        img.style.height = '100%';
+                        img.style.objectFit = 'cover';
+                        preview.parentNode.replaceChild(img, preview);
+                    }
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+@endsection

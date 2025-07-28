@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Brand;
+use App\Models\CategoryAd;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Category extends Model
 {
@@ -53,5 +55,18 @@ class Category extends Model
     public function getRouteKeyName()
     {
         return 'slug'; // Use slug for route binding
+    }
+
+    public function topBrands()
+    {
+        return $this->belongsToMany(Brand::class, 'brand_category')
+            ->wherePivot('is_top_brand', true)
+            ->withPivot('priority')
+            ->orderBy('priority');
+    }
+
+    public function ads()
+    {
+        return $this->hasMany(CategoryAd::class);
     }
 }
