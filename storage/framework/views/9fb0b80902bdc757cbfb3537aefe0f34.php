@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Invoice - {{ $order->order_number }}</title>
+    <title>Invoice - <?php echo e($order->order_number); ?></title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -176,7 +176,7 @@
 <body>
     <div class="header">
         <div style="display: flex; align-items: center; justify-content: center; margin-bottom: 10px;">
-            <img src="{{ public_path('assets/imgs/template/logo_only.png') }}" alt="DjibMarket Logo"
+            <img src="<?php echo e(public_path('assets/imgs/template/logo_only.png')); ?>" alt="DjibMarket Logo"
                 style="height: 60px; margin-right: 15px;">
             <div>
                 <div class="company-name">DjibMarket</div>
@@ -191,38 +191,39 @@
             <div class="info-section">
                 <div class="info-title">Bill To:</div>
                 <div class="info-content">
-                    <strong>{{ $order->user->name }}</strong><br>
-                    {{ $order->user->email }}<br>
-                    @if ($order->user->phone)
-                        {{ $order->user->phone }}<br>
-                    @endif
+                    <strong><?php echo e($order->user->name); ?></strong><br>
+                    <?php echo e($order->user->email); ?><br>
+                    <?php if($order->user->phone): ?>
+                        <?php echo e($order->user->phone); ?><br>
+                    <?php endif; ?>
                 </div>
             </div>
 
-            @if ($order->shippingAddress)
+            <?php if($order->shippingAddress): ?>
                 <div class="info-section">
                     <div class="info-title">Ship To:</div>
                     <div class="info-content">
-                        <strong>{{ $order->shippingAddress->full_name }}</strong><br>
-                        {{ $order->shippingAddress->full_address }}<br>
-                        {{ $order->shippingAddress->phone }}
+                        <strong><?php echo e($order->shippingAddress->full_name); ?></strong><br>
+                        <?php echo e($order->shippingAddress->full_address); ?><br>
+                        <?php echo e($order->shippingAddress->phone); ?>
+
                     </div>
                 </div>
-            @endif
+            <?php endif; ?>
         </div>
 
         <div class="invoice-info-right">
             <div class="info-section">
                 <div class="info-title">Invoice Details:</div>
                 <div class="info-content">
-                    <strong>Invoice #:</strong> {{ $order->order_number }}<br>
-                    <strong>Order Date:</strong> {{ $order->created_at->format('M d, Y') }}<br>
+                    <strong>Invoice #:</strong> <?php echo e($order->order_number); ?><br>
+                    <strong>Order Date:</strong> <?php echo e($order->created_at->format('M d, Y')); ?><br>
                     <strong>Status:</strong>
                     <span style="margin-top: .5rem;"
-                        class="status-badge status-{{ $order->status }}">{{ $order->status_label }}</span><br>
-                    @if ($order->tracking_number)
-                        <strong>Tracking #:</strong> {{ $order->tracking_number }}<br>
-                    @endif
+                        class="status-badge status-<?php echo e($order->status); ?>"><?php echo e($order->status_label); ?></span><br>
+                    <?php if($order->tracking_number): ?>
+                        <strong>Tracking #:</strong> <?php echo e($order->tracking_number); ?><br>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
@@ -238,19 +239,19 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($order->orderItems as $item)
+            <?php $__currentLoopData = $order->orderItems; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <tr>
                     <td>
-                        <strong>{{ $item->product->title ?? 'Product no longer available' }}</strong>
-                        @if ($item->product && $item->product->category)
-                            <br><small style="color: #666;">Category: {{ $item->product->category->name }}</small>
-                        @endif
+                        <strong><?php echo e($item->product->title ?? 'Product no longer available'); ?></strong>
+                        <?php if($item->product && $item->product->category): ?>
+                            <br><small style="color: #666;">Category: <?php echo e($item->product->category->name); ?></small>
+                        <?php endif; ?>
                     </td>
-                    <td class="text-center">{{ $item->quantity }}</td>
-                    <td class="text-right">{{ number_format($item->price, 0) }} DJF</td>
-                    <td class="text-right">{{ number_format($item->price * $item->quantity, 0) }} DJF</td>
+                    <td class="text-center"><?php echo e($item->quantity); ?></td>
+                    <td class="text-right"><?php echo e(number_format($item->price, 0)); ?> DJF</td>
+                    <td class="text-right"><?php echo e(number_format($item->price * $item->quantity, 0)); ?> DJF</td>
                 </tr>
-            @endforeach
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </tbody>
     </table>
 
@@ -259,30 +260,31 @@
             <table class="totals-table">
                 <tr>
                     <td>Subtotal:</td>
-                    <td class="text-right">{{ number_format($order->total_price, 0) }} DJF</td>
+                    <td class="text-right"><?php echo e(number_format($order->total_price, 0)); ?> DJF</td>
                 </tr>
-                @if ($order->discount_amount > 0)
+                <?php if($order->discount_amount > 0): ?>
                     <tr>
                         <td>Discount:</td>
-                        <td class="text-right" style="color: #28a745;">-{{ number_format($order->discount_amount, 0) }}
+                        <td class="text-right" style="color: #28a745;">-<?php echo e(number_format($order->discount_amount, 0)); ?>
+
                             DJF</td>
                     </tr>
-                @endif
-                @if ($order->shipping_cost > 0)
+                <?php endif; ?>
+                <?php if($order->shipping_cost > 0): ?>
                     <tr>
                         <td>Shipping:</td>
-                        <td class="text-right">{{ number_format($order->shipping_cost, 0) }} DJF</td>
+                        <td class="text-right"><?php echo e(number_format($order->shipping_cost, 0)); ?> DJF</td>
                     </tr>
-                @endif
-                @if ($order->tax_amount > 0)
+                <?php endif; ?>
+                <?php if($order->tax_amount > 0): ?>
                     <tr>
                         <td>Tax:</td>
-                        <td class="text-right">{{ number_format($order->tax_amount, 0) }} DJF</td>
+                        <td class="text-right"><?php echo e(number_format($order->tax_amount, 0)); ?> DJF</td>
                     </tr>
-                @endif
+                <?php endif; ?>
                 <tr class="total-row">
                     <td><strong>Total:</strong></td>
-                    <td class="text-right"><strong>{{ number_format($order->final_price, 0) }} DJF</strong></td>
+                    <td class="text-right"><strong><?php echo e(number_format($order->final_price, 0)); ?> DJF</strong></td>
                 </tr>
             </table>
         </div>
@@ -296,3 +298,4 @@
 </body>
 
 </html>
+<?php /**PATH C:\laragon\www\djibmarket\resources\views/buyer/dashboard/invoice.blade.php ENDPATH**/ ?>

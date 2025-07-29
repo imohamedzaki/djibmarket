@@ -284,16 +284,23 @@
         }
 
         .btn-primary {
-            background: var(--primary-color);
-            border-color: var(--primary-color);
-            color: white;
+            background: #007bff !important;
+            border-color: #007bff !important;
+            color: white !important;
         }
 
         .btn-primary:hover {
-            background: var(--primary-dark);
-            border-color: var(--primary-dark);
-            color: white;
+            background: #0056b3 !important;
+            border-color: #0056b3 !important;
+            color: white !important;
             text-decoration: none;
+        }
+
+        .btn-primary:focus {
+            background: #0056b3 !important;
+            border-color: #0056b3 !important;
+            color: white !important;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
         }
 
         .btn-outline-primary {
@@ -369,8 +376,8 @@
         }
 
         .wishlist-card {
-            background: var(--white-color);
-            border: 1px solid var(--border-color);
+            background: var(--white);
+            border: 1px solid var(--gray-200);
             border-radius: var(--radius-lg);
             overflow: hidden;
             transition: all 0.2s ease;
@@ -635,8 +642,8 @@
 
         /* Empty State */
         .empty-state-card {
-            background: var(--white-color);
-            border: 1px solid var(--border-color);
+            background: var(--white);
+            border: 1px solid var(--gray-200);
             border-radius: var(--radius-lg);
             box-shadow: var(--shadow-sm);
         }

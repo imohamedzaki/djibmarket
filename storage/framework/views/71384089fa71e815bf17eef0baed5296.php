@@ -441,12 +441,15 @@
         .status-badge {
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 0.375rem;
-            padding: 0.375rem 0.75rem;
+            padding: 0.5rem 1rem;
             border-radius: 9999px;
             font-size: 0.75rem;
             font-weight: 500;
             text-transform: capitalize;
+            min-width: 80px;
+            white-space: nowrap;
         }
 
         .status-dot {
