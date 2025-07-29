@@ -1,4 +1,11 @@
 <?php $__env->startSection('title', 'Checkout'); ?>
+<?php $__env->startSection('css'); ?>
+    <style>
+        .buyer-breadcrumb-section {
+            margin-bottom: 1rem !important;
+        }
+    </style>
+<?php $__env->stopSection(); ?>
 
 <!-- Leaflet CSS and JS for map functionality -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -7,17 +14,33 @@
 <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
 
 <?php $__env->startSection('content'); ?>
-    <div class="section-box">
-        <div class="breadcrumbs-div">
-            <div class="container">
-                <ul class="breadcrumb">
-                    <li><a class="font-xs color-gray-1000" href="<?php echo e(route('buyer.home')); ?>">Home</a></li>
-                    <li><a class="font-xs color-gray-500" href="#">Shop</a></li>
-                    <li><a class="font-xs color-gray-500" href="#">Checkout</a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
+    <!-- Breadcrumb -->
+    <?php if (isset($component)) { $__componentOriginal8f244c6f5098027f3325f8df162e270b = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal8f244c6f5098027f3325f8df162e270b = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.buyer.breadcrumb','data' => ['items' => [
+        ['text' => 'Home', 'url' => route('buyer.home')],
+        ['text' => 'Checkout', 'url' => route('checkout.index')],
+    ]]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('buyer.breadcrumb'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['items' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute([
+        ['text' => 'Home', 'url' => route('buyer.home')],
+        ['text' => 'Checkout', 'url' => route('checkout.index')],
+    ])]); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal8f244c6f5098027f3325f8df162e270b)): ?>
+<?php $attributes = $__attributesOriginal8f244c6f5098027f3325f8df162e270b; ?>
+<?php unset($__attributesOriginal8f244c6f5098027f3325f8df162e270b); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal8f244c6f5098027f3325f8df162e270b)): ?>
+<?php $component = $__componentOriginal8f244c6f5098027f3325f8df162e270b; ?>
+<?php unset($__componentOriginal8f244c6f5098027f3325f8df162e270b); ?>
+<?php endif; ?>
 
     <section class="section-box shop-template">
         <div class="container">
