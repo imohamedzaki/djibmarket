@@ -8,7 +8,7 @@
     <meta name="description"
         content="DjibMarket - Your premier online marketplace for buying and selling products in Djibouti">
     <!-- Fav Icon  -->
-    <link rel="shortcut icon" href="{{ asset('images') }}/favicon.png">
+    <link rel="shortcut icon" href="{{ asset('images') }}/favicon.png" sizes="32x26">
     <!-- Page Title  -->
     <title>DjibMarket</title>
     <!-- StyleSheets  -->

@@ -8,116 +8,116 @@
     <meta name="description"
         content="DjibMarket - Your premier online marketplace for buying and selling products in Djibouti">
     <!-- Fav Icon  -->
-    <link rel="shortcut icon" href="{{ asset('assets/imgs/template') }}/favicon.png">
+    <link rel="shortcut icon" href="{{ asset('assets/imgs/template') }}/favicon.png" sizes="32x26">
     <!-- Page Title  -->
     <title>DjibMarket</title>
     <!-- StyleSheets  -->
     <link rel="stylesheet" href="{{ asset('assets/shared') }}/css/dashlite.css?ver=3.2.2">
 
     <style>
-        body {
-            background: linear-gradient(90deg, #e3fff7 0%, #d9e7ff 100%) !important;
-        }
+    body {
+        background: linear-gradient(90deg, #e3fff7 0%, #d9e7ff 100%) !important;
+    }
 
-        .card {
-            background: rgba(255, 255, 255, 0.85) !important;
-            backdrop-filter: blur(10px) !important;
-            border: none !important;
-            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.05) !important;
-            border-radius: 12px !important;
-            transition: transform 0.3s ease, box-shadow 0.3s ease !important;
-        }
+    .card {
+        background: rgba(255, 255, 255, 0.85) !important;
+        backdrop-filter: blur(10px) !important;
+        border: none !important;
+        box-shadow: 0 15px 25px rgba(0, 0, 0, 0.05) !important;
+        border-radius: 12px !important;
+        transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+    }
 
-        .card:hover {
-            transform: translateY(-5px) !important;
-            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.08) !important;
-        }
+    .card:hover {
+        transform: translateY(-5px) !important;
+        box-shadow: 0 20px 30px rgba(0, 0, 0, 0.08) !important;
+    }
 
-        .card-inner {
-            border-radius: 0 0 12px 12px !important;
-        }
+    .card-inner {
+        border-radius: 0 0 12px 12px !important;
+    }
 
-        .custom_guard {
-            position: relative;
-            background: linear-gradient(45deg, #61e4bc 0%, #7cbeff 100%) !important;
-            color: #ffffff !important;
-            padding: .6rem !important;
-            text-align: center;
-            font-weight: bold;
-            text-transform: uppercase;
-            margin: 0;
-            border-bottom: none !important;
-            border-radius: 12px 12px 0 0 !important;
-            box-shadow: 0 3px 10px rgba(100, 200, 255, 0.2) !important;
-        }
+    .custom_guard {
+        position: relative;
+        background: linear-gradient(45deg, #61e4bc 0%, #7cbeff 100%) !important;
+        color: #ffffff !important;
+        padding: .6rem !important;
+        text-align: center;
+        font-weight: bold;
+        text-transform: uppercase;
+        margin: 0;
+        border-bottom: none !important;
+        border-radius: 12px 12px 0 0 !important;
+        box-shadow: 0 3px 10px rgba(100, 200, 255, 0.2) !important;
+    }
 
-        .custom_guard::before {
-            display: block;
-            content: '';
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='100%25' width='100%25'%3E%3Cdefs%3E%3Cpattern id='doodad' width='30' height='30' viewBox='0 0 40 40' patternUnits='userSpaceOnUse' patternTransform='rotate(135)'%3E%3Crect width='100%25' height='100%25' fill='rgba(65, 153, 225,0)'/%3E%3Ccircle cx='-15' cy='15' r='1' fill='rgba(255, 255, 255,0.6)'/%3E%3Ccircle cx='-5' cy='25' r='1' fill='rgba(255, 255, 255,0.6)'/%3E%3Ccircle cx='5' cy='15' r='1' fill='rgba(255, 255, 255,0.6)'/%3E%3Ccircle cx='25' cy='15' r='1' fill='rgba(255, 255, 255,0.6)'/%3E%3Ccircle cx='15' cy='25' r='1' fill='rgba(255, 255, 255,0.6)'/%3E%3Ccircle cx='35' cy='25' r='1' fill='rgba(255, 255, 255,0.6)'/%3E%3Ccircle cx='15' cy='15' r='1' fill='rgba(255, 255, 255,1)'/%3E%3Ccircle cx='35' cy='15' r='1' fill='rgba(255, 255, 255,1)'/%3E%3Ccircle cx='5' cy='25' r='1' fill='rgba(255, 255, 255,1)'/%3E%3Ccircle cx='25' cy='25' r='1' fill='rgba(255, 255, 255,1)'/%3E%3C/pattern%3E%3C/defs%3E%3Crect fill='url(%23doodad)' height='200%25' width='200%25'/%3E%3C/svg%3E ");
-            background-size: cover;
-            opacity: .3;
-            border-radius: 12px 12px 0 0 !important;
-        }
+    .custom_guard::before {
+        display: block;
+        content: '';
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='100%25' width='100%25'%3E%3Cdefs%3E%3Cpattern id='doodad' width='30' height='30' viewBox='0 0 40 40' patternUnits='userSpaceOnUse' patternTransform='rotate(135)'%3E%3Crect width='100%25' height='100%25' fill='rgba(65, 153, 225,0)'/%3E%3Ccircle cx='-15' cy='15' r='1' fill='rgba(255, 255, 255,0.6)'/%3E%3Ccircle cx='-5' cy='25' r='1' fill='rgba(255, 255, 255,0.6)'/%3E%3Ccircle cx='5' cy='15' r='1' fill='rgba(255, 255, 255,0.6)'/%3E%3Ccircle cx='25' cy='15' r='1' fill='rgba(255, 255, 255,0.6)'/%3E%3Ccircle cx='15' cy='25' r='1' fill='rgba(255, 255, 255,0.6)'/%3E%3Ccircle cx='35' cy='25' r='1' fill='rgba(255, 255, 255,0.6)'/%3E%3Ccircle cx='15' cy='15' r='1' fill='rgba(255, 255, 255,1)'/%3E%3Ccircle cx='35' cy='15' r='1' fill='rgba(255, 255, 255,1)'/%3E%3Ccircle cx='5' cy='25' r='1' fill='rgba(255, 255, 255,1)'/%3E%3Ccircle cx='25' cy='25' r='1' fill='rgba(255, 255, 255,1)'/%3E%3C/pattern%3E%3C/defs%3E%3Crect fill='url(%23doodad)' height='200%25' width='200%25'/%3E%3C/svg%3E ");
+        background-size: cover;
+        opacity: .3;
+        border-radius: 12px 12px 0 0 !important;
+    }
 
-        .custom_guard span {
-            position: relative;
-            letter-spacing: 5px;
-        }
+    .custom_guard span {
+        position: relative;
+        letter-spacing: 5px;
+    }
 
-        .btn-primary {
-            background: linear-gradient(45deg, #4ad4a5 0%, #56a8ff 100%) !important;
-            border: none !important;
-            box-shadow: 0 5px 15px rgba(86, 168, 255, 0.3) !important;
-        }
+    .btn-primary {
+        background: linear-gradient(45deg, #4ad4a5 0%, #56a8ff 100%) !important;
+        border: none !important;
+        box-shadow: 0 5px 15px rgba(86, 168, 255, 0.3) !important;
+    }
 
-        .btn-primary:hover {
-            box-shadow: 0 8px 20px rgba(86, 168, 255, 0.5) !important;
-        }
+    .btn-primary:hover {
+        box-shadow: 0 8px 20px rgba(86, 168, 255, 0.5) !important;
+    }
 
-        .form-control {
-            background-color: rgba(255, 255, 255, 0.8) !important;
-            border: 1px solid rgba(94, 116, 143, 0.3) !important;
-        }
+    .form-control {
+        background-color: rgba(255, 255, 255, 0.8) !important;
+        border: 1px solid rgba(94, 116, 143, 0.3) !important;
+    }
 
-        .form-control:focus {
-            border-color: rgba(86, 168, 255, 0.5) !important;
-            box-shadow: 0 0 0 3px rgba(86, 168, 255, 0.1) !important;
-        }
+    .form-control:focus {
+        border-color: rgba(86, 168, 255, 0.5) !important;
+        box-shadow: 0 0 0 3px rgba(86, 168, 255, 0.1) !important;
+    }
 
-        a {
-            color: #4BB8D5 !important;
-            transition: color 0.3s ease !important;
-        }
+    a {
+        color: #4BB8D5 !important;
+        transition: color 0.3s ease !important;
+    }
 
-        a:hover {
-            color: #56a8ff !important;
-        }
+    a:hover {
+        color: #56a8ff !important;
+    }
 
-        .nk-footer {
-            background: rgba(255, 255, 255, 0.6) !important;
-            backdrop-filter: blur(5px) !important;
-            margin-top: 30px;
-            border-top: 1px solid rgba(94, 116, 143, 0.3) !important;
-        }
+    .nk-footer {
+        background: rgba(255, 255, 255, 0.6) !important;
+        backdrop-filter: blur(5px) !important;
+        margin-top: 30px;
+        border-top: 1px solid rgba(94, 116, 143, 0.3) !important;
+    }
 
-        .nav-link {
-            color: #5C93B1 !important;
-            transition: color 0.3s ease !important;
-        }
+    .nav-link {
+        color: #5C93B1 !important;
+        transition: color 0.3s ease !important;
+    }
 
-        .nav-link:hover {
-            color: #56a8ff !important;
-        }
+    .nav-link:hover {
+        color: #56a8ff !important;
+    }
 
-        .text-soft {
-            color: #71A6D1 !important;
-        }
+    .text-soft {
+        color: #71A6D1 !important;
+    }
     </style>
 </head>
 
@@ -178,8 +178,8 @@
                                                 <em class="passcode-icon icon-show icon ni ni-eye"></em>
                                                 <em class="passcode-icon icon-hide icon ni ni-eye-off"></em>
                                             </a>
-                                            <input type="password" class="form-control form-control-lg"
-                                                id="password" placeholder="Enter your passcode" name="password">
+                                            <input type="password" class="form-control form-control-lg" id="password"
+                                                placeholder="Enter your passcode" name="password">
                                         </div>
                                         <x-input-error :messages="$errors->get('password')" class="mt-2" />
                                     </div>
@@ -284,19 +284,19 @@
     <script src="{{ asset('assets/shared') }}/js/bundle.js?ver=3.2.2"></script>
     <script src="{{ asset('assets/shared') }}/js/scripts.js?ver=3.2.2"></script>
     <script>
-        // Disable submit button on form submit
-        $('form').on('submit', function(e) {
-            var submitButton = $('.submitButton');
+    // Disable submit button on form submit
+    $('form').on('submit', function(e) {
+        var submitButton = $('.submitButton');
 
-            // Disable the button
-            submitButton.prop('disabled', true);
+        // Disable the button
+        submitButton.prop('disabled', true);
 
-            // Change the button text
-            // submitButton.find('.button-text').text('Submitting...');
+        // Change the button text
+        // submitButton.find('.button-text').text('Submitting...');
 
-            // Show the loading spinner
-            $('.loadingSpinner').removeClass('d-none');
-        });
+        // Show the loading spinner
+        $('.loadingSpinner').removeClass('d-none');
+    });
     </script>
 
     <!-- select region modal -->

@@ -90,10 +90,10 @@
             box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
         }
 
-        .brand-logo svg {
-            width: 24px;
-            height: 24px;
-            color: white;
+        .brand-logo img {
+            width: 32px;
+            mix-blend-mode: screen;
+            filter: brightness(0) invert(1);
         }
 
         .page-title {
@@ -501,9 +501,7 @@
 
             <div class="brand-section">
                 <div class="brand-logo">
-                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 2L2 7V10C2 16 6 20.5 12 22C18 20.5 22 16 22 10V7L12 2Z" fill="currentColor" />
-                    </svg>
+                    <img src="<?php echo e(asset('assets/imgs/template/logo_only.png')); ?>" alt="DjibMarket Logo">
                 </div>
                 <h1 class="page-title">Welcome back</h1>
                 <p class="page-subtitle">Sign in to your seller account</p>

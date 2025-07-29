@@ -8,7 +8,7 @@
     <meta name="description"
         content="DjibMarket - Your premier online marketplace for buying and selling products in Djibouti">
     <!-- Fav Icon  -->
-    <link rel="shortcut icon" href="{{ asset('assets/imgs/template') }}/favicon.png">
+    <link rel="shortcut icon" href="{{ asset('assets/imgs/template') }}/favicon.png" sizes="32x26">
     <!-- Page Title  -->
     <title>DjibMarket - Admin Login</title>
     <!-- StyleSheets  -->
@@ -552,10 +552,6 @@
                 </button>
             </form>
 
-            <div class="signup-section">
-                <span class="signup-text">Need admin access?</span>
-                <a href="{{ route('admin.register') }}" class="signup-link">Request account</a>
-            </div>
         </div>
 
         <!-- Right Side - Image Section -->
@@ -573,7 +569,8 @@
             <div class="image-content">
                 <div class="admin-badge">Admin Portal</div>
                 <h2 class="hero-title">Manage DjibMarket</h2>
-                <p class="hero-subtitle">Access powerful admin tools to manage users, products, orders, and system settings with complete control</p>
+                <p class="hero-subtitle">Access powerful admin tools to manage users, products, orders, and system
+                    settings with complete control</p>
             </div>
         </div>
     </div>
