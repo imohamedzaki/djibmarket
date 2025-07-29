@@ -407,7 +407,8 @@ class DashboardController extends Controller
     public function tracking()
     {
         $orders = Auth::user()->orders()
-            ->whereNotNull('tracking_number')
+            ->where('status', '!=', 'delivered')
+            // ->whereNotNull('tracking_number')
             ->with(['orderItems.product'])
             ->latest()
             ->paginate(10);

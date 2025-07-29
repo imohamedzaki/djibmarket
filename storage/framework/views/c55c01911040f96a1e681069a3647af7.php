@@ -73,6 +73,7 @@
         .dashboard-wrapper {
             display: flex;
             min-height: 100vh;
+            border-bottom: 1px solid var(--gray-200);
         }
 
         /* Sidebar */
@@ -185,8 +186,9 @@
         }
 
         .sidebar-menu a i {
-            width: 20px;
-            font-size: 16px;
+            width: 24px;
+            font-size: 20px;
+            font-weight: bold;
             flex-shrink: 0;
             text-align: center;
         }
@@ -465,63 +467,63 @@
                     <li>
                         <a href="<?php echo e(route('buyer.dashboard.index')); ?>"
                             class="<?php echo e(request()->routeIs('buyer.dashboard.index') ? 'active' : ''); ?>">
-                            <i class="fas fa-layout-dashboard"></i>
+                            <i class="ti ti-dashboard"></i>
                             <span>Dashboard</span>
                         </a>
                     </li>
                     <li>
                         <a href="<?php echo e(route('buyer.dashboard.profile')); ?>"
                             class="<?php echo e(request()->routeIs('buyer.dashboard.profile') ? 'active' : ''); ?>">
-                            <i class="fas fa-user"></i>
+                            <i class="ti ti-user"></i>
                             <span>My Profile</span>
                         </a>
                     </li>
                     <li>
                         <a href="<?php echo e(route('buyer.dashboard.orders')); ?>"
                             class="<?php echo e(request()->routeIs('buyer.dashboard.orders*') ? 'active' : ''); ?>">
-                            <i class="fas fa-package"></i>
+                            <i class="ti ti-package"></i>
                             <span>My Orders</span>
                         </a>
                     </li>
                     <li>
                         <a href="<?php echo e(route('buyer.dashboard.addresses')); ?>"
                             class="<?php echo e(request()->routeIs('buyer.dashboard.addresses') ? 'active' : ''); ?>">
-                            <i class="fas fa-map-pin"></i>
+                            <i class="ti ti-map-pin"></i>
                             <span>Addresses</span>
                         </a>
                     </li>
                     <li>
                         <a href="<?php echo e(route('buyer.dashboard.wishlist')); ?>"
                             class="<?php echo e(request()->routeIs('buyer.dashboard.wishlist') ? 'active' : ''); ?>">
-                            <i class="fas fa-heart"></i>
+                            <i class="ti ti-heart"></i>
                             <span>Wishlist</span>
                         </a>
                     </li>
                     <li>
                         <a href="<?php echo e(route('buyer.dashboard.tracking')); ?>"
                             class="<?php echo e(request()->routeIs('buyer.dashboard.tracking') ? 'active' : ''); ?>">
-                            <i class="fas fa-truck"></i>
+                            <i class="ti ti-truck"></i>
                             <span>Order Tracking</span>
                         </a>
                     </li>
                     <li>
                         <a href="<?php echo e(route('buyer.dashboard.return-requests')); ?>"
                             class="<?php echo e(request()->routeIs('buyer.dashboard.return-requests') ? 'active' : ''); ?>">
-                            <i class="fas fa-rotate-left"></i>
+                            <i class="ti ti-rotate-clockwise-2"></i>
                             <span>Return Requests</span>
                         </a>
                     </li>
                     <li>
                         <a href="<?php echo e(route('buyer.dashboard.browsing-history')); ?>"
                             class="<?php echo e(request()->routeIs('buyer.dashboard.browsing-history') ? 'active' : ''); ?>">
-                            <i class="fas fa-history"></i>
+                            <i class="ti ti-history"></i>
                             <span>Browsing History</span>
                         </a>
                     </li>
                     <li>
                         <a href="<?php echo e(route('buyer.dashboard.cart')); ?>"
                             class="<?php echo e(request()->routeIs('buyer.dashboard.cart') ? 'active' : ''); ?>">
-                            <i class="fas fa-shopping-cart"></i>
+                            <i class="ti ti-shopping-cart"></i>
                             <span>My Cart</span>
                         </a>
                     </li>
@@ -533,14 +535,14 @@
                 <div class="dashboard-content-inner">
                     <?php if(session('success')): ?>
                         <div class="alert alert-success">
-                            <i class="fas fa-check-circle alert-icon"></i>
+                            <i class="ti ti-check alert-icon"></i>
                             <div><?php echo e(session('success')); ?></div>
                         </div>
                     <?php endif; ?>
 
                     <?php if($errors->any()): ?>
                         <div class="alert alert-danger">
-                            <i class="fas fa-exclamation-circle alert-icon"></i>
+                            <i class="ti ti-alert-circle alert-icon"></i>
                             <div>
                                 <ul style="margin: 0; padding-left: 16px;">
                                     <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
