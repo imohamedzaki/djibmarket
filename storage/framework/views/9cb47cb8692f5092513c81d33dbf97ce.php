@@ -157,9 +157,9 @@
                     </div>
 
                     <div class="summary-actions">
-                        <a href="<?php echo e(route('checkout.index')); ?>" class="btn btn-primary btn-lg btn-block">
+                        <a id="checkout-btn" href="<?php echo e(route('checkout.index')); ?>" class="btn btn-primary btn-lg btn-block" onclick="handleCheckoutClick(event, this)">
                             <i class="fas fa-credit-card me-2"></i>
-                            Proceed to Checkout
+                            <span class="btn-text">Proceed to Checkout</span>
                         </a>
                         <button type="button" class="btn btn-outline-secondary btn-block" onclick="saveForLater()">
                             <i class="fas fa-heart me-2"></i>
@@ -1172,6 +1172,44 @@
                 toast.style.transform = 'translateX(100%)';
                 setTimeout(() => toast.remove(), 300);
             }, 3000);
+        }
+
+        function handleCheckoutClick(event, button) {
+            // Prevent default action temporarily
+            event.preventDefault();
+            
+            // Add loading state
+            const icon = button.querySelector('i');
+            const textSpan = button.querySelector('.btn-text');
+            
+            // Store original content
+            const originalIcon = icon.outerHTML;
+            const originalText = textSpan.textContent;
+            
+            // Change to loading state
+            icon.className = 'ti ti-loader-2 me-2';
+            icon.style.animation = 'spin 1s linear infinite';
+            textSpan.textContent = 'Processing your request...';
+            button.style.pointerEvents = 'none';
+            button.style.opacity = '0.8';
+            
+            // Add spinner animation CSS if not exists
+            if (!document.querySelector('#spinner-style')) {
+                const style = document.createElement('style');
+                style.id = 'spinner-style';
+                style.textContent = `
+                    @keyframes spin {
+                        from { transform: rotate(0deg); }
+                        to { transform: rotate(360deg); }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+            
+            // Simulate processing delay (1.5 seconds) then redirect
+            setTimeout(() => {
+                window.location.href = button.href;
+            }, 1500);
         }
 
         function showCustomDialog(options) {
