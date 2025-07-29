@@ -1,11 +1,4 @@
 <?php $__env->startSection('title', 'Checkout'); ?>
-<?php $__env->startSection('css'); ?>
-    <style>
-        .buyer-breadcrumb-section {
-            margin-bottom: 1rem !important;
-        }
-    </style>
-<?php $__env->stopSection(); ?>
 
 <!-- Leaflet CSS and JS for map functionality -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -42,147 +35,162 @@
 <?php unset($__componentOriginal8f244c6f5098027f3325f8df162e270b); ?>
 <?php endif; ?>
 
-    <section class="section-box shop-template">
-        <div class="container">
+    <div class="checkout-container">
+        <div class="checkout-wrapper">
+            <!-- Checkout Header -->
+            <div class="checkout-header">
+                <div class="checkout-header-content">
+                    <div>
+                        <h1>Checkout</h1>
+                        <p>Complete your order and get your items delivered.</p>
+                    </div>
+                    <div class="checkout-stats">
+                        <?php if($cartItems && count($cartItems) > 0): ?>
+                            <span class="item-count"><?php echo e(count($cartItems)); ?>
+
+                                <?php echo e(Str::plural('item', count($cartItems))); ?></span>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
+
             <form action="<?php echo e(route('checkout.store')); ?>" method="POST" id="checkout-form">
                 <?php echo csrf_field(); ?>
 
                 <?php if($errors->any()): ?>
-                    <div class="alert alert-danger mb-4">
-                        <h6>Please fix the following errors:</h6>
-                        <ul class="mb-0">
-                            <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <li><?php echo e($error); ?></li>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                        </ul>
+                    <div class="alert alert-danger">
+                        <i class="ti ti-alert-circle alert-icon"></i>
+                        <div>
+                            <h6>Please fix the following errors:</h6>
+                            <ul style="margin: 0; padding-left: 16px;">
+                                <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <li><?php echo e($error); ?></li>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </ul>
+                        </div>
                     </div>
                 <?php endif; ?>
 
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="box-border">
-                            <div class="row">
-                                <div class="col-lg-6 col-sm-6 mb-20">
-                                    <h5 class="font-md-bold color-brand-3 text-sm-start text-center">Contact information
-                                    </h5>
-                                </div>
-                                <div class="col-lg-6 col-sm-6 mb-20 text-sm-end text-center">
-                                    <!-- Always show authenticated user's email -->
-                                </div>
-                                <div class="col-lg-12">
-                                    <div class="form-group">
-                                        <?php if(auth()->guard()->check()): ?>
-                                            <!-- For authenticated users, show email as readonly -->
-                                            <input class="form-control font-sm" type="email" name="email"
-                                                value="<?php echo e(Auth::user()->email); ?>" readonly
-                                                style="background-color: #f8f9fa; cursor: not-allowed;">
-                                            <small class="text-muted mt-1 d-block">
-                                                <i class="fas fa-info-circle me-1"></i>
-                                                Using your account email. To change this, please update your profile.
-                                            </small>
-                                        <?php else: ?>
-                                            <!-- For guest users, allow email input -->
-                                            <input class="form-control font-sm <?php $__errorArgs = ['email'];
+                <div class="checkout-layout">
+                    <!-- Main Checkout Content -->
+                    <div class="checkout-main-section">
+                        <!-- Contact Information Card -->
+                        <div class="checkout-card">
+                            <div class="card-header">
+                                <h3 class="section-title">
+                                    <i class="ti ti-mail me-2"></i>
+                                    Contact Information
+                                </h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <?php if(auth()->guard()->check()): ?>
+                                        <label class="form-label">Email Address</label>
+                                        <input class="form-control" type="email" name="email"
+                                            value="<?php echo e(Auth::user()->email); ?>" readonly>
+                                        <small class="form-text">
+                                            <i class="ti ti-info-circle me-1"></i>
+                                            Using your account email. To change this, please update your profile.
+                                        </small>
+                                    <?php else: ?>
+                                        <label class="form-label">Email Address *</label>
+                                        <input class="form-control <?php $__errorArgs = ['email'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
-unset($__errorArgs, $__bag); ?>"
-                                                type="email" name="email" value="<?php echo e(old('email')); ?>" placeholder="Email*"
-                                                required>
-                                            <?php $__errorArgs = ['email'];
+unset($__errorArgs, $__bag); ?>" type="email"
+                                            name="email" value="<?php echo e(old('email')); ?>" placeholder="Enter your email address"
+                                            required>
+                                        <?php $__errorArgs = ['email'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                                                <div class="invalid-feedback"><?php echo e($message); ?></div>
-                                            <?php unset($message);
+                                            <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                        <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
-                                        <?php endif; ?>
-                                    </div>
+                                    <?php endif; ?>
                                 </div>
-                                <div class="col-lg-12">
-                                    <div class="form-group">
-                                        <label class="font-sm color-brand-3" for="checkboxOffers">
-                                            <input class="checkboxOffer" id="checkboxOffers" type="checkbox"
-                                                name="newsletter">
-                                            Keep me up to date on news and exclusive offers
-                                        </label>
-                                    </div>
+                                <div class="form-group">
+                                    <label class="form-checkbox">
+                                        <input type="checkbox" name="newsletter" id="newsletter">
+                                        <span class="checkmark"></span>
+                                        Keep me up to date on news and exclusive offers
+                                    </label>
                                 </div>
+                            </div>
+                        </div>
 
-                                <!-- Shipping Address Selection -->
+                        <!-- Shipping Address Card -->
+                        <div class="checkout-card">
+                            <div class="card-header">
+                                <h3 class="section-title">
+                                    <i class="ti ti-truck me-2"></i>
+                                    Shipping Address
+                                </h3>
+                            </div>
+                            <div class="card-body">
                                 <?php if(Auth::check() && $addresses->count() > 0): ?>
-                                    <div class="col-lg-12">
-                                        <h5 class="font-md-bold color-brand-3 mt-15 mb-20">Select Shipping Address</h5>
-                                        <div class="address-selection mb-20">
-                                            <?php $__currentLoopData = $addresses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $address): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                <div class="address-option">
-                                                    <label class="address-radio-label">
-                                                        <input type="radio" name="shipping_address_id"
-                                                            value="<?php echo e($address->id); ?>"
-                                                            <?php echo e(($defaultAddress && $defaultAddress->id == $address->id) || $loop->first ? 'checked' : ''); ?>
+                                    <div class="address-selection">
+                                        <?php $__currentLoopData = $addresses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $address): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                            <div class="address-option">
+                                                <label class="address-radio-label">
+                                                    <input type="radio" name="shipping_address_id"
+                                                        value="<?php echo e($address->id); ?>"
+                                                        <?php echo e(($defaultAddress && $defaultAddress->id == $address->id) || $loop->first ? 'checked' : ''); ?>
 
-                                                            onchange="toggleAddressForm()">
-                                                        <div class="address-card-mini">
-                                                            <div class="address-header">
+                                                        onchange="toggleAddressForm()">
+                                                    <div class="address-card">
+                                                        <div class="address-header">
+                                                            <div class="address-title">
                                                                 <strong><?php echo e($address->title); ?></strong>
                                                                 <?php if($address->is_default): ?>
                                                                     <span class="badge badge-primary">Default</span>
                                                                 <?php endif; ?>
                                                             </div>
-                                                            <div class="address-details">
-                                                                <?php echo e($address->full_name); ?><br>
-                                                                <?php echo e($address->full_address); ?><br>
-                                                                <?php echo e($address->phone); ?>
-
-                                                                <?php if($address->hasCoordinates()): ?>
-                                                                    <br><small class="text-muted">
-                                                                        <i class="fas fa-map-pin me-1"></i>
-                                                                        <?php echo e($address->coordinates); ?>
-
-                                                                    </small>
-                                                                <?php endif; ?>
-                                                            </div>
-                                                        </div>
-                                                    </label>
-                                                </div>
-                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-
-                                            <!-- Option to use new address -->
-                                            <div class="address-option">
-                                                <label class="address-radio-label" style="cursor: pointer;">
-                                                    <input type="radio" name="shipping_address_id" value=""
-                                                        onchange="openNewAddressModal()" style="display: none;">
-                                                    <div class="address-card-mini new-address"
-                                                        onclick="openNewAddressModal()">
-                                                        <div class="address-header">
-                                                            <strong><i class="fas fa-plus-circle me-2"></i>Use New
-                                                                Address</strong>
                                                         </div>
                                                         <div class="address-details">
-                                                            Click here to create a new shipping address with map selection
+                                                            <div class="address-name"><?php echo e($address->full_name); ?></div>
+                                                            <div class="address-info"><?php echo e($address->full_address); ?></div>
+                                                            <div class="address-phone"><?php echo e($address->phone); ?></div>
+                                                            <?php if($address->hasCoordinates()): ?>
+                                                                <div class="address-coords">
+                                                                    <i class="ti ti-map-pin me-1"></i>
+                                                                    <?php echo e($address->coordinates); ?>
+
+                                                                </div>
+                                                            <?php endif; ?>
                                                         </div>
                                                     </div>
                                                 </label>
                                             </div>
-                                        </div>
-                                    </div>
-                                <?php endif; ?>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
-                                <div class="col-lg-12" id="address-form"
-                                    style="<?php echo e(Auth::check() && $addresses->count() > 0 ? 'display: none;' : ''); ?>">
-                                    <h5 class="font-md-bold color-brand-3 mt-15 mb-20">Shipping address</h5>
-                                </div>
-                                <div class="address-form-fields" id="address-form-fields"
-                                    style="<?php echo e(Auth::check() && $addresses->count() > 0 ? 'display: none;' : ''); ?>">
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <input class="form-control font-sm <?php $__errorArgs = ['first_name'];
+                                        <!-- Add New Address Option -->
+                                        <div class="address-option">
+                                            <div class="address-card new-address-card" onclick="openNewAddressModal()">
+                                                <div class="new-address-content">
+                                                    <i class="ti ti-plus-circle me-2"></i>
+                                                    <div>
+                                                        <strong>Use New Address</strong>
+                                                        <p>Add a new shipping address with map selection</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php else: ?>
+                                    <!-- Manual Address Form -->
+                                    <div class="address-form" id="address-form">
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label class="form-label">First Name *</label>
+                                                <input class="form-control <?php $__errorArgs = ['first_name'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -190,24 +198,23 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>"
-                                                type="text" name="first_name"
-                                                value="<?php echo e(old('first_name', Auth::user()->name ?? '')); ?>"
-                                                placeholder="First name*" required data-required="true">
-                                            <?php $__errorArgs = ['first_name'];
+                                                    type="text" name="first_name"
+                                                    value="<?php echo e(old('first_name', Auth::user()->name ?? '')); ?>"
+                                                    placeholder="Enter your first name" required>
+                                                <?php $__errorArgs = ['first_name'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                                                <div class="invalid-feedback"><?php echo e($message); ?></div>
-                                            <?php unset($message);
+                                                    <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                                <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <input class="form-control font-sm <?php $__errorArgs = ['last_name'];
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-label">Last Name *</label>
+                                                <input class="form-control <?php $__errorArgs = ['last_name'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -215,23 +222,24 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>"
-                                                type="text" name="last_name" value="<?php echo e(old('last_name')); ?>"
-                                                placeholder="Last name*" required data-required="true">
-                                            <?php $__errorArgs = ['last_name'];
+                                                    type="text" name="last_name" value="<?php echo e(old('last_name')); ?>"
+                                                    placeholder="Enter your last name" required>
+                                                <?php $__errorArgs = ['last_name'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                                                <div class="invalid-feedback"><?php echo e($message); ?></div>
-                                            <?php unset($message);
+                                                    <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                                <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-lg-12">
+
                                         <div class="form-group">
-                                            <input class="form-control font-sm <?php $__errorArgs = ['address_1'];
+                                            <label class="form-label">Address Line 1 *</label>
+                                            <input class="form-control <?php $__errorArgs = ['address_1'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -240,7 +248,7 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>"
                                                 type="text" name="address_1" value="<?php echo e(old('address_1')); ?>"
-                                                placeholder="Address 1*" required data-required="true">
+                                                placeholder="Street address, P.O. box, company name" required>
                                             <?php $__errorArgs = ['address_1'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
@@ -252,27 +260,27 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
                                         </div>
-                                    </div>
-                                    <div class="col-lg-12">
+
                                         <div class="form-group">
-                                            <input class="form-control font-sm" type="text" name="address_2"
-                                                value="<?php echo e(old('address_2')); ?>" placeholder="Address 2">
+                                            <label class="form-label">Address Line 2</label>
+                                            <input class="form-control" type="text" name="address_2"
+                                                value="<?php echo e(old('address_2')); ?>"
+                                                placeholder="Apartment, suite, unit, building, floor, etc.">
                                         </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <select class="form-control font-sm select-style1 color-gray-700"
-                                                name="country">
-                                                <option value="Djibouti" selected>Djibouti</option>
-                                                <option value="Ethiopia">Ethiopia</option>
-                                                <option value="Somalia">Somalia</option>
-                                                <option value="Eritrea">Eritrea</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <input class="form-control font-sm <?php $__errorArgs = ['city'];
+
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label class="form-label">Country *</label>
+                                                <select class="form-control" name="country">
+                                                    <option value="Djibouti" selected>Djibouti</option>
+                                                    <option value="Ethiopia">Ethiopia</option>
+                                                    <option value="Somalia">Somalia</option>
+                                                    <option value="Eritrea">Eritrea</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-label">City *</label>
+                                                <input class="form-control <?php $__errorArgs = ['city'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -280,186 +288,182 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>"
-                                                type="text" name="city" value="<?php echo e(old('city')); ?>"
-                                                placeholder="City*" required data-required="true">
-                                            <?php $__errorArgs = ['city'];
+                                                    type="text" name="city" value="<?php echo e(old('city')); ?>"
+                                                    placeholder="Enter your city" required>
+                                                <?php $__errorArgs = ['city'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
 $message = $__bag->first($__errorArgs[0]); ?>
-                                                <div class="invalid-feedback"><?php echo e($message); ?></div>
-                                            <?php unset($message);
+                                                    <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                                <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <div class="form-group">
-                                            <input class="form-control font-sm <?php $__errorArgs = ['postal_code'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>"
-                                                type="text" name="postal_code" value="<?php echo e(old('postal_code')); ?>"
-                                                placeholder="PostCode / ZIP*" required data-required="true">
-                                            <?php $__errorArgs = ['postal_code'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                                <div class="invalid-feedback"><?php echo e($message); ?></div>
-                                            <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <input class="form-control font-sm" type="text" name="company_name"
-                                                value="<?php echo e(old('company_name')); ?>" placeholder="Company name">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <input class="form-control font-sm <?php $__errorArgs = ['phone'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>"
-                                                type="text" name="phone"
-                                                value="<?php echo e(old('phone', Auth::user()->phone ?? '')); ?>"
-                                                placeholder="Phone*" required data-required="true">
-                                            <?php $__errorArgs = ['phone'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                                <div class="invalid-feedback"><?php echo e($message); ?></div>
-                                            <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <div class="form-group mb-0">
-                                            <textarea class="form-control font-sm" name="additional_info" placeholder="Additional Information" rows="5"><?php echo e(old('additional_info')); ?></textarea>
-                                        </div>
-                                    </div>
-                                    <!-- Hidden coordinates fields for new address -->
-                                    <input type="hidden" name="latitude" id="new_latitude" value="">
-                                    <input type="hidden" name="longitude" id="new_longitude" value="">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mt-20">
-                            <div class="col-lg-6 col-5 mb-20">
-                                <a class="btn font-sm-bold color-brand-1 arrow-back-1"
-                                    href="<?php echo e(route('cart.index')); ?>">Return to Cart</a>
-                            </div>
-                            <div class="col-lg-6 col-7 mb-20 text-end">
-                                <button type="submit" class="btn btn-buy w-auto arrow-next" id="place-order-btn">
-                                    Place an Order
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="box-border">
-                            <h5 class="font-md-bold mb-20">Your Order</h5>
-                            <div class="listCheckout">
-                                <?php $__currentLoopData = $cartItems; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                    <div class="item-wishlist">
-                                        <div class="wishlist-product">
-                                            <div class="product-wishlist">
-                                                <div class="product-image">
-                                                    <a href="<?php echo e($item['product_url']); ?>">
-                                                        <?php if($item['product_image']): ?>
-                                                            <img src="<?php echo e($item['product_image']); ?>"
-                                                                alt="<?php echo e($item['product_title']); ?>">
-                                                        <?php else: ?>
-                                                            <div class="no-image-placeholder"
-                                                                style="width: 80px; height: 80px; background: #f8f9fa; border: 1px dashed #dee2e6; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: #6c757d; font-size: 10px;">
-                                                                No Image
-                                                            </div>
-                                                        <?php endif; ?>
-                                                    </a>
-                                                </div>
-                                                <div class="product-info">
-                                                    <a href="<?php echo e($item['product_url']); ?>">
-                                                        <h6 class="color-brand-3">
-                                                            <?php echo e(Str::limit($item['product_title'], 50)); ?></h6>
-                                                    </a>
-                                                    <div class="rating">
-                                                        <span
-                                                            class="font-xs color-gray-500"><?php echo e($item['product']->category->name ?? 'Product'); ?></span>
-                                                    </div>
-                                                </div>
                                             </div>
                                         </div>
-                                        <div class="wishlist-status">
-                                            <h5 class="color-gray-500">x<?php echo e($item['quantity']); ?></h5>
-                                        </div>
-                                        <div class="wishlist-price">
-                                            <h4 class="color-brand-3 font-lg-bold">
-                                                <?php echo e(number_format($item['total_price'], 0)); ?> DJF</h4>
-                                        </div>
-                                    </div>
-                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                            </div>
-                            <div class="form-group d-flex mt-15">
-                                <input class="form-control mr-15" name="coupon_code" placeholder="Enter Your Coupon">
-                                <button type="button" class="btn btn-buy w-auto" onclick="applyCoupon()">Apply</button>
-                            </div>
-                            <div class="form-group mb-0">
-                                <div class="row mb-10">
-                                    <div class="col-lg-6 col-6"><span class="font-md-bold color-brand-3">Subtotal</span>
-                                    </div>
-                                    <div class="col-lg-6 col-6 text-end">
-                                        <span class="font-lg-bold color-brand-3"><?php echo e(number_format($subtotal, 0)); ?>
 
-                                            DJF</span>
-                                    </div>
-                                </div>
-                                <div class="border-bottom mb-10 pb-5">
-                                    <div class="row">
-                                        <div class="col-lg-6 col-6"><span
-                                                class="font-md-bold color-brand-3">Shipping</span></div>
-                                        <div class="col-lg-6 col-6 text-end">
-                                            <span class="font-lg-bold color-brand-3"><?php echo e(number_format($shippingCost, 0)); ?>
-
-                                                DJF</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <?php if($taxAmount > 0): ?>
-                                    <div class="border-bottom mb-10 pb-5">
-                                        <div class="row">
-                                            <div class="col-lg-6 col-6"><span
-                                                    class="font-md-bold color-brand-3">Tax</span></div>
-                                            <div class="col-lg-6 col-6 text-end">
-                                                <span
-                                                    class="font-lg-bold color-brand-3"><?php echo e(number_format($taxAmount, 0)); ?>
-
-                                                    DJF</span>
+                                        <div class="form-row">
+                                            <div class="form-group">
+                                                <label class="form-label">PostCode / ZIP *</label>
+                                                <input class="form-control <?php $__errorArgs = ['postal_code'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                                                    type="text" name="postal_code" value="<?php echo e(old('postal_code')); ?>"
+                                                    placeholder="Enter postal code" required>
+                                                <?php $__errorArgs = ['postal_code'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                    <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-label">Phone Number *</label>
+                                                <input class="form-control <?php $__errorArgs = ['phone'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                                                    type="text" name="phone"
+                                                    value="<?php echo e(old('phone', Auth::user()->phone ?? '')); ?>"
+                                                    placeholder="Enter your phone number" required>
+                                                <?php $__errorArgs = ['phone'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                    <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                             </div>
                                         </div>
+
+                                        <div class="form-group">
+                                            <label class="form-label">Company Name</label>
+                                            <input class="form-control" type="text" name="company_name"
+                                                value="<?php echo e(old('company_name')); ?>"
+                                                placeholder="Enter company name (optional)">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="form-label">Additional Information</label>
+                                            <textarea class="form-control" name="additional_info" rows="3"
+                                                placeholder="Any special delivery instructions..."><?php echo e(old('additional_info')); ?></textarea>
+                                        </div>
+
+                                        <!-- Hidden coordinates fields -->
+                                        <input type="hidden" name="latitude" id="new_latitude" value="">
+                                        <input type="hidden" name="longitude" id="new_longitude" value="">
                                     </div>
                                 <?php endif; ?>
-                                <div class="row">
-                                    <div class="col-lg-6 col-6"><span class="font-md-bold color-brand-3">Total</span>
+                            </div>
+                        </div>
+
+                        <!-- Navigation Buttons -->
+                        <div class="checkout-navigation">
+                            <a href="<?php echo e(route('cart.index')); ?>" class="btn btn-outline-secondary">
+                                <i class="ti ti-arrow-left me-2"></i>
+                                Return to Cart
+                            </a>
+                            <button type="submit" class="btn btn-primary btn-lg" id="place-order-btn"
+                                onclick="handleOrderSubmit(event, this)">
+                                <i class="ti ti-credit-card me-2"></i>
+                                <span class="btn-text">Place Order</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Order Summary Section -->
+                    <div class="checkout-summary-section">
+                        <div class="checkout-summary-card">
+                            <div class="summary-header">
+                                <h3 class="section-title">
+                                    <i class="ti ti-shopping-cart me-2"></i>
+                                    Order Summary
+                                </h3>
+                            </div>
+
+                            <div class="summary-content">
+                                <!-- Order Items -->
+                                <div class="order-items">
+                                    <?php $__currentLoopData = $cartItems; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <div class="order-item">
+                                            <div class="item-image">
+                                                <?php if($item['product_image']): ?>
+                                                    <img src="<?php echo e($item['product_image']); ?>"
+                                                        alt="<?php echo e($item['product_title']); ?>"
+                                                        onerror="this.src='<?php echo e(asset('assets/imgs/template/product-placeholder.jpg')); ?>'">
+                                                <?php else: ?>
+                                                    <div class="image-placeholder">
+                                                        <i class="ti ti-photo"></i>
+                                                    </div>
+                                                <?php endif; ?>
+                                            </div>
+                                            <div class="item-details">
+                                                <h4 class="item-title">
+                                                    <a
+                                                        href="<?php echo e($item['product_url']); ?>"><?php echo e(Str::limit($item['product_title'], 40)); ?></a>
+                                                </h4>
+                                                <div class="item-meta">
+                                                    <span
+                                                        class="item-category"><?php echo e($item['product']->category->name ?? 'Product'); ?></span>
+                                                    <span class="item-quantity">Qty: <?php echo e($item['quantity']); ?></span>
+                                                </div>
+                                            </div>
+                                            <div class="item-price">
+                                                <?php echo e(number_format($item['total_price'], 0)); ?> DJF
+                                            </div>
+                                        </div>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                </div>
+
+                                <!-- Coupon Section -->
+                                <div class="coupon-section">
+                                    <div class="coupon-input-group">
+                                        <input class="form-control" name="coupon_code" placeholder="Enter coupon code">
+                                        <button type="button" class="btn btn-outline-primary" onclick="applyCoupon()">
+                                            Apply
+                                        </button>
                                     </div>
-                                    <div class="col-lg-6 col-6 text-end">
-                                        <span class="font-lg-bold color-brand-3"
-                                            id="order-total"><?php echo e(number_format($finalTotal, 0)); ?> DJF</span>
+                                </div>
+
+                                <!-- Order Totals -->
+                                <div class="order-totals">
+                                    <div class="total-row">
+                                        <span class="total-label">Subtotal</span>
+                                        <span class="total-value"><?php echo e(number_format($subtotal, 0)); ?> DJF</span>
+                                    </div>
+                                    <div class="total-row">
+                                        <span class="total-label">Shipping</span>
+                                        <span class="total-value"><?php echo e(number_format($shippingCost, 0)); ?> DJF</span>
+                                    </div>
+                                    <?php if($taxAmount > 0): ?>
+                                        <div class="total-row">
+                                            <span class="total-label">Tax</span>
+                                            <span class="total-value"><?php echo e(number_format($taxAmount, 0)); ?> DJF</span>
+                                        </div>
+                                    <?php endif; ?>
+                                    <div class="total-divider"></div>
+                                    <div class="total-row total-final">
+                                        <span class="total-label">Total</span>
+                                        <span class="total-value" id="order-total"><?php echo e(number_format($finalTotal, 0)); ?>
+
+                                            DJF</span>
                                     </div>
                                 </div>
                             </div>
@@ -468,9 +472,9 @@ unset($__errorArgs, $__bag); ?>
                 </div>
             </form>
         </div>
-    </section>
+    </div>
 
-    <!-- New Address Modal with Map Functionality -->
+    <!-- New Address Modal -->
     <?php if(auth()->guard()->check()): ?>
         <div class="modal fade" id="newAddressModal" tabindex="-1">
             <div class="modal-dialog modal-lg">
@@ -483,145 +487,128 @@ unset($__errorArgs, $__bag); ?>
                         <?php echo csrf_field(); ?>
                         <div class="modal-body">
                             <!-- Map Selection Section -->
-                            <div class="mb-4">
-                                <h6 class="mb-3"><i class="fas fa-map-marker-alt me-2"></i>Select Location on Map</h6>
-                                <div class="d-flex gap-2 mb-3">
-                                    <div class="map-search-container flex-grow-1">
-                                        <i class="fas fa-search map-search-icon"></i>
+                            <div class="map-section">
+                                <h6 class="section-subtitle">
+                                    <i class="ti ti-map-pin me-2"></i>Select Location on Map
+                                </h6>
+                                <div class="map-controls">
+                                    <div class="map-search-container">
+                                        <i class="ti ti-search map-search-icon"></i>
                                         <input type="text" id="new-map-search" class="map-search-input"
-                                            placeholder="Search for locations within Djibouti only...">
+                                            placeholder="Search for locations within Djibouti...">
                                     </div>
                                     <button type="button" class="btn btn-outline-primary" id="new-current-location-btn">
-                                        <i class="fas fa-crosshairs me-1"></i> My Location
+                                        <i class="ti ti-crosshairs me-1"></i> My Location
                                     </button>
                                 </div>
                                 <div id="new-map" class="map-container"></div>
                                 <div id="new-location-info" class="location-info">
-                                    <h6><i class="fas fa-info-circle me-2"></i>Location Information</h6>
+                                    <h6><i class="ti ti-info-circle me-2"></i>Location Information</h6>
                                     <div class="location-details"></div>
-                                    <div class="coordinates-info mt-2">
-                                        <small class="text-muted">
-                                            <strong>Coordinates:</strong> <span class="coordinates-display">Click on map to see
-                                                coordinates</span>
-                                        </small>
+                                    <div class="coordinates-info">
+                                        <small><strong>Coordinates:</strong> <span class="coordinates-display">Click on map to
+                                                see coordinates</span></small>
                                     </div>
                                 </div>
-                                <small class="text-muted">
-                                    <i class="fas fa-lightbulb me-1"></i>
-                                    You can search for a location, click on the map, drag the marker, or use "My Location" to
-                                    detect your current position.
+                                <small class="form-text">
+                                    <i class="ti ti-lightbulb me-1"></i>
+                                    You can search for a location, click on the map, drag the marker, or use "My Location".
                                 </small>
                             </div>
 
                             <hr class="my-4">
 
-                            <!-- Manual Address Entry -->
-                            <h6 class="mb-3"><i class="fas fa-edit me-2"></i>Address Details</h6>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group mb-3">
-                                        <label for="modal_type" class="form-label">Address Type *</label>
-                                        <select class="form-control" id="modal_type" name="type" required>
+                            <!-- Address Form -->
+                            <h6 class="section-subtitle">
+                                <i class="ti ti-edit me-2"></i>Address Details
+                            </h6>
+                            <div class="modal-form">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">Address Type *</label>
+                                        <select class="form-control" name="type" required>
                                             <option value="home">Home</option>
                                             <option value="work">Work</option>
                                             <option value="other">Other</option>
                                         </select>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group mb-3">
-                                        <label for="modal_title" class="form-label">Address Title *</label>
-                                        <input type="text" class="form-control" id="modal_title" name="title"
+                                    <div class="form-group">
+                                        <label class="form-label">Address Title *</label>
+                                        <input type="text" class="form-control" name="title"
                                             placeholder="e.g., Home, Office" required>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group mb-3">
-                                        <label for="modal_first_name" class="form-label">First Name *</label>
-                                        <input type="text" class="form-control" id="modal_first_name" name="first_name"
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">First Name *</label>
+                                        <input type="text" class="form-control" name="first_name"
                                             value="<?php echo e(Auth::user()->name); ?>" required>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group mb-3">
-                                        <label for="modal_last_name" class="form-label">Last Name *</label>
-                                        <input type="text" class="form-control" id="modal_last_name" name="last_name"
-                                            required>
+                                    <div class="form-group">
+                                        <label class="form-label">Last Name *</label>
+                                        <input type="text" class="form-control" name="last_name" required>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="form-group mb-3">
-                                <label for="modal_phone" class="form-label">Phone Number *</label>
-                                <input type="text" class="form-control" id="modal_phone" name="phone"
-                                    value="<?php echo e(Auth::user()->phone); ?>" required>
-                            </div>
+                                <div class="form-group">
+                                    <label class="form-label">Phone Number *</label>
+                                    <input type="text" class="form-control" name="phone"
+                                        value="<?php echo e(Auth::user()->phone); ?>" required>
+                                </div>
 
-                            <div class="form-group mb-3">
-                                <label for="modal_address_line_1" class="form-label">Address Line 1 *</label>
-                                <input type="text" class="form-control" id="modal_address_line_1" name="address_line_1"
-                                    placeholder="Street address, P.O. box, company name" required>
-                            </div>
+                                <div class="form-group">
+                                    <label class="form-label">Address Line 1 *</label>
+                                    <input type="text" class="form-control" name="address_line_1"
+                                        placeholder="Street address, P.O. box, company name" required>
+                                </div>
 
-                            <div class="form-group mb-3">
-                                <label for="modal_address_line_2" class="form-label">Address Line 2</label>
-                                <input type="text" class="form-control" id="modal_address_line_2" name="address_line_2"
-                                    placeholder="Apartment, suite, unit, building, floor, etc.">
-                            </div>
+                                <div class="form-group">
+                                    <label class="form-label">Address Line 2</label>
+                                    <input type="text" class="form-control" name="address_line_2"
+                                        placeholder="Apartment, suite, unit, building, floor, etc.">
+                                </div>
 
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group mb-3">
-                                        <label for="modal_city" class="form-label">City *</label>
-                                        <input type="text" class="form-control" id="modal_city" name="city" required>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label class="form-label">City *</label>
+                                        <input type="text" class="form-control" name="city" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">State/Province</label>
+                                        <input type="text" class="form-control" name="state">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Postal Code *</label>
+                                        <input type="text" class="form-control" name="postal_code" required>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="form-group mb-3">
-                                        <label for="modal_state" class="form-label">State/Province</label>
-                                        <input type="text" class="form-control" id="modal_state" name="state">
-                                    </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Country *</label>
+                                    <input type="text" class="form-control" name="country" value="Djibouti" required>
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="form-group mb-3">
-                                        <label for="modal_postal_code" class="form-label">Postal Code *</label>
-                                        <input type="text" class="form-control" id="modal_postal_code" name="postal_code"
-                                            required>
-                                    </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Delivery Notes</label>
+                                    <textarea class="form-control" name="notes" rows="2" placeholder="Any special delivery instructions..."></textarea>
                                 </div>
-                            </div>
 
-                            <div class="form-group mb-3">
-                                <label for="modal_country" class="form-label">Country *</label>
-                                <input type="text" class="form-control" id="modal_country" name="country"
-                                    value="Djibouti" required>
-                            </div>
-
-                            <div class="form-group mb-3">
-                                <label for="modal_notes" class="form-label">Delivery Notes</label>
-                                <textarea class="form-control" id="modal_notes" name="notes" rows="2"
-                                    placeholder="Any special delivery instructions..."></textarea>
-                            </div>
-
-                            <div class="form-group mb-3">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="modal_is_default" name="is_default"
-                                        value="1">
-                                    <label class="form-check-label" for="modal_is_default">
+                                <div class="form-group">
+                                    <label class="form-checkbox">
+                                        <input type="checkbox" name="is_default" value="1">
+                                        <span class="checkmark"></span>
                                         Set as default address
                                     </label>
                                 </div>
-                            </div>
 
-                            <!-- Hidden fields for coordinates -->
-                            <input type="hidden" id="modal_latitude" name="latitude" value="">
-                            <input type="hidden" id="modal_longitude" name="longitude" value="">
+                                <!-- Hidden coordinates fields -->
+                                <input type="hidden" id="modal_latitude" name="latitude" value="">
+                                <input type="hidden" id="modal_longitude" name="longitude" value="">
+                            </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
                             <button type="submit" class="btn btn-primary">Save Address</button>
                         </div>
                     </form>
@@ -631,86 +618,237 @@ unset($__errorArgs, $__bag); ?>
     <?php endif; ?>
 
     <style>
-        .box-border {
-            border: 1px solid #e0e0e0;
-            border-radius: 10px;
-            padding: 30px;
-            margin-bottom: 20px;
+        :root {
+            /* Colors from cart page */
+            --primary-50: #eff6ff;
+            --primary-500: #3b82f6;
+            --primary-600: #2563eb;
+            --primary-700: #1d4ed8;
+            --white: #ffffff;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-900: #111827;
+            --green-50: #f0fdf4;
+            --green-600: #16a34a;
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
         }
 
-        .box-payment {
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            background-color: var(--gray-50);
+            color: var(--gray-900);
+            line-height: 1.5;
+        }
+
+        .checkout-container {
+            min-height: 100vh;
+            background: var(--gray-50);
+        }
+
+        .checkout-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--spacing-xl);
+        }
+
+        /* Header */
+        .checkout-header {
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .checkout-header-content {
             display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            justify-content: center;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
         }
 
-        .box-payment .btn {
-            padding: 10px 15px;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            background: white;
-            transition: all 0.3s;
+        .checkout-header h1 {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin: 0 0 var(--spacing-xs) 0;
+            line-height: 1.2;
         }
 
-        .box-payment .btn:hover {
-            border-color: #007bff;
-            box-shadow: 0 2px 8px rgba(0, 123, 255, 0.2);
+        .checkout-header p {
+            color: var(--gray-600);
+            margin: 0;
+            font-size: 14px;
         }
 
-        .border-bottom-4 {
-            position: relative;
-            margin: 20px 0;
+        .checkout-stats {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
         }
 
-        .border-bottom-4::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: #e0e0e0;
+        .item-count {
+            background: var(--gray-100);
+            color: var(--gray-600);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            font-weight: 500;
         }
 
-        .text-or {
-            background: white;
-            padding: 0 15px;
-            position: relative;
-            z-index: 1;
+        /* Layout */
+        .checkout-layout {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 2rem;
         }
 
+        /* Cards */
+        .checkout-card,
+        .checkout-summary-card {
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: var(--spacing-lg);
+            overflow: hidden;
+        }
+
+        .checkout-card:hover,
+        .checkout-summary-card:hover {
+            box-shadow: var(--shadow-md);
+            transition: box-shadow 0.2s ease;
+        }
+
+        .card-header,
+        .summary-header {
+            background: var(--white);
+            border-bottom: 1px solid var(--gray-200);
+            padding: var(--spacing-lg);
+        }
+
+        .section-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .card-body,
+        .summary-content {
+            padding: var(--spacing-lg);
+        }
+
+        /* Forms */
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: var(--spacing-lg);
         }
 
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-md);
+        }
 
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--gray-700);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+            background: var(--white);
+            color: var(--gray-900);
+        }
 
         .form-control:focus {
-            border-color: #007bff;
-            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+            outline: none;
+            border-color: var(--primary-600);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
 
         .form-control.is-invalid {
-            border-color: #dc3545;
+            border-color: #ef4444;
         }
 
         .invalid-feedback {
             display: block;
-            color: #dc3545;
+            color: #ef4444;
+            font-size: 0.75rem;
+            margin-top: var(--spacing-xs);
+        }
+
+        .form-text {
+            font-size: 0.75rem;
+            color: var(--gray-600);
+            margin-top: var(--spacing-xs);
+            display: block;
+        }
+
+        /* Custom Checkbox */
+        .form-checkbox {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            font-size: 0.875rem;
+            color: var(--gray-700);
+            cursor: pointer;
+            margin: 0;
+        }
+
+        .form-checkbox input[type="checkbox"] {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid var(--gray-300);
+            border-radius: var(--radius-sm);
+            background: var(--white);
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+
+        .form-checkbox input[type="checkbox"]:checked {
+            background: var(--primary-600);
+            border-color: var(--primary-600);
+        }
+
+        .form-checkbox input[type="checkbox"]:checked::before {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
             font-size: 12px;
-            margin-top: 5px;
+            font-weight: bold;
         }
 
-        .checkboxOffer {
-            margin-right: 8px;
-        }
-
-        /* Address Selection Styles */
+        /* Address Selection */
         .address-selection {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: var(--spacing-md);
         }
 
         .address-option {
@@ -730,182 +868,433 @@ unset($__errorArgs, $__bag); ?>
             height: 0;
         }
 
-        .address-card-mini {
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            padding: 15px;
+        .address-card {
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md);
             transition: all 0.3s ease;
-            background: white;
+            background: var(--white);
         }
 
-        .address-card-mini.new-address {
-            border-style: dashed;
-            background: #f8f9fa;
-            cursor: pointer;
-            transition: all 0.3s ease;
+        .address-radio-label input[type="radio"]:checked+.address-card {
+            border-color: var(--primary-600);
+            background: var(--primary-50);
         }
 
-        .address-card-mini.new-address:hover {
-            background: #e9ecef;
-            border-color: #007bff;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
-        }
-
-        .address-radio-label input[type="radio"]:checked+.address-card-mini {
-            border-color: #007bff;
-            background: #f0f8ff;
-        }
-
-        .address-card-mini:hover {
-            border-color: #007bff;
-            box-shadow: 0 2px 8px rgba(0, 123, 255, 0.15);
+        .address-card:hover {
+            border-color: var(--primary-600);
+            box-shadow: var(--shadow-sm);
         }
 
         .address-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 8px;
+            margin-bottom: var(--spacing-sm);
         }
 
-        .address-details {
-            font-size: 14px;
-            color: #666;
-            line-height: 1.4;
+        .address-title {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
         }
 
         .badge {
             font-size: 10px;
             padding: 2px 6px;
-            border-radius: 4px;
+            border-radius: var(--radius-sm);
+            font-weight: 500;
         }
 
         .badge-primary {
-            background-color: #007bff;
+            background-color: var(--primary-600);
             color: white;
         }
 
-        .listCheckout .item-wishlist {
-            display: flex;
-            align-items: center;
-            padding: 15px 0;
-            border-bottom: 1px solid #f0f0f0;
+        .address-details {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+            line-height: 1.4;
         }
 
-        .listCheckout .item-wishlist:last-child {
+        .address-name {
+            font-weight: 500;
+            color: var(--gray-900);
+            margin-bottom: 2px;
+        }
+
+        .address-info,
+        .address-phone {
+            margin-bottom: 2px;
+        }
+
+        .address-coords {
+            font-size: 0.75rem;
+            color: var(--gray-500);
+            margin-top: var(--spacing-xs);
+        }
+
+        /* New Address Card */
+        .new-address-card {
+            border-style: dashed;
+            background: var(--gray-50);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-lg);
+        }
+
+        .new-address-card:hover {
+            background: var(--primary-50);
+            border-color: var(--primary-600);
+            transform: translateY(-1px);
+        }
+
+        .new-address-content {
+            display: flex;
+            align-items: center;
+            text-align: center;
+        }
+
+        .new-address-content i {
+            font-size: 1.25rem;
+            color: var(--primary-600);
+        }
+
+        .new-address-content strong {
+            color: var(--gray-900);
+            font-size: 0.875rem;
+        }
+
+        .new-address-content p {
+            color: var(--gray-600);
+            font-size: 0.75rem;
+            margin: 2px 0 0 0;
+        }
+
+        /* Order Summary */
+        .order-items {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .order-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            padding: var(--spacing-md) 0;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .order-item:last-child {
             border-bottom: none;
         }
 
-        .listCheckout .product-image {
+        .item-image {
             width: 60px;
             height: 60px;
-            margin-right: 15px;
-            border-radius: 8px;
+            border-radius: var(--radius-md);
             overflow: hidden;
+            background: var(--gray-100);
+            flex-shrink: 0;
         }
 
-        .listCheckout .product-image img {
+        .item-image img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
 
-        .listCheckout .wishlist-product {
+        .image-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray-600);
+            font-size: 1.5rem;
+        }
+
+        .item-details {
             flex: 1;
+            min-width: 0;
         }
 
-        .listCheckout .wishlist-status {
-            margin: 0 15px;
+        .item-title {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--gray-900);
+            margin: 0 0 4px 0;
+            line-height: 1.3;
         }
 
-        .listCheckout .wishlist-price {
-            min-width: 100px;
+        .item-title a {
+            color: var(--gray-900);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .item-title a:hover {
+            color: var(--primary-700);
+            text-decoration: none;
+        }
+
+        .item-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .item-category,
+        .item-quantity {
+            font-size: 0.75rem;
+            color: var(--gray-600);
+        }
+
+        .item-price {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--gray-900);
             text-align: right;
         }
 
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.8);
+        /* Coupon Section */
+        .coupon-section {
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-lg);
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .coupon-input-group {
             display: flex;
-            justify-content: center;
+            gap: var(--spacing-sm);
+        }
+
+        .coupon-input-group .form-control {
+            flex: 1;
+        }
+
+        /* Order Totals */
+        .order-totals {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
             align-items: center;
-            z-index: 9999;
-            display: none;
         }
 
-        .loading-spinner {
-            width: 50px;
-            height: 50px;
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #3498db;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
+        .total-label {
+            font-size: 0.875rem;
+            color: var(--gray-600);
         }
 
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
+        .total-value {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--gray-900);
         }
 
-        @media (max-width: 768px) {
-            .address-selection {
-                gap: 10px;
-            }
-
-            .address-card-mini {
-                padding: 12px;
-            }
+        .total-divider {
+            height: 1px;
+            background: var(--gray-200);
+            margin: var(--spacing-sm) 0;
         }
 
-        /* Map Styles for Address Modal */
-        .map-container {
-            height: 400px;
-            width: 100%;
-            border-radius: 8px;
-            border: 2px solid #ddd;
-            margin-bottom: 15px;
+        .total-final {
+            margin-top: var(--spacing-sm);
+            padding-top: var(--spacing-sm);
+            border-top: 1px solid var(--gray-200);
         }
 
-        .pac-container {
-            z-index: 1051;
+        .total-final .total-label {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--gray-900);
+        }
+
+        .total-final .total-value {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--primary-600);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-sm);
+            padding: 0.75rem 1.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-radius: var(--radius-md);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .btn-primary {
+            background: var(--primary-600);
+            color: var(--white);
+            border-color: var(--primary-600);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-700);
+            border-color: var(--primary-700);
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .btn-outline-primary {
+            background: transparent;
+            color: var(--primary-600);
+            border-color: var(--primary-600);
+        }
+
+        .btn-outline-primary:hover {
+            background: var(--primary-600);
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .btn-outline-secondary {
+            background: transparent;
+            color: var(--gray-600);
+            border-color: var(--gray-300);
+        }
+
+        .btn-outline-secondary:hover {
+            background: var(--gray-100);
+            color: var(--gray-700);
+            text-decoration: none;
+        }
+
+        .btn-lg {
+            padding: 1rem 2rem;
+            font-size: 1rem;
+        }
+
+        /* Navigation */
+        .checkout-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: var(--spacing-lg);
+            border-top: 1px solid var(--gray-200);
+        }
+
+        /* Alert */
+        .alert {
+            border-radius: var(--radius-md);
+            border: 1px solid;
+            padding: var(--spacing-md) var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-sm);
+        }
+
+        .alert-danger {
+            background: #fef2f2;
+            border-color: #fecaca;
+            color: #991b1b;
+        }
+
+        .alert-icon {
+            font-size: 16px;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        /* Modal Styles */
+        .modal-content {
+            border-radius: var(--radius-lg);
+            border: none;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .modal-header {
+            border-bottom: 1px solid var(--gray-200);
+            padding: var(--spacing-lg);
+        }
+
+        .modal-body {
+            padding: var(--spacing-lg);
+        }
+
+        .modal-footer {
+            border-top: 1px solid var(--gray-200);
+            padding: var(--spacing-lg);
+        }
+
+        .section-subtitle {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-bottom: var(--spacing-md);
+            display: flex;
+            align-items: center;
+        }
+
+        .modal-form .form-row {
+            margin-bottom: var(--spacing-md);
+        }
+
+        .modal-form .form-group {
+            margin-bottom: var(--spacing-md);
+        }
+
+        /* Map Section */
+        .map-section {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .map-controls {
+            display: flex;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-md);
         }
 
         .map-search-container {
             position: relative;
-            margin-bottom: 15px;
+            flex: 1;
         }
 
         .map-search-input {
             width: 100%;
-            padding: 12px 15px 12px 45px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
         }
 
         .map-search-icon {
             position: absolute;
-            left: 15px;
+            left: 0.75rem;
             top: 50%;
             transform: translateY(-50%);
-            color: #999;
+            color: var(--gray-600);
+        }
+
+        .map-container {
+            height: 300px;
+            width: 100%;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--gray-300);
+            margin-bottom: var(--spacing-md);
         }
 
         .location-info {
-            background: #f8f9fa;
-            border-radius: 8px;
-            padding: 15px;
-            margin-top: 15px;
+            background: var(--gray-50);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md);
             display: none;
         }
 
@@ -914,84 +1303,117 @@ unset($__errorArgs, $__bag); ?>
         }
 
         .location-info h6 {
-            margin-bottom: 10px;
-            color: #333;
+            margin-bottom: var(--spacing-sm);
+            color: var(--gray-900);
             font-weight: 600;
+            font-size: 0.875rem;
         }
 
         .location-details {
-            color: #666;
-            font-size: 14px;
-            line-height: 1.5;
+            color: var(--gray-700);
+            font-size: 0.875rem;
+            line-height: 1.4;
         }
 
-        .modal-content {
-            border-radius: 12px;
-            border: none;
+        .coordinates-info {
+            margin-top: var(--spacing-sm);
         }
 
-        .modal-header {
-            border-bottom: 1px solid #eee;
-            padding: 20px;
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .checkout-layout {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-lg);
+            }
+
+            .checkout-wrapper {
+                padding: var(--spacing-lg);
+            }
+
+            .checkout-header-content {
+                flex-direction: column;
+                align-items: stretch;
+                gap: var(--spacing-md);
+            }
         }
 
-        .modal-body {
-            padding: 20px;
+        @media (max-width: 640px) {
+            .checkout-wrapper {
+                padding: var(--spacing-md);
+            }
+
+            .checkout-header h1 {
+                font-size: 20px;
+            }
+
+            .card-body,
+            .summary-content {
+                padding: var(--spacing-md);
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-sm);
+            }
+
+            .checkout-navigation {
+                flex-direction: column-reverse;
+                gap: var(--spacing-md);
+                align-items: stretch;
+            }
+
+            .checkout-navigation .btn {
+                width: 100%;
+            }
+
+            .map-controls {
+                flex-direction: column;
+            }
+
+            .coupon-input-group {
+                flex-direction: column;
+            }
         }
 
-        .modal-footer {
-            border-top: 1px solid #eee;
-            padding: 20px;
-        }
+        /* Loading spinner animation */
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
 
-        .form-label {
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 8px;
+            to {
+                transform: rotate(360deg);
+            }
         }
     </style>
 
-    <div class="loading-overlay" id="loading-overlay">
-        <div class="loading-spinner"></div>
-    </div>
-
     <script>
-        function showLoading() {
-            document.getElementById('loading-overlay').style.display = 'flex';
-        }
+        function handleOrderSubmit(event, button) {
+            // Prevent default action temporarily
+            event.preventDefault();
 
-        function hideLoading() {
-            document.getElementById('loading-overlay').style.display = 'none';
+            // Add loading state
+            const icon = button.querySelector('i');
+            const textSpan = button.querySelector('.btn-text');
+
+            // Change to loading state
+            icon.className = 'ti ti-loader-2 me-2';
+            icon.style.animation = 'spin 1s linear infinite';
+            textSpan.textContent = 'Processing your order...';
+            button.style.pointerEvents = 'none';
+            button.style.opacity = '0.8';
+
+            // Submit the form after a brief delay
+            setTimeout(() => {
+                document.getElementById('checkout-form').submit();
+            }, 500);
         }
 
         function toggleAddressForm() {
-            const selectedAddress = document.querySelector('input[name="shipping_address_id"]:checked');
-            const addressForm = document.getElementById('address-form');
-            const addressFormFields = document.getElementById('address-form-fields');
-
-            // Always hide the inline address form since we're using modal for new addresses
-            addressForm.style.display = 'none';
-            addressFormFields.style.display = 'none';
-
-            // Remove required attribute for HTML5 validation since we're using modal
-            const requiredFields = addressFormFields.querySelectorAll('input[required]');
-            requiredFields.forEach(field => {
-                field.setAttribute('data-required', 'true'); // Store original required state
-                field.required = false;
-            });
+            // This function can be used if needed for address form toggling
         }
 
         function openNewAddressModal() {
-            // Select the "new address" radio button
-            const newAddressRadio = document.querySelector('input[name="shipping_address_id"][value=""]');
-            if (newAddressRadio) {
-                newAddressRadio.checked = true;
-            }
-
-            // Hide the inline form
-            toggleAddressForm();
-
-            // Open the modal
             const modal = new bootstrap.Modal(document.getElementById('newAddressModal'));
             modal.show();
         }
@@ -1002,77 +1424,8 @@ unset($__errorArgs, $__bag); ?>
                 showNotification('Please enter a coupon code', 'error');
                 return;
             }
-
-            // Here you would implement coupon validation
             showNotification('Coupon functionality will be implemented soon', 'info');
         }
-
-        // Form submission handling
-        document.getElementById('checkout-form').addEventListener('submit', function(e) {
-            console.log('Form submission started');
-
-            // Check if cart is empty
-            const cartItems = document.querySelectorAll('.listCheckout .item-wishlist');
-            if (cartItems.length === 0) {
-                e.preventDefault();
-                showNotification('Your cart is empty. Please add some items before checkout.', 'error');
-                return false;
-            }
-
-            // Check if an address is selected when addresses are available
-            const addressRadios = document.querySelectorAll('input[name="shipping_address_id"]');
-            if (addressRadios.length > 0) {
-                const selectedAddress = document.querySelector('input[name="shipping_address_id"]:checked');
-                if (!selectedAddress) {
-                    e.preventDefault();
-                    showNotification('Please select a shipping address', 'error');
-                    return false;
-                }
-
-                // If "Use New Address" is selected, validate required fields
-                if (selectedAddress.value === '') {
-                    const requiredFields = document.querySelectorAll(
-                        '#address-form-fields input[data-required="true"]');
-                    let hasErrors = false;
-
-                    requiredFields.forEach(field => {
-                        if (!field.value.trim()) {
-                            hasErrors = true;
-                            field.classList.add('is-invalid');
-                        } else {
-                            field.classList.remove('is-invalid');
-                        }
-                    });
-
-                    if (hasErrors) {
-                        e.preventDefault();
-                        showNotification('Please fill in all required address fields', 'error');
-                        return false;
-                    }
-                }
-            }
-
-            const submitBtn = document.getElementById('place-order-btn');
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = 'Processing...';
-            showLoading();
-        });
-
-        // Show notification for flash messages
-        <?php if(session('success')): ?>
-            showNotification('<?php echo e(session('success')); ?>', 'success');
-        <?php endif; ?>
-
-        <?php if(session('error')): ?>
-            showNotification('<?php echo e(session('error')); ?>', 'error');
-            // Reset button state if there's an error
-            const submitBtn = document.getElementById('place-order-btn');
-            if (submitBtn) {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = 'Place Order';
-            }
-            hideLoading();
-        <?php endif; ?>
 
         function showNotification(message, type = 'info') {
             const notification = document.createElement('div');
@@ -1084,9 +1437,10 @@ unset($__errorArgs, $__bag); ?>
                 right: 20px;
                 z-index: 9999;
                 min-width: 300px;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                box-shadow: var(--shadow-lg);
             `;
             notification.innerHTML = `
+                <i class="ti ti-${type === 'error' ? 'alert-circle' : type === 'success' ? 'check' : 'info-circle'} me-2"></i>
                 ${message}
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             `;
@@ -1100,12 +1454,7 @@ unset($__errorArgs, $__bag); ?>
             }, 5000);
         }
 
-        // Initialize address form visibility on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            toggleAddressForm();
-        });
-
-        // Map functionality for new address modal
+        // Include all the map functionality from the original file
         let map;
         let marker;
         let geocoder;
@@ -1118,53 +1467,45 @@ unset($__errorArgs, $__bag); ?>
 
             if (!mapElement) return;
 
-            // Clear any existing map
             if (map) {
                 map.remove();
             }
 
-            // Default location: Djibouti City, Djibouti
             let djiboutiLocation = [11.5721, 43.1456];
 
-            // Define Djibouti's geographic bounds
             const djiboutiBounds = L.latLngBounds(
-                L.latLng(10.9, 41.75), // Southwest corner (minimum lat, minimum lng)
-                L.latLng(12.8, 43.65) // Northeast corner (maximum lat, maximum lng)
+                L.latLng(10.9, 41.75),
+                L.latLng(12.8, 43.65)
             );
 
-            // Create map with OpenStreetMap tiles, restricted to Djibouti
             map = L.map(mapElement, {
                 center: djiboutiLocation,
                 zoom: 13,
-                minZoom: 8, // Prevent zooming out too far
-                maxZoom: 18, // Allow detailed zoom
-                maxBounds: djiboutiBounds, // Restrict panning to Djibouti bounds
-                maxBoundsViscosity: 1.0 // Make bounds completely rigid
+                minZoom: 8,
+                maxZoom: 18,
+                maxBounds: djiboutiBounds,
+                maxBoundsViscosity: 1.0
             });
 
-            // Add OpenStreetMap tiles
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-                bounds: djiboutiBounds // Restrict tiles to Djibouti area
+                bounds: djiboutiBounds
             }).addTo(map);
 
-            // Create draggable marker
             marker = L.marker(djiboutiLocation, {
                 draggable: true,
                 title: 'Selected Location'
             }).addTo(map);
 
-            // Initialize geocoder for search - restricted to Djibouti only
             geocoder = L.Control.Geocoder.nominatim({
                 geocodingQueryParams: {
-                    countrycodes: 'dj', // Only Djibouti
-                    bounded: 1, // Strict bounding
-                    viewbox: '41.75,10.9,43.65,12.8', // Djibouti bounding box
+                    countrycodes: 'dj',
+                    bounded: 1,
+                    viewbox: '41.75,10.9,43.65,12.8',
                     limit: 10
                 }
             });
 
-            // Handle search input
             if (searchInput) {
                 searchInput.addEventListener('keypress', function(e) {
                     if (e.key === 'Enter') {
@@ -1172,41 +1513,21 @@ unset($__errorArgs, $__bag); ?>
                         searchLocation(this.value);
                     }
                 });
-
-                // Add search button functionality
-                const searchContainer = searchInput.parentElement;
-                if (!searchContainer.querySelector('.search-btn')) {
-                    const searchBtn = document.createElement('button');
-                    searchBtn.type = 'button';
-                    searchBtn.className = 'btn btn-sm btn-outline-primary search-btn';
-                    searchBtn.style.position = 'absolute';
-                    searchBtn.style.right = '10px';
-                    searchBtn.style.top = '50%';
-                    searchBtn.style.transform = 'translateY(-50%)';
-                    searchBtn.innerHTML = '<i class="fas fa-search"></i>';
-                    searchBtn.onclick = () => searchLocation(searchInput.value);
-                    searchContainer.style.position = 'relative';
-                    searchContainer.appendChild(searchBtn);
-                }
             }
 
-            // Handle current location button
             if (currentLocationBtn) {
                 currentLocationBtn.addEventListener('click', getCurrentLocation);
             }
 
-            // Listen for marker drag - ensure it stays within Djibouti
             marker.on('dragend', function(e) {
                 const position = e.target.getLatLng();
                 const lat = position.lat;
                 const lng = position.lng;
 
-                // Check if dragged position is within Djibouti bounds
                 if (lat >= 10.9 && lat <= 12.8 && lng >= 41.75 && lng <= 43.65) {
                     updateCoordinates(position);
                     reverseGeocode(position);
                 } else {
-                    // Snap back to previous valid position or center of Djibouti
                     marker.setLatLng(djiboutiLocation);
                     updateCoordinates({
                         lat: djiboutiLocation[0],
@@ -1216,30 +1537,23 @@ unset($__errorArgs, $__bag); ?>
                 }
             });
 
-            // Listen for map clicks - restrict to Djibouti bounds
             map.on('click', function(e) {
                 const position = e.latlng;
                 const lat = position.lat;
                 const lng = position.lng;
 
-                // Only allow clicks within Djibouti bounds
                 if (lat >= 10.9 && lat <= 12.8 && lng >= 41.75 && lng <= 43.65) {
                     marker.setLatLng(position);
                     updateCoordinates(position);
                     reverseGeocode(position);
-                } else {
-                    // This shouldn't happen due to maxBounds, but just in case
-                    showNotification('Please select a location within Djibouti only.', 'error');
                 }
             });
 
-            // Update coordinates display initially
             updateCoordinates({
                 lat: djiboutiLocation[0],
                 lng: djiboutiLocation[1]
             });
 
-            // Invalidate size to ensure proper rendering
             setTimeout(() => {
                 map.invalidateSize();
             }, 100);
@@ -1254,7 +1568,7 @@ unset($__errorArgs, $__bag); ?>
                 return;
             }
 
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> Detecting...';
+            btn.innerHTML = '<i class="ti ti-loader-2 spin me-1"></i> Detecting...';
             btn.disabled = true;
 
             navigator.geolocation.getCurrentPosition(
@@ -1262,22 +1576,17 @@ unset($__errorArgs, $__bag); ?>
                     const lat = position.coords.latitude;
                     const lng = position.coords.longitude;
 
-                    // Check if location is within Djibouti bounds
                     if (lat >= 10.9 && lat <= 12.8 && lng >= 41.75 && lng <= 43.65) {
                         const latlng = L.latLng(lat, lng);
-
                         map.setView(latlng, 15);
                         marker.setLatLng(latlng);
-
                         updateCoordinates(latlng);
                         reverseGeocode(latlng);
-
                         btn.innerHTML = originalText;
                         btn.disabled = false;
                     } else {
                         alert(
-                            'Your current location is outside Djibouti. Please manually select a location within Djibouti or search for an address.'
-                        );
+                            'Your current location is outside Djibouti. Please manually select a location within Djibouti.');
                         btn.innerHTML = originalText;
                         btn.disabled = false;
                     }
@@ -1287,10 +1596,6 @@ unset($__errorArgs, $__bag); ?>
                     alert('Unable to detect location. Please try again or search manually.');
                     btn.innerHTML = originalText;
                     btn.disabled = false;
-                }, {
-                    enableHighAccuracy: true,
-                    timeout: 10000,
-                    maximumAge: 60000
                 }
             );
         }
@@ -1298,14 +1603,11 @@ unset($__errorArgs, $__bag); ?>
         function searchLocation(query) {
             if (!query.trim()) return;
 
-            // Search only within Djibouti bounds
             fetch(
-                    `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&countrycodes=dj&bounded=1&viewbox=41.75,10.9,43.65,12.8&limit=10&addressdetails=1`
-                )
+                    `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&countrycodes=dj&bounded=1&viewbox=41.75,10.9,43.65,12.8&limit=10&addressdetails=1`)
                 .then(response => response.json())
                 .then(data => {
                     if (data && data.length > 0) {
-                        // Filter results to ensure they're within Djibouti bounds
                         const validResults = data.filter(result => {
                             const lat = parseFloat(result.lat);
                             const lon = parseFloat(result.lon);
@@ -1387,24 +1689,16 @@ unset($__errorArgs, $__bag); ?>
         function parseNominatimAddress(nominatimAddress) {
             const components = {};
 
-            if (nominatimAddress.house_number) {
-                components.street_number = nominatimAddress.house_number;
-            }
-            if (nominatimAddress.road) {
-                components.route = nominatimAddress.road;
-            }
+            if (nominatimAddress.house_number) components.street_number = nominatimAddress.house_number;
+            if (nominatimAddress.road) components.route = nominatimAddress.road;
             if (nominatimAddress.city || nominatimAddress.town || nominatimAddress.village) {
                 components.city = nominatimAddress.city || nominatimAddress.town || nominatimAddress.village;
             }
             if (nominatimAddress.state || nominatimAddress.region) {
                 components.state = nominatimAddress.state || nominatimAddress.region;
             }
-            if (nominatimAddress.country) {
-                components.country = nominatimAddress.country;
-            }
-            if (nominatimAddress.postcode) {
-                components.postal_code = nominatimAddress.postcode;
-            }
+            if (nominatimAddress.country) components.country = nominatimAddress.country;
+            if (nominatimAddress.postcode) components.postal_code = nominatimAddress.postcode;
 
             return components;
         }
@@ -1414,41 +1708,35 @@ unset($__errorArgs, $__bag); ?>
 
             const components = place.address_components;
 
-            // Fill address line 1
             let addressLine1 = '';
             if (components.street_number) addressLine1 += components.street_number + ' ';
             if (components.route) addressLine1 += components.route;
 
             if (addressLine1.trim()) {
-                const addressField = document.getElementById('modal_address_line_1');
+                const addressField = document.querySelector('input[name="address_line_1"]');
                 if (addressField) addressField.value = addressLine1.trim();
             }
 
-            // Fill city
             if (components.city) {
-                const cityField = document.getElementById('modal_city');
+                const cityField = document.querySelector('input[name="city"]');
                 if (cityField) cityField.value = components.city;
             }
 
-            // Fill state
             if (components.state) {
-                const stateField = document.getElementById('modal_state');
+                const stateField = document.querySelector('input[name="state"]');
                 if (stateField) stateField.value = components.state;
             }
 
-            // Fill country
             if (components.country) {
-                const countryField = document.getElementById('modal_country');
+                const countryField = document.querySelector('input[name="country"]');
                 if (countryField) countryField.value = components.country;
             }
 
-            // Fill postal code
             if (components.postal_code) {
-                const postalField = document.getElementById('modal_postal_code');
+                const postalField = document.querySelector('input[name="postal_code"]');
                 if (postalField) postalField.value = components.postal_code;
             }
 
-            // Show location info
             showLocationInfo(place);
         }
 
@@ -1463,7 +1751,7 @@ unset($__errorArgs, $__bag); ?>
             }
         }
 
-        // Handle modal events to initialize maps
+        // Initialize map when modal is shown
         document.addEventListener('DOMContentLoaded', function() {
             const newModal = document.getElementById('newAddressModal');
             if (newModal) {
@@ -1474,7 +1762,6 @@ unset($__errorArgs, $__bag); ?>
                 });
             }
 
-            // Handle form submission
             const newAddressForm = document.getElementById('newAddressForm');
             if (newAddressForm) {
                 newAddressForm.addEventListener('submit', function(e) {
@@ -1492,17 +1779,15 @@ unset($__errorArgs, $__bag); ?>
                             method: 'POST',
                             body: formData,
                             headers: {
-                                'X-Requested-With': 'XMLHttpRequest',
+                                'X-Requested-With': 'XMLHttpRequest'
                             }
                         })
                         .then(response => {
                             if (response.ok) {
-                                // Handle both JSON and redirect responses
                                 const contentType = response.headers.get('content-type');
                                 if (contentType && contentType.includes('application/json')) {
                                     return response.json();
                                 } else {
-                                    // Controller returned a redirect (success)
                                     return {
                                         success: true
                                     };
@@ -1515,13 +1800,9 @@ unset($__errorArgs, $__bag); ?>
                             const modal = bootstrap.Modal.getInstance(document.getElementById(
                                 'newAddressModal'));
                             modal.hide();
-
-                            // Show success message
                             showNotification(
                                 'Address saved successfully! You can now proceed with checkout.',
                                 'success');
-
-                            // Reload page to show the new address in the list
                             setTimeout(() => {
                                 location.reload();
                             }, 1500);
