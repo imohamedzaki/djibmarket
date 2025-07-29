@@ -55,7 +55,7 @@
         </div>
         <div class="row mt-15">
             <div class="col-6 text-start">
-                <a class="btn btn-cart w-auto" href="<?php echo e(route('cart.index')); ?>">View cart</a>
+                <a class="btn btn-cart w-auto" href="<?php echo e(route('buyer.dashboard.cart')); ?>">View cart</a>
             </div>
             <div class="col-6">
                 <a class="btn btn-buy w-auto" href="<?php echo e(route('checkout.index') ?? '#'); ?>">Checkout</a>

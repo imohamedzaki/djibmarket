@@ -424,10 +424,23 @@ class DashboardController extends Controller
         }
 
         if (!$order->canBeCanceled()) {
+            if (request()->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'This order cannot be canceled.'
+                ], 422);
+            }
             return back()->with('error', 'This order cannot be canceled.');
         }
 
         $order->cancel('Order canceled by customer');
+
+        if (request()->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Order has been canceled successfully.'
+            ]);
+        }
 
         return back()->with('success', 'Order has been canceled successfully.');
     }

@@ -441,15 +441,12 @@
         .status-badge {
             display: inline-flex;
             align-items: center;
-            justify-content: center;
             gap: 0.375rem;
-            padding: 0.5rem 1rem;
+            padding: 0.375rem 0.75rem;
             border-radius: 9999px;
             font-size: 0.75rem;
             font-weight: 500;
             text-transform: capitalize;
-            min-width: 80px;
-            white-space: nowrap;
         }
 
         .status-dot {
@@ -977,14 +974,217 @@
             });
         }
 
-        // Cancel order functionality
-        function cancelOrder(orderId) {
-            if (confirm('Are you sure you want to cancel this order? This action cannot be undone.')) {
-                // Here you would make an AJAX request to cancel the order
-                console.log('Canceling order:', orderId);
-                // For now, just show an alert
-                alert('Order cancellation functionality would be implemented here.');
+        // Custom Dialog Function
+        function showCustomDialog(options) {
+            const {
+                title = 'Confirm',
+                message = 'Are you sure?',
+                confirmText = 'Confirm',
+                cancelText = 'Cancel',
+                type = 'info',
+                onConfirm = () => {},
+                onCancel = () => {}
+            } = options;
+
+            // Remove existing dialogs
+            document.querySelectorAll('.custom-dialog-overlay').forEach(dialog => dialog.remove());
+
+            // Create dialog overlay
+            const overlay = document.createElement('div');
+            overlay.className = 'custom-dialog-overlay';
+            overlay.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 10000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            `;
+
+            // Create dialog box
+            const dialog = document.createElement('div');
+            dialog.className = 'custom-dialog';
+            dialog.style.cssText = `
+                background: white;
+                border-radius: 12px;
+                padding: 0;
+                max-width: 400px;
+                width: 90%;
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+                transform: scale(0.9);
+                transition: transform 0.3s ease;
+                overflow: hidden;
+            `;
+
+            const colors = {
+                info: {
+                    bg: '#3b82f6',
+                    light: '#dbeafe'
+                },
+                warning: {
+                    bg: '#f59e0b',
+                    light: '#fef3c7'
+                },
+                danger: {
+                    bg: '#ef4444',
+                    light: '#fee2e2'
+                },
+                success: {
+                    bg: '#10b981',
+                    light: '#d1fae5'
+                }
+            };
+
+            const color = colors[type] || colors.info;
+
+            dialog.innerHTML = `
+                <div style="background: ${color.light}; padding: 20px; border-bottom: 1px solid #e5e7eb;">
+                    <h3 style="margin: 0; color: ${color.bg}; font-size: 18px; font-weight: 600;">${title}</h3>
+                </div>
+                <div style="padding: 20px;">
+                    <p style="margin: 0 0 20px 0; color: #374151; line-height: 1.5;">${message}</p>
+                    <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                        <button class="dialog-cancel-btn" style="
+                            padding: 10px 20px;
+                            border: 1px solid #d1d5db;
+                            background: white;
+                            color: #374151;
+                            border-radius: 6px;
+                            cursor: pointer;
+                            font-weight: 500;
+                            transition: all 0.2s ease;
+                        ">${cancelText}</button>
+                        <button class="dialog-confirm-btn" style="
+                            padding: 10px 20px;
+                            border: none;
+                            background: ${color.bg};
+                            color: white;
+                            border-radius: 6px;
+                            cursor: pointer;
+                            font-weight: 500;
+                            transition: all 0.2s ease;
+                        ">${confirmText}</button>
+                    </div>
+                </div>
+            `;
+
+            overlay.appendChild(dialog);
+            document.body.appendChild(overlay);
+
+            // Show dialog with animation
+            setTimeout(() => {
+                overlay.style.opacity = '1';
+                dialog.style.transform = 'scale(1)';
+            }, 10);
+
+            // Handle clicks
+            dialog.querySelector('.dialog-cancel-btn').addEventListener('click', () => {
+                closeDialog();
+                onCancel();
+            });
+
+            dialog.querySelector('.dialog-confirm-btn').addEventListener('click', () => {
+                closeDialog();
+                onConfirm();
+            });
+
+            // Close on overlay click
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    closeDialog();
+                    onCancel();
+                }
+            });
+
+            // Close on Escape key
+            const handleEscape = (e) => {
+                if (e.key === 'Escape') {
+                    closeDialog();
+                    onCancel();
+                    document.removeEventListener('keydown', handleEscape);
+                }
+            };
+            document.addEventListener('keydown', handleEscape);
+
+            function closeDialog() {
+                overlay.style.opacity = '0';
+                dialog.style.transform = 'scale(0.9)';
+                setTimeout(() => overlay.remove(), 300);
+                document.removeEventListener('keydown', handleEscape);
             }
+        }
+
+        // Cancel order functionality with custom dialog
+        function cancelOrder(orderId) {
+            showCustomDialog({
+                title: 'Cancel Order',
+                message: 'Are you sure you want to cancel this order? This action cannot be undone.',
+                confirmText: 'Cancel Order',
+                cancelText: 'Keep Order',
+                type: 'danger',
+                onConfirm: function() {
+                    // Find the cancel button for this order
+                    const cancelButton = document.querySelector(`button[onclick="cancelOrder(${orderId})"]`);
+                    if (cancelButton) {
+                        const originalText = cancelButton.innerHTML;
+                        cancelButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Cancelling...';
+                        cancelButton.disabled = true;
+                    }
+
+                    // Make AJAX request to cancel order
+                    fetch(`/buyer/dashboard/orders/${orderId}/cancel`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                                'X-Requested-With': 'XMLHttpRequest'
+                            }
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (data.success) {
+                                // Show success message
+                                showCustomDialog({
+                                    title: 'Order Cancelled',
+                                    message: data.message || 'Your order has been successfully cancelled.',
+                                    confirmText: 'OK',
+                                    type: 'success',
+                                    onConfirm: function() {
+                                        location.reload();
+                                    }
+                                });
+                            } else {
+                                throw new Error(data.message || 'Failed to cancel order');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            showCustomDialog({
+                                title: 'Error',
+                                message: 'Failed to cancel order. Please try again or contact support.',
+                                confirmText: 'OK',
+                                type: 'danger',
+                                onConfirm: function() {
+                                    if (cancelButton) {
+                                        cancelButton.innerHTML = originalText;
+                                        cancelButton.disabled = false;
+                                    }
+                                }
+                            });
+                        });
+                }
+            });
         }
     </script>
 <?php $__env->stopSection(); ?>
