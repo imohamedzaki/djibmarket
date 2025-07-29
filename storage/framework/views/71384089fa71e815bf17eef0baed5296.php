@@ -650,10 +650,8 @@
         }
 
         .dropdown-menu {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            z-index: 10;
+            position: fixed;
+            z-index: 1000;
             background: var(--white);
             border: 1px solid var(--border-color);
             border-radius: var(--radius-md);
@@ -661,10 +659,17 @@
             min-width: 160px;
             padding: 0.5rem 0;
             display: none;
+            transform: translateY(0.25rem);
+            opacity: 0;
+            transition: all 0.2s ease;
+            pointer-events: none;
         }
 
         .dropdown-menu.show {
             display: block;
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
         }
 
         .dropdown-item {
@@ -892,8 +897,43 @@
 
             // Toggle current dropdown
             if (!isOpen) {
+                positionDropdown(button, dropdown);
                 dropdown.classList.add('show');
             }
+        }
+
+        function positionDropdown(button, dropdown) {
+            const buttonRect = button.getBoundingClientRect();
+            const dropdownRect = dropdown.getBoundingClientRect();
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+            
+            // Default position: below the button, aligned to the right
+            let top = buttonRect.bottom + 4;
+            let left = buttonRect.right - 160; // dropdown min-width is 160px
+            
+            // Check if it would go outside the right edge of the viewport
+            if (left < 8) {
+                left = buttonRect.left; // Align to left of button instead
+            }
+            
+            // Check if it would go outside the left edge of the viewport
+            if (left + 160 > viewportWidth - 8) {
+                left = viewportWidth - 160 - 8; // Keep within viewport with 8px margin
+            }
+            
+            // Check if it would go outside the bottom of the viewport
+            if (top + 100 > viewportHeight - 8) { // Assuming max dropdown height of ~100px
+                top = buttonRect.top - 100 - 4; // Position above the button instead
+            }
+            
+            // Ensure it doesn't go above the viewport
+            if (top < 8) {
+                top = 8;
+            }
+            
+            dropdown.style.top = `${top}px`;
+            dropdown.style.left = `${left}px`;
         }
 
         // Close dropdowns when clicking outside
@@ -903,6 +943,19 @@
                     menu.classList.remove('show');
                 });
             }
+        });
+
+        // Close dropdowns on scroll and resize to prevent positioning issues
+        window.addEventListener('scroll', function() {
+            document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                menu.classList.remove('show');
+            });
+        });
+
+        window.addEventListener('resize', function() {
+            document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                menu.classList.remove('show');
+            });
         });
 
         // Copy tracking number
