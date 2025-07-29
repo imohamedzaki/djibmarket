@@ -1,498 +1,1068 @@
 
 
 <?php $__env->startSection('dashboard-content'); ?>
-    <div class="dashboard-header">
-        <h1>Welcome back, <?php echo e(Auth::user()->name); ?>!</h1>
-        <p>Here's what's happening with your account today.</p>
-    </div>
-
-    <!-- Stats Grid -->
-    <div class="stats-grid">
-        <div class="stat-card orders">
-            <div class="stat-icon">
-                <i class="fas fa-shopping-bag"></i>
+    <!-- Modern Dashboard Header -->
+    <div class="modern-dashboard-header">
+        <div class="dashboard-welcome">
+            <div class="welcome-text">
+                <h1 class="welcome-title">Welcome back, <?php echo e(Auth::user()->name); ?>!</h1>
+                <p class="welcome-subtitle">Here's your account overview and recent activity</p>
             </div>
-            <h3 class="stat-number"><?php echo e($stats['total_orders']); ?></h3>
-            <p class="stat-label">Total Orders</p>
-        </div>
-
-        <div class="stat-card pending">
-            <div class="stat-icon">
-                <i class="fas fa-clock"></i>
+            <div class="welcome-date">
+                <div class="date-badge">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span><?php echo e(date('M d, Y')); ?></span>
+                </div>
             </div>
-            <h3 class="stat-number"><?php echo e($stats['pending_orders']); ?></h3>
-            <p class="stat-label">Pending Orders</p>
-        </div>
-
-        <div class="stat-card completed">
-            <div class="stat-icon">
-                <i class="fas fa-check-circle"></i>
-            </div>
-            <h3 class="stat-number"><?php echo e($stats['completed_orders']); ?></h3>
-            <p class="stat-label">Completed Orders</p>
-        </div>
-
-        <div class="stat-card wishlist">
-            <div class="stat-icon">
-                <i class="fas fa-heart"></i>
-            </div>
-            <h3 class="stat-number"><?php echo e($stats['wishlist_items']); ?></h3>
-            <p class="stat-label">Wishlist Items</p>
         </div>
     </div>
 
-    <div class="dashboard-grid">
-        <!-- Recent Orders -->
-        <div class="dashboard-grid-main">
-            <div class="card">
-                <div class="card-header">
+    <!-- Modern Stats Grid -->
+    <div class="modern-stats-grid">
+        <div class="modern-stat-card orders-card">
+            <div class="stat-card-content">
+                <div class="stat-header">
+                    <div class="stat-icon-container orders-icon">
+                        <i class="fas fa-shopping-bag"></i>
+                    </div>
+                    <div class="stat-trend positive">
+                        <i class="fas fa-arrow-up"></i>
+                    </div>
+                </div>
+                <div class="stat-body">
+                    <h3 class="stat-number"><?php echo e($stats['total_orders']); ?></h3>
+                    <p class="stat-label">Total Orders</p>
+                    <span class="stat-change">+12% from last month</span>
+                </div>
+            </div>
+            <div class="stat-card-footer">
+                <a href="<?php echo e(route('buyer.dashboard.orders')); ?>" class="stat-link">
+                    <span>View Orders</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="modern-stat-card pending-card">
+            <div class="stat-card-content">
+                <div class="stat-header">
+                    <div class="stat-icon-container pending-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-trend neutral">
+                        <i class="fas fa-minus"></i>
+                    </div>
+                </div>
+                <div class="stat-body">
+                    <h3 class="stat-number"><?php echo e($stats['pending_orders']); ?></h3>
+                    <p class="stat-label">Pending Orders</p>
+                    <span class="stat-change">Awaiting processing</span>
+                </div>
+            </div>
+            <div class="stat-card-footer">
+                <a href="<?php echo e(route('buyer.dashboard.orders')); ?>?status=pending" class="stat-link">
+                    <span>View Pending</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="modern-stat-card completed-card">
+            <div class="stat-card-content">
+                <div class="stat-header">
+                    <div class="stat-icon-container completed-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-trend positive">
+                        <i class="fas fa-arrow-up"></i>
+                    </div>
+                </div>
+                <div class="stat-body">
+                    <h3 class="stat-number"><?php echo e($stats['completed_orders']); ?></h3>
+                    <p class="stat-label">Completed Orders</p>
+                    <span class="stat-change">+8% this month</span>
+                </div>
+            </div>
+            <div class="stat-card-footer">
+                <a href="<?php echo e(route('buyer.dashboard.orders')); ?>?status=delivered" class="stat-link">
+                    <span>View Completed</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="modern-stat-card wishlist-card">
+            <div class="stat-card-content">
+                <div class="stat-header">
+                    <div class="stat-icon-container wishlist-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <div class="stat-trend positive">
+                        <i class="fas fa-arrow-up"></i>
+                    </div>
+                </div>
+                <div class="stat-body">
+                    <h3 class="stat-number"><?php echo e($stats['wishlist_items']); ?></h3>
+                    <p class="stat-label">Wishlist Items</p>
+                    <span class="stat-change"><?php echo e($stats['wishlist_items'] > 0 ? 'Ready to purchase' : 'Start saving favorites'); ?></span>
+                </div>
+            </div>
+            <div class="stat-card-footer">
+                <a href="<?php echo e(route('buyer.dashboard.wishlist')); ?>" class="stat-link">
+                    <span>View Wishlist</span>
+                    <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modern Content Grid -->
+    <div class="modern-dashboard-grid">
+        <!-- Recent Orders Section -->
+        <div class="dashboard-main-content">
+            <div class="modern-card orders-section">
+                <div class="modern-card-header">
                     <div class="card-header-content">
-                        <h5 class="card-title">Recent Orders</h5>
-                        <a href="<?php echo e(route('buyer.dashboard.orders')); ?>" class="btn btn-outline-primary btn-sm">
-                            <i class="fas fa-arrow-right me-1"></i>
-                            View All
+                        <div class="section-title-group">
+                            <h5 class="section-title">Recent Orders</h5>
+                            <span class="section-subtitle">Your latest purchases and their status</span>
+                        </div>
+                        <a href="<?php echo e(route('buyer.dashboard.orders')); ?>" class="modern-btn btn-primary">
+                            <span>View All Orders</span>
+                            <i class="fas fa-arrow-right"></i>
                         </a>
                     </div>
                 </div>
-                <div class="card-body">
+                <div class="modern-card-body">
                     <?php if($recent_orders->count() > 0): ?>
-                        <div class="modern-table-container">
-                            <table class="modern-table">
-                                <thead>
-                                    <tr>
-                                        <th>Order</th>
-                                        <th>Date</th>
-                                        <th>Items</th>
-                                        <th>Total</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php $__currentLoopData = $recent_orders; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $order): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                        <tr>
-                                            <td>
-                                                <div class="table-cell-content">
-                                                    <a href="<?php echo e(route('buyer.dashboard.orders.show', $order)); ?>"
-                                                        class="table-link">
-                                                        <span
-                                                            class="font-medium">#<?php echo e($order->order_number ?? 'ORD-' . $order->id); ?></span>
-                                                    </a>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="table-cell-content">
-                                                    <span
-                                                        class="text-sm text-gray-600"><?php echo e($order->created_at->format('M d, Y')); ?></span>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="table-cell-content">
-                                                    <span class="text-sm"><?php echo e($order->orderItems->count()); ?> items</span>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="table-cell-content">
-                                                    <span class="font-medium"><?php echo e(number_format($order->final_price, 0)); ?>
+                        <div class="modern-orders-list">
+                            <?php $__currentLoopData = $recent_orders; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $order): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <div class="order-item">
+                                    <div class="order-item-header">
+                                        <div class="order-info">
+                                            <a href="<?php echo e(route('buyer.dashboard.orders.show', $order)); ?>"
+                                                class="order-number">
+                                                #<?php echo e($order->order_number ?? 'ORD-' . $order->id); ?>
 
-                                                        DJF</span>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="table-cell-content">
-                                                    <span
-                                                        class="status-badge status-<?php echo e($order->status == 'delivered' ? 'success' : ($order->status == 'pending' ? 'warning' : 'info')); ?>">
-                                                        <?php echo e(ucfirst($order->status)); ?>
+                                            </a>
+                                            <span class="order-date"><?php echo e($order->created_at->format('M d, Y \a\t g:i A')); ?></span>
+                                        </div>
+                                        <div class="order-status">
+                                            <span class="modern-status-badge status-<?php echo e($order->status == 'delivered' ? 'success' : ($order->status == 'pending' ? 'warning' : ($order->status == 'canceled' ? 'danger' : 'info'))); ?>">
+                                                <span class="status-dot"></span>
+                                                <?php echo e(ucfirst($order->status)); ?>
 
-                                                    </span>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                </tbody>
-                            </table>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="order-item-body">
+                                        <div class="order-products">
+                                            <?php $__currentLoopData = $order->orderItems->take(2); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                <?php if($item->product): ?>
+                                                    <div class="product-thumb">
+                                                        <img src="<?php echo e($item->product->primary_image_url ?? asset('assets/imgs/template/product-placeholder.jpg')); ?>" 
+                                                             alt="<?php echo e($item->product->title); ?>"
+                                                             onerror="this.src='<?php echo e(asset('assets/imgs/template/product-placeholder.jpg')); ?>'">
+                                                    </div>
+                                                <?php endif; ?>
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                            <?php if($order->orderItems->count() > 2): ?>
+                                                <div class="product-more">+<?php echo e($order->orderItems->count() - 2); ?></div>
+                                            <?php endif; ?>
+                                        </div>
+                                        <div class="order-details">
+                                            <span class="order-items"><?php echo e($order->orderItems->count()); ?> <?php echo e(Str::plural('item', $order->orderItems->count())); ?></span>
+                                            <span class="order-total"><?php echo e(number_format($order->final_price, 0)); ?> DJF</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </div>
                     <?php else: ?>
-                        <div class="empty-state">
-                            <div class="empty-state-icon">
-                                <i class="fas fa-shopping-bag"></i>
+                        <div class="modern-empty-state">
+                            <div class="empty-state-illustration">
+                                <div class="empty-icon-wrapper">
+                                    <i class="fas fa-shopping-bag"></i>
+                                </div>
                             </div>
-                            <h3 class="empty-state-title">No orders yet</h3>
-                            <p class="empty-state-text">Start shopping to see your orders here!</p>
-                            <a href="<?php echo e(route('buyer.home')); ?>" class="btn btn-primary">
-                                <i class="fas fa-shopping-bag me-1"></i>
-                                Start Shopping
-                            </a>
+                            <div class="empty-state-content">
+                                <h3 class="empty-title">No orders yet</h3>
+                                <p class="empty-description">When you place your first order, it will appear here. Start browsing our amazing products!</p>
+                                <a href="<?php echo e(route('buyer.home')); ?>" class="modern-btn btn-primary">
+                                    <i class="fas fa-shopping-bag"></i>
+                                    <span>Start Shopping</span>
+                                </a>
+                            </div>
                         </div>
                     <?php endif; ?>
                 </div>
             </div>
         </div>
 
-        <!-- Recently Viewed -->
-        <div class="dashboard-grid-sidebar">
-            <div class="card">
-                <div class="card-header">
+        <!-- Recently Viewed Sidebar -->
+        <div class="dashboard-sidebar-content">
+            <div class="modern-card browsing-section">
+                <div class="modern-card-header">
                     <div class="card-header-content">
-                        <h5 class="card-title">Recently Viewed</h5>
-                        <a href="<?php echo e(route('buyer.dashboard.browsing-history')); ?>" class="btn btn-outline-primary btn-sm">
-                            <i class="fas fa-arrow-right me-1"></i>
-                            View All
+                        <div class="section-title-group">
+                            <h5 class="section-title">Recently Viewed</h5>
+                            <span class="section-subtitle">Products you've browsed</span>
+                        </div>
+                        <a href="<?php echo e(route('buyer.dashboard.browsing-history')); ?>" class="modern-btn btn-secondary btn-sm">
+                            <span>View All</span>
+                            <i class="fas fa-arrow-right"></i>
                         </a>
                     </div>
                 </div>
-                <div class="card-body">
+                <div class="modern-card-body">
                     <?php if($recent_browsing->count() > 0): ?>
-                        <div class="recent-items-list">
+                        <div class="modern-browsing-list">
                             <?php $__currentLoopData = $recent_browsing; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $history): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <div class="recent-item">
-                                    <div class="recent-item-image">
+                                <div class="browsing-item">
+                                    <div class="browsing-item-image">
                                         <?php if($history->product): ?>
                                             <img src="<?php echo e($history->product->primary_image_url ?? asset('assets/imgs/template/product-placeholder.jpg')); ?>"
                                                 alt="<?php echo e($history->product->title); ?>"
                                                 onerror="this.src='<?php echo e(asset('assets/imgs/template/product-placeholder.jpg')); ?>'">
                                         <?php else: ?>
-                                            <div class="recent-item-placeholder">
+                                            <div class="browsing-item-placeholder">
                                                 <i class="fas fa-image"></i>
                                             </div>
                                         <?php endif; ?>
                                     </div>
-                                    <div class="recent-item-content">
+                                    <div class="browsing-item-content">
                                         <?php if($history->product): ?>
-                                            <h6 class="recent-item-title">
+                                            <h6 class="browsing-item-title">
                                                 <a href="<?php echo e(route('buyer.product.show', $history->product)); ?>">
-                                                    <?php echo e(Str::limit($history->product->title, 30)); ?>
+                                                    <?php echo e(Str::limit($history->product->title, 35)); ?>
 
                                                 </a>
                                             </h6>
-                                            <span
-                                                class="recent-item-time"><?php echo e($history->viewed_at->diffForHumans()); ?></span>
+                                            <div class="browsing-item-meta">
+                                                <?php if($history->product->price): ?>
+                                                    <span class="product-price"><?php echo e(number_format($history->product->price, 0)); ?> DJF</span>
+                                                <?php endif; ?>
+                                                <span class="browsing-time"><?php echo e($history->viewed_at->diffForHumans()); ?></span>
+                                            </div>
                                         <?php else: ?>
-                                            <h6 class="recent-item-title recent-item-unavailable">Product no longer
-                                                available</h6>
-                                            <span
-                                                class="recent-item-time"><?php echo e($history->viewed_at->diffForHumans()); ?></span>
+                                            <h6 class="browsing-item-title unavailable">Product no longer available</h6>
+                                            <div class="browsing-item-meta">
+                                                <span class="browsing-time"><?php echo e($history->viewed_at->diffForHumans()); ?></span>
+                                            </div>
                                         <?php endif; ?>
                                     </div>
                                 </div>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </div>
                     <?php else: ?>
-                        <div class="empty-state">
-                            <div class="empty-state-icon">
-                                <i class="fas fa-history"></i>
+                        <div class="modern-empty-state compact">
+                            <div class="empty-state-illustration">
+                                <div class="empty-icon-wrapper">
+                                    <i class="fas fa-history"></i>
+                                </div>
                             </div>
-                            <p class="empty-state-text">No browsing history yet</p>
+                            <div class="empty-state-content">
+                                <h4 class="empty-title">No history yet</h4>
+                                <p class="empty-description">Start browsing products to see your viewing history here</p>
+                            </div>
                         </div>
                     <?php endif; ?>
+                </div>
+            </div>
+
+            <!-- Quick Actions Card -->
+            <div class="modern-card quick-actions-section">
+                <div class="modern-card-header">
+                    <div class="section-title-group">
+                        <h5 class="section-title">Quick Actions</h5>
+                        <span class="section-subtitle">Frequently used features</span>
+                    </div>
+                </div>
+                <div class="modern-card-body">
+                    <div class="quick-actions-grid">
+                        <a href="<?php echo e(route('buyer.dashboard.addresses')); ?>" class="quick-action-item">
+                            <div class="quick-action-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="quick-action-content">
+                                <span class="quick-action-title">Addresses</span>
+                                <span class="quick-action-count"><?php echo e($stats['addresses']); ?> saved</span>
+                            </div>
+                        </a>
+                        
+                        <a href="<?php echo e(route('buyer.dashboard.return-requests')); ?>" class="quick-action-item">
+                            <div class="quick-action-icon">
+                                <i class="fas fa-undo-alt"></i>
+                            </div>
+                            <div class="quick-action-content">
+                                <span class="quick-action-title">Returns</span>
+                                <span class="quick-action-count"><?php echo e($stats['return_requests']); ?> requests</span>
+                            </div>
+                        </a>
+                        
+                        <a href="<?php echo e(route('buyer.dashboard.tracking')); ?>" class="quick-action-item">
+                            <div class="quick-action-icon">
+                                <i class="fas fa-truck"></i>
+                            </div>
+                            <div class="quick-action-content">
+                                <span class="quick-action-title">Track Orders</span>
+                                <span class="quick-action-count">Live tracking</span>
+                            </div>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <style>
-        .dashboard-grid {
+        /* Modern Dashboard Variables */
+        :root {
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-success: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-warning: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-info: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        /* Modern Dashboard Header */
+        .modern-dashboard-header {
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-welcome {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 2rem;
+            border-radius: 16px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dashboard-welcome::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 40%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: rotate(15deg);
+        }
+
+        .welcome-text {
+            position: relative;
+            z-index: 2;
+        }
+
+        .welcome-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0 0 0.5rem 0;
+            line-height: 1.2;
+        }
+
+        .welcome-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin: 0;
+            font-weight: 400;
+        }
+
+        .welcome-date {
+            position: relative;
+            z-index: 2;
+        }
+
+        .date-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            font-weight: 500;
+        }
+
+        /* Modern Stats Grid */
+        .modern-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .modern-stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 0;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        .modern-stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .stat-card-content {
+            padding: 1.5rem;
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .stat-icon-container {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            color: white;
+        }
+
+        .orders-icon {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .pending-icon {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .completed-icon {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .wishlist-icon {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .stat-trend {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+        }
+
+        .stat-trend.positive {
+            background: #ecfdf5;
+            color: #065f46;
+        }
+
+        .stat-trend.neutral {
+            background: #f3f4f6;
+            color: #6b7280;
+        }
+
+        .stat-body {
+            margin-bottom: 1rem;
+        }
+
+        .stat-number {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin: 0 0 0.25rem 0;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: #6b7280;
+            font-weight: 500;
+            margin: 0 0 0.5rem 0;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .stat-change {
+            font-size: 0.8125rem;
+            color: #9ca3af;
+            font-weight: 400;
+        }
+
+        .stat-card-footer {
+            background: #f9fafb;
+            padding: 1rem 1.5rem;
+            border-top: 1px solid #f3f4f6;
+        }
+
+        .stat-link {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #374151;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: color 0.2s ease;
+        }
+
+        .stat-link:hover {
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        /* Modern Dashboard Grid */
+        .modern-dashboard-grid {
             display: grid;
             grid-template-columns: 2fr 1fr;
-            gap: 1.5rem;
+            gap: 2rem;
+        }
+
+        /* Modern Cards */
+        .modern-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modern-card:hover {
+            box-shadow: var(--shadow-lg);
+        }
+
+        .modern-card-header {
+            padding: 1.5rem 1.5rem 0;
+            border-bottom: 1px solid #f3f4f6;
+            margin-bottom: 1.5rem;
         }
 
         .card-header-content {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
         }
 
-        .card-title {
-            margin: 0;
-            font-size: 1.125rem;
+        .section-title-group {
+            flex: 1;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
             font-weight: 600;
-            color: var(--text-primary);
+            color: #1f2937;
+            margin: 0 0 0.25rem 0;
         }
 
-        .btn {
+        .section-subtitle {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin: 0;
+        }
+
+        .modern-card-body {
+            padding: 0 1.5rem 1.5rem;
+        }
+
+        /* Modern Buttons */
+        .modern-btn {
             display: inline-flex;
             align-items: center;
-            gap: 0.375rem;
-            padding: 0.5rem 1rem;
+            gap: 0.5rem;
+            padding: 0.625rem 1rem;
             font-size: 0.875rem;
             font-weight: 500;
-            border-radius: var(--radius-md);
+            border-radius: 8px;
             text-decoration: none;
             transition: all 0.2s ease;
-            border: 1px solid;
+            border: 1px solid transparent;
             cursor: pointer;
         }
 
-        .btn-primary {
-            background: var(--primary-color);
-            border-color: var(--primary-color);
+        .modern-btn.btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .modern-btn.btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+            text-decoration: none;
             color: white;
         }
 
-        .btn-primary:hover {
-            background: var(--primary-dark);
-            border-color: var(--primary-dark);
-            color: white;
+        .modern-btn.btn-secondary {
+            background: #f9fafb;
+            color: #374151;
+            border-color: #e5e7eb;
+        }
+
+        .modern-btn.btn-secondary:hover {
+            background: #f3f4f6;
+            color: #1f2937;
             text-decoration: none;
         }
 
-        .btn-outline-primary {
-            background: transparent;
-            border-color: var(--primary-color);
-            color: var(--primary-color);
-        }
-
-        .btn-outline-primary:hover {
-            background: var(--primary-color);
-            color: white;
-            text-decoration: none;
-        }
-
-        .btn-sm {
-            padding: 0.375rem 0.75rem;
+        .modern-btn.btn-sm {
+            padding: 0.5rem 0.75rem;
             font-size: 0.8125rem;
         }
 
-        /* Modern Table Styles */
-        .modern-table-container {
-            overflow-x: auto;
-        }
-
-        .modern-table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-        }
-
-        .modern-table th {
-            background: var(--light-color);
-            color: var(--text-secondary);
-            font-weight: 600;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            padding: 0.75rem 1rem;
-            text-align: left;
-            border: none;
-
-            first-child: {
-                border-radius: var(--radius-md) 0 0 var(--radius-md);
-            }
-
-            last-child: {
-                border-radius: 0 var(--radius-md) var(--radius-md) 0;
-            }
-        }
-
-        .modern-table th:first-child {
-            border-radius: var(--radius-md) 0 0 var(--radius-md);
-        }
-
-        .modern-table th:last-child {
-            border-radius: 0 var(--radius-md) var(--radius-md) 0;
-        }
-
-        .modern-table td {
-            padding: 1rem;
-            border-bottom: 1px solid var(--border-color);
-            vertical-align: middle;
-        }
-
-        .modern-table tbody tr:hover {
-            background: var(--light-color);
-        }
-
-        .modern-table tbody tr:last-child td {
-            border-bottom: none;
-        }
-
-        .table-cell-content {
-            display: flex;
-            align-items: center;
-        }
-
-        .table-link {
-            color: var(--primary-color);
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .table-link:hover {
-            color: var(--primary-dark);
-            text-decoration: underline;
-        }
-
-        .font-medium {
-            font-weight: 500;
-        }
-
-        .text-sm {
-            font-size: 0.875rem;
-        }
-
-        .text-gray-600 {
-            color: var(--text-secondary);
-        }
-
-        /* Status Badge Styles */
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            font-size: 0.75rem;
-            font-weight: 500;
-            text-transform: capitalize;
-        }
-
-        .status-badge.status-success {
-            background: #ecfdf5;
-            color: #065f46;
-        }
-
-        .status-badge.status-warning {
-            background: #fffbeb;
-            color: #92400e;
-        }
-
-        .status-badge.status-info {
-            background: #eff6ff;
-            color: #1e40af;
-        }
-
-        /* Empty State Styles */
-        .empty-state {
-            text-align: center;
-            padding: 3rem 1rem;
-        }
-
-        .empty-state-icon {
-            width: 64px;
-            height: 64px;
-            margin: 0 auto 1rem;
-            border-radius: 50%;
-            background: var(--light-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            color: var(--text-secondary);
-        }
-
-        .empty-state-title {
-            font-size: 1.125rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin: 0 0 0.5rem 0;
-        }
-
-        .empty-state-text {
-            color: var(--text-secondary);
-            margin: 0 0 1.5rem 0;
-        }
-
-        /* Recent Items List */
-        .recent-items-list {
+        /* Modern Orders List */
+        .modern-orders-list {
             display: flex;
             flex-direction: column;
             gap: 1rem;
         }
 
-        .recent-item {
+        .order-item {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .order-item:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+
+        .order-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+        }
+
+        .order-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .order-number {
+            font-weight: 600;
+            color: #667eea;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+
+        .order-number:hover {
+            color: #5a67d8;
+            text-decoration: underline;
+        }
+
+        .order-date {
+            font-size: 0.8125rem;
+            color: #6b7280;
+        }
+
+        .modern-status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.375rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: capitalize;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+
+        .modern-status-badge.status-success {
+            background: #ecfdf5;
+            color: #065f46;
+        }
+
+        .modern-status-badge.status-success .status-dot {
+            background: #10b981;
+        }
+
+        .modern-status-badge.status-warning {
+            background: #fffbeb;
+            color: #92400e;
+        }
+
+        .modern-status-badge.status-warning .status-dot {
+            background: #f59e0b;
+        }
+
+        .modern-status-badge.status-info {
+            background: #eff6ff;
+            color: #1e40af;
+        }
+
+        .modern-status-badge.status-info .status-dot {
+            background: #3b82f6;
+        }
+
+        .modern-status-badge.status-danger {
+            background: #fef2f2;
+            color: #991b1b;
+        }
+
+        .modern-status-badge.status-danger .status-dot {
+            background: #ef4444;
+        }
+
+        .order-item-body {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .order-products {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            padding: 0.75rem;
-            border-radius: var(--radius-md);
-            transition: background-color 0.2s ease;
+            gap: 0.5rem;
         }
 
-        .recent-item:hover {
-            background: var(--light-color);
-        }
-
-        .recent-item-image {
-            width: 48px;
-            height: 48px;
-            border-radius: var(--radius-md);
+        .product-thumb {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
             overflow: hidden;
-            flex-shrink: 0;
-            background: var(--light-color);
+            background: #f3f4f6;
+            border: 1px solid #e5e7eb;
         }
 
-        .recent-item-image img {
+        .product-thumb img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
 
-        .recent-item-placeholder {
+        .product-more {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #6b7280;
+        }
+
+        .order-details {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 0.25rem;
+        }
+
+        .order-items {
+            font-size: 0.8125rem;
+            color: #6b7280;
+        }
+
+        .order-total {
+            font-weight: 600;
+            color: #1f2937;
+            font-size: 1rem;
+        }
+
+        /* Modern Browsing List */
+        .modern-browsing-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .browsing-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border-radius: 8px;
+            transition: background-color 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .browsing-item:hover {
+            background: #f8fafc;
+            border-color: #e2e8f0;
+        }
+
+        .browsing-item-image {
+            width: 56px;
+            height: 56px;
+            border-radius: 8px;
+            overflow: hidden;
+            flex-shrink: 0;
+            background: #f3f4f6;
+            border: 1px solid #e5e7eb;
+        }
+
+        .browsing-item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .browsing-item-placeholder {
             width: 100%;
             height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--text-secondary);
-            font-size: 1.25rem;
+            color: #9ca3af;
+            font-size: 1.5rem;
         }
 
-        .recent-item-content {
+        .browsing-item-content {
             flex: 1;
             min-width: 0;
         }
 
-        .recent-item-title {
+        .browsing-item-title {
             font-size: 0.875rem;
             font-weight: 500;
-            margin: 0 0 0.25rem 0;
-            line-height: 1.25;
+            margin: 0 0 0.5rem 0;
+            line-height: 1.3;
         }
 
-        .recent-item-title a {
-            color: var(--text-primary);
+        .browsing-item-title a {
+            color: #1f2937;
             text-decoration: none;
         }
 
-        .recent-item-title a:hover {
-            color: var(--primary-color);
+        .browsing-item-title a:hover {
+            color: #667eea;
         }
 
-        .recent-item-unavailable {
-            color: var(--text-secondary);
+        .browsing-item-title.unavailable {
+            color: #9ca3af;
         }
 
-        .recent-item-time {
+        .browsing-item-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .product-price {
+            font-weight: 600;
+            color: #667eea;
+            font-size: 0.875rem;
+        }
+
+        .browsing-time {
             font-size: 0.75rem;
-            color: var(--text-secondary);
+            color: #9ca3af;
+        }
+
+        /* Quick Actions */
+        .quick-actions-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .quick-action-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.875rem;
+            border-radius: 8px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .quick-action-item:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+            text-decoration: none;
+            transform: translateX(4px);
+        }
+
+        .quick-action-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .quick-action-content {
+            display: flex;
+            flex-direction: column;
+            gap: 0.125rem;
+        }
+
+        .quick-action-title {
+            font-weight: 500;
+            color: #1f2937;
+            font-size: 0.875rem;
+        }
+
+        .quick-action-count {
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+
+        /* Modern Empty States */
+        .modern-empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+        }
+
+        .modern-empty-state.compact {
+            padding: 2rem 1rem;
+        }
+
+        .empty-state-illustration {
+            margin-bottom: 1.5rem;
+        }
+
+        .empty-icon-wrapper {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: #9ca3af;
+        }
+
+        .modern-empty-state.compact .empty-icon-wrapper {
+            width: 64px;
+            height: 64px;
+            font-size: 1.5rem;
+        }
+
+        .empty-state-content h3,
+        .empty-state-content h4 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .empty-state-content .empty-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #374151;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .empty-state-content .empty-description {
+            color: #6b7280;
+            margin: 0 0 1.5rem 0;
+            font-size: 0.875rem;
+            line-height: 1.5;
         }
 
         /* Responsive Design */
         @media (max-width: 1024px) {
-            .dashboard-grid {
+            .modern-dashboard-grid {
                 grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .modern-stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
                 gap: 1rem;
+            }
+
+            .dashboard-welcome {
+                padding: 1.5rem;
+            }
+
+            .welcome-title {
+                font-size: 1.75rem;
             }
         }
 
-        @media (max-width: 640px) {
+        @media (max-width: 768px) {
+            .dashboard-welcome {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .dashboard-welcome::before {
+                display: none;
+            }
+
+            .modern-stats-grid {
+                grid-template-columns: 1fr;
+            }
+
             .card-header-content {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: stretch;
+            }
+
+            .order-item-header {
+                flex-direction: column;
+                gap: 0.5rem;
+                align-items: stretch;
+            }
+
+            .order-item-body {
                 flex-direction: column;
                 gap: 0.75rem;
                 align-items: stretch;
             }
 
-            .modern-table th,
-            .modern-table td {
-                padding: 0.5rem;
+            .order-details {
+                align-items: flex-start;
+                flex-direction: row;
+                justify-content: space-between;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .modern-dashboard-header,
+            .modern-stats-grid,
+            .modern-dashboard-grid {
+                margin-bottom: 1rem;
             }
 
-            .recent-item {
-                padding: 0.5rem;
+            .modern-card-header,
+            .modern-card-body {
+                padding-left: 1rem;
+                padding-right: 1rem;
             }
 
-            .recent-item-image {
-                width: 40px;
-                height: 40px;
+            .stat-card-content {
+                padding: 1rem;
+            }
+
+            .stat-card-footer {
+                padding: 0.75rem 1rem;
             }
         }
     </style>
