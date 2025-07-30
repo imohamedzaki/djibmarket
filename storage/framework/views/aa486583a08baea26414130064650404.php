@@ -1,6 +1,5 @@
-@extends('layouts.app.buyer')
 
-@section('title', 'Checkout')
+<?php $__env->startSection('title', 'Checkout'); ?>
 
 <!-- Leaflet CSS and JS for map functionality -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -8,12 +7,34 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
 <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
 
-@section('content')
+<?php $__env->startSection('dashboard-content'); ?>
     <!-- Breadcrumb -->
-    <x-buyer.breadcrumb :items="[
+    <?php if (isset($component)) { $__componentOriginal8f244c6f5098027f3325f8df162e270b = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal8f244c6f5098027f3325f8df162e270b = $attributes; } ?>
+<?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.buyer.breadcrumb','data' => ['items' => [
         ['text' => 'Home', 'url' => route('buyer.home')],
         ['text' => 'Checkout', 'url' => route('checkout.index')],
-    ]" />
+    ]]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('buyer.breadcrumb'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\Illuminate\View\AnonymousComponent::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['items' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute([
+        ['text' => 'Home', 'url' => route('buyer.home')],
+        ['text' => 'Checkout', 'url' => route('checkout.index')],
+    ])]); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal8f244c6f5098027f3325f8df162e270b)): ?>
+<?php $attributes = $__attributesOriginal8f244c6f5098027f3325f8df162e270b; ?>
+<?php unset($__attributesOriginal8f244c6f5098027f3325f8df162e270b); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal8f244c6f5098027f3325f8df162e270b)): ?>
+<?php $component = $__componentOriginal8f244c6f5098027f3325f8df162e270b; ?>
+<?php unset($__componentOriginal8f244c6f5098027f3325f8df162e270b); ?>
+<?php endif; ?>
 
     <div class="checkout-container">
         <div class="checkout-wrapper">
@@ -25,30 +46,31 @@
                         <p>Complete your order and get your items delivered.</p>
                     </div>
                     <div class="checkout-stats">
-                        @if ($cartItems && count($cartItems) > 0)
-                            <span class="item-count">{{ count($cartItems) }}
-                                {{ Str::plural('item', count($cartItems)) }}</span>
-                        @endif
+                        <?php if($cartItems && count($cartItems) > 0): ?>
+                            <span class="item-count"><?php echo e(count($cartItems)); ?>
+
+                                <?php echo e(Str::plural('item', count($cartItems))); ?></span>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
 
-            <form action="{{ route('checkout.store') }}" method="POST" id="checkout-form">
-                @csrf
+            <form action="<?php echo e(route('checkout.store')); ?>" method="POST" id="checkout-form">
+                <?php echo csrf_field(); ?>
 
-                @if ($errors->any())
+                <?php if($errors->any()): ?>
                     <div class="alert alert-danger">
                         <i class="ti ti-alert-circle alert-icon"></i>
                         <div>
                             <h6>Please fix the following errors:</h6>
                             <ul style="margin: 0; padding-left: 16px;">
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
+                                <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <li><?php echo e($error); ?></li>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </ul>
                         </div>
                     </div>
-                @endif
+                <?php endif; ?>
 
                 <div class="checkout-layout">
                     <!-- Main Checkout Content -->
@@ -63,23 +85,37 @@
                             </div>
                             <div class="card-body">
                                 <div class="form-group">
-                                    @auth
+                                    <?php if(auth()->guard()->check()): ?>
                                         <label class="form-label">Email Address</label>
                                         <input class="form-control" type="email" name="email"
-                                            value="{{ Auth::user()->email }}" readonly>
+                                            value="<?php echo e(Auth::user()->email); ?>" readonly>
                                         <small class="form-text">
                                             <i class="ti ti-info-circle me-1"></i>
                                             Using your account email. To change this, please update your profile.
                                         </small>
-                                    @else
+                                    <?php else: ?>
                                         <label class="form-label">Email Address *</label>
-                                        <input class="form-control @error('email') is-invalid @enderror" type="email"
-                                            name="email" value="{{ old('email') }}" placeholder="Enter your email address"
+                                        <input class="form-control <?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" type="email"
+                                            name="email" value="<?php echo e(old('email')); ?>" placeholder="Enter your email address"
                                             required>
-                                        @error('email')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    @endauth
+                                        <?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                            <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                                    <?php endif; ?>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-checkbox">
@@ -100,42 +136,45 @@
                                 </h3>
                             </div>
                             <div class="card-body">
-                                @if (Auth::check() && $addresses->count() > 0)
+                                <?php if(Auth::check() && $addresses->count() > 0): ?>
                                     <div class="address-selection">
-                                        @foreach ($addresses as $address)
+                                        <?php $__currentLoopData = $addresses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $address): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                             <div class="address-option">
                                                 <label class="address-radio-label">
                                                     <input type="radio" name="shipping_address_id"
-                                                        value="{{ $address->id }}"
-                                                        {{ ($defaultAddress && $defaultAddress->id == $address->id) || $loop->first ? 'checked' : '' }}
+                                                        value="<?php echo e($address->id); ?>"
+                                                        <?php echo e(($defaultAddress && $defaultAddress->id == $address->id) || $loop->first ? 'checked' : ''); ?>
+
                                                         onchange="toggleAddressForm()">
                                                     <div class="address-card">
                                                         <div class="address-header">
                                                             <div class="address-title">
-                                                                <strong>{{ $address->title }}</strong>
-                                                                @if ($address->is_default)
+                                                                <strong><?php echo e($address->title); ?></strong>
+                                                                <?php if($address->is_default): ?>
                                                                     <span class="badge badge-primary">Default</span>
-                                                                @endif
+                                                                <?php endif; ?>
                                                             </div>
                                                         </div>
                                                         <div class="address-details">
                                                             <div class="address-name">
-                                                                {{ $address->full_name }}</div>
+                                                                <?php echo e($address->full_name); ?></div>
                                                             <div class="address-info">
-                                                                {{ $address->full_address }}</div>
-                                                            <div class="address-phone">{{ $address->phone }}
+                                                                <?php echo e($address->full_address); ?></div>
+                                                            <div class="address-phone"><?php echo e($address->phone); ?>
+
                                                             </div>
-                                                            @if ($address->hasCoordinates())
+                                                            <?php if($address->hasCoordinates()): ?>
                                                                 <div class="address-coords">
                                                                     <i class="ti ti-map-pin me-1"></i>
-                                                                    {{ $address->coordinates }}
+                                                                    <?php echo e($address->coordinates); ?>
+
                                                                 </div>
-                                                            @endif
+                                                            <?php endif; ?>
                                                         </div>
                                                     </div>
                                                 </label>
                                             </div>
-                                        @endforeach
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
                                         <!-- Add New Address Option -->
                                         <div class="address-option">
@@ -150,45 +189,87 @@
                                             </div>
                                         </div>
                                     </div>
-                                @else
+                                <?php else: ?>
                                     <!-- Manual Address Form -->
                                     <div class="address-form" id="address-form">
                                         <div class="form-row">
                                             <div class="form-group">
                                                 <label class="form-label">First Name *</label>
-                                                <input class="form-control @error('first_name') is-invalid @enderror"
+                                                <input class="form-control <?php $__errorArgs = ['first_name'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                                                     type="text" name="first_name"
-                                                    value="{{ old('first_name', Auth::user()->name ?? '') }}"
+                                                    value="<?php echo e(old('first_name', Auth::user()->name ?? '')); ?>"
                                                     placeholder="Enter your first name" required>
-                                                @error('first_name')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
+                                                <?php $__errorArgs = ['first_name'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                    <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                             </div>
                                             <div class="form-group">
                                                 <label class="form-label">Last Name *</label>
-                                                <input class="form-control @error('last_name') is-invalid @enderror"
-                                                    type="text" name="last_name" value="{{ old('last_name') }}"
+                                                <input class="form-control <?php $__errorArgs = ['last_name'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                                                    type="text" name="last_name" value="<?php echo e(old('last_name')); ?>"
                                                     placeholder="Enter your last name" required>
-                                                @error('last_name')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
+                                                <?php $__errorArgs = ['last_name'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                    <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                             </div>
                                         </div>
 
                                         <div class="form-group">
                                             <label class="form-label">Address Line 1 *</label>
-                                            <input class="form-control @error('address_1') is-invalid @enderror"
-                                                type="text" name="address_1" value="{{ old('address_1') }}"
+                                            <input class="form-control <?php $__errorArgs = ['address_1'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                                                type="text" name="address_1" value="<?php echo e(old('address_1')); ?>"
                                                 placeholder="Street address, P.O. box, company name" required>
-                                            @error('address_1')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
+                                            <?php $__errorArgs = ['address_1'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                         </div>
 
                                         <div class="form-group">
                                             <label class="form-label">Address Line 2</label>
                                             <input class="form-control" type="text" name="address_2"
-                                                value="{{ old('address_2') }}"
+                                                value="<?php echo e(old('address_2')); ?>"
                                                 placeholder="Apartment, suite, unit, building, floor, etc.">
                                         </div>
 
@@ -204,61 +285,103 @@
                                             </div>
                                             <div class="form-group">
                                                 <label class="form-label">City *</label>
-                                                <input class="form-control @error('city') is-invalid @enderror"
-                                                    type="text" name="city" value="{{ old('city') }}"
+                                                <input class="form-control <?php $__errorArgs = ['city'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                                                    type="text" name="city" value="<?php echo e(old('city')); ?>"
                                                     placeholder="Enter your city" required>
-                                                @error('city')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
+                                                <?php $__errorArgs = ['city'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                    <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                             </div>
                                         </div>
 
                                         <div class="form-row">
                                             <div class="form-group">
                                                 <label class="form-label">PostCode / ZIP *</label>
-                                                <input class="form-control @error('postal_code') is-invalid @enderror"
-                                                    type="text" name="postal_code" value="{{ old('postal_code') }}"
+                                                <input class="form-control <?php $__errorArgs = ['postal_code'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                                                    type="text" name="postal_code" value="<?php echo e(old('postal_code')); ?>"
                                                     placeholder="Enter postal code" required>
-                                                @error('postal_code')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
+                                                <?php $__errorArgs = ['postal_code'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                    <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                             </div>
                                             <div class="form-group">
                                                 <label class="form-label">Phone Number *</label>
-                                                <input class="form-control @error('phone') is-invalid @enderror"
+                                                <input class="form-control <?php $__errorArgs = ['phone'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
                                                     type="text" name="phone"
-                                                    value="{{ old('phone', Auth::user()->phone ?? '') }}"
+                                                    value="<?php echo e(old('phone', Auth::user()->phone ?? '')); ?>"
                                                     placeholder="Enter your phone number" required>
-                                                @error('phone')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
+                                                <?php $__errorArgs = ['phone'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                                    <div class="invalid-feedback"><?php echo e($message); ?></div>
+                                                <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
                                             </div>
                                         </div>
 
                                         <div class="form-group">
                                             <label class="form-label">Company Name</label>
                                             <input class="form-control" type="text" name="company_name"
-                                                value="{{ old('company_name') }}"
+                                                value="<?php echo e(old('company_name')); ?>"
                                                 placeholder="Enter company name (optional)">
                                         </div>
 
                                         <div class="form-group">
                                             <label class="form-label">Additional Information</label>
                                             <textarea class="form-control" name="additional_info" rows="3"
-                                                placeholder="Any special delivery instructions...">{{ old('additional_info') }}</textarea>
+                                                placeholder="Any special delivery instructions..."><?php echo e(old('additional_info')); ?></textarea>
                                         </div>
 
                                         <!-- Hidden coordinates fields -->
                                         <input type="hidden" name="latitude" id="new_latitude" value="">
                                         <input type="hidden" name="longitude" id="new_longitude" value="">
                                     </div>
-                                @endif
+                                <?php endif; ?>
                             </div>
                         </div>
 
                         <!-- Navigation Buttons -->
                         <div class="checkout-navigation">
-                            <a href="{{ route('cart.index') }}" class="btn btn-outline-secondary">
+                            <a href="<?php echo e(route('cart.index')); ?>" class="btn btn-outline-secondary">
                                 <i class="ti ti-arrow-left me-2"></i>
                                 Return to Cart
                             </a>
@@ -283,36 +406,36 @@
                             <div class="summary-content">
                                 <!-- Order Items -->
                                 <div class="order-items">
-                                    @foreach ($cartItems as $item)
+                                    <?php $__currentLoopData = $cartItems; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                         <div class="order-item">
                                             <div class="item-image">
-                                                @if ($item['product_image'])
-                                                    <img src="{{ $item['product_image'] }}"
-                                                        alt="{{ $item['product_title'] }}"
-                                                        onerror="this.src='{{ asset('assets/imgs/template/product-placeholder.jpg') }}'">
-                                                @else
+                                                <?php if($item['product_image']): ?>
+                                                    <img src="<?php echo e($item['product_image']); ?>"
+                                                        alt="<?php echo e($item['product_title']); ?>"
+                                                        onerror="this.src='<?php echo e(asset('assets/imgs/template/product-placeholder.jpg')); ?>'">
+                                                <?php else: ?>
                                                     <div class="image-placeholder">
                                                         <i class="ti ti-photo"></i>
                                                     </div>
-                                                @endif
+                                                <?php endif; ?>
                                             </div>
                                             <div class="item-details">
                                                 <h4 class="item-title">
                                                     <a
-                                                        href="{{ $item['product_url'] }}">{{ Str::limit($item['product_title'], 40) }}</a>
+                                                        href="<?php echo e($item['product_url']); ?>"><?php echo e(Str::limit($item['product_title'], 40)); ?></a>
                                                 </h4>
                                                 <div class="item-meta">
                                                     <span
-                                                        class="item-category">{{ $item['product']->category->name ?? 'Product' }}</span>
+                                                        class="item-category"><?php echo e($item['product']->category->name ?? 'Product'); ?></span>
                                                     <span class="item-quantity">Qty:
-                                                        {{ $item['quantity'] }}</span>
+                                                        <?php echo e($item['quantity']); ?></span>
                                                 </div>
                                             </div>
                                             <div class="item-price">
-                                                {{ number_format($item['total_price'], 0) }} DJF
+                                                <?php echo e(number_format($item['total_price'], 0)); ?> DJF
                                             </div>
                                         </div>
-                                    @endforeach
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </div>
 
                                 <!-- Coupon Section -->
@@ -329,24 +452,27 @@
                                 <div class="order-totals">
                                     <div class="total-row">
                                         <span class="total-label">Subtotal</span>
-                                        <span class="total-value">{{ number_format($subtotal, 0) }} DJF</span>
+                                        <span class="total-value"><?php echo e(number_format($subtotal, 0)); ?> DJF</span>
                                     </div>
                                     <div class="total-row">
                                         <span class="total-label">Shipping</span>
-                                        <span class="total-value">{{ number_format($shippingCost, 0) }}
+                                        <span class="total-value"><?php echo e(number_format($shippingCost, 0)); ?>
+
                                             DJF</span>
                                     </div>
-                                    @if ($taxAmount > 0)
+                                    <?php if($taxAmount > 0): ?>
                                         <div class="total-row">
                                             <span class="total-label">Tax</span>
-                                            <span class="total-value">{{ number_format($taxAmount, 0) }}
+                                            <span class="total-value"><?php echo e(number_format($taxAmount, 0)); ?>
+
                                                 DJF</span>
                                         </div>
-                                    @endif
+                                    <?php endif; ?>
                                     <div class="total-divider"></div>
                                     <div class="total-row total-final">
                                         <span class="total-label">Total</span>
-                                        <span class="total-value" id="order-total">{{ number_format($finalTotal, 0) }}
+                                        <span class="total-value" id="order-total"><?php echo e(number_format($finalTotal, 0)); ?>
+
                                             DJF</span>
                                     </div>
                                 </div>
@@ -359,7 +485,7 @@
     </div>
 
     <!-- New Address Modal -->
-    @auth
+    <?php if(auth()->guard()->check()): ?>
         <div class="modal fade" id="newAddressModal" tabindex="-1">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -367,8 +493,8 @@
                         <h5 class="modal-title">Add New Address</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
-                    <form action="{{ route('buyer.dashboard.addresses.store') }}" method="POST">
-                        @csrf
+                    <form action="<?php echo e(route('buyer.dashboard.addresses.store')); ?>" method="POST">
+                        <?php echo csrf_field(); ?>
                         <div class="modal-body">
                             <!-- Map Selection Section -->
                             <div class="map-section">
@@ -494,7 +620,7 @@
                 </div>
             </div>
         </div>
-    @endauth
+    <?php endif; ?>
 
     <style>
         :root {
@@ -1198,6 +1324,35 @@
             margin-top: var(--spacing-sm);
         }
 
+        /* Form Grid */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-md);
+        }
+
+        .form-grid-3 {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+
+        .form-divider {
+            height: 1px;
+            background: var(--gray-200);
+            margin: var(--spacing-xl) 0;
+        }
+
+        .checkbox-input {
+            width: 16px;
+            height: 16px;
+            border-radius: var(--radius-sm);
+        }
+
+        .checkbox-label {
+            font-size: 14px;
+            color: var(--gray-700);
+            cursor: pointer;
+        }
+
         /* Responsive Design */
         @media (max-width: 1024px) {
             .checkout-layout {
@@ -1213,6 +1368,18 @@
                 flex-direction: column;
                 align-items: stretch;
                 gap: var(--spacing-md);
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-grid-3 {
+                grid-template-columns: 1fr;
+            }
+
+            .map-controls {
+                flex-direction: column;
             }
         }
 
@@ -1245,12 +1412,18 @@
                 width: 100%;
             }
 
-            .map-controls {
+            .coupon-input-group {
                 flex-direction: column;
             }
 
-            .coupon-input-group {
-                flex-direction: column;
+            .modal-body,
+            .modal-header,
+            .modal-footer {
+                padding: var(--spacing-md);
+            }
+
+            .map-container {
+                height: 300px;
             }
         }
 
@@ -1262,272 +1435,6 @@
 
             to {
                 transform: rotate(360deg);
-            }
-
-            /* Modal Styles from addresses page */
-            .modal-header {
-                padding: var(--spacing-lg);
-                border-bottom: 1px solid var(--gray-200);
-            }
-
-            .modal-title {
-                font-size: 18px;
-                font-weight: 600;
-                color: var(--gray-900);
-                margin: 0;
-            }
-
-            .modal-body {
-                padding: var(--spacing-lg);
-            }
-
-            .modal-footer {
-                padding: var(--spacing-lg);
-                border-top: 1px solid var(--gray-200);
-                display: flex;
-                gap: var(--spacing-sm);
-                justify-content: flex-end;
-            }
-
-            /* Map Section */
-            .map-section {
-                margin-bottom: var(--spacing-xl);
-            }
-
-            .section-title {
-                font-size: 16px;
-                font-weight: 600;
-                color: var(--gray-900);
-                margin: 0 0 var(--spacing-md) 0;
-            }
-
-            .map-controls {
-                display: flex;
-                gap: var(--spacing-sm);
-                margin-bottom: var(--spacing-md);
-            }
-
-            .map-search-container {
-                position: relative;
-                flex: 1;
-            }
-
-            .map-search-icon {
-                position: absolute;
-                left: var(--spacing-sm);
-                top: 50%;
-                transform: translateY(-50%);
-                color: var(--gray-600);
-                font-size: 14px;
-            }
-
-            .map-search-input {
-                width: 100%;
-                padding: var(--spacing-sm) var(--spacing-sm) var(--spacing-sm) 2.5rem;
-                border: 1px solid var(--gray-300);
-                border-radius: var(--radius-md);
-                font-size: 14px;
-                background: var(--white);
-                transition: all 0.2s ease;
-            }
-
-            .map-search-input:focus {
-                outline: none;
-                border-color: var(--primary-600);
-                box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-            }
-
-            .map-container {
-                height: 400px;
-                width: 100%;
-                border-radius: var(--radius-md);
-                border: 1px solid var(--gray-300);
-                margin-bottom: var(--spacing-md);
-                overflow: hidden;
-            }
-
-            .location-info {
-                background: var(--gray-50);
-                border: 1px solid var(--gray-200);
-                border-radius: var(--radius-md);
-                padding: var(--spacing-md);
-                margin-bottom: var(--spacing-md);
-                display: none;
-            }
-
-            .location-info.show {
-                display: block;
-            }
-
-            .location-details {
-                color: var(--gray-700);
-                font-size: 14px;
-                line-height: 1.5;
-                margin-bottom: var(--spacing-sm);
-            }
-
-            .coordinates-display {
-                font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-                color: var(--gray-600);
-                font-size: 12px;
-            }
-
-            .map-help-text {
-                color: var(--gray-600);
-                font-size: 12px;
-                display: flex;
-                align-items: flex-start;
-                gap: var(--spacing-xs);
-            }
-
-            /* Form Styles */
-            .form-divider {
-                height: 1px;
-                background: var(--gray-200);
-                margin: var(--spacing-xl) 0;
-            }
-
-            .form-grid {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: var(--spacing-md);
-            }
-
-            .form-grid-3 {
-                grid-template-columns: 1fr 1fr 1fr;
-            }
-
-            .form-group {
-                display: flex;
-                flex-direction: column;
-                gap: var(--spacing-xs);
-                margin-bottom: var(--spacing-md);
-            }
-
-            .form-label {
-                font-size: 14px;
-                font-weight: 500;
-                color: var(--gray-700);
-            }
-
-            .form-control {
-                padding: var(--spacing-sm) var(--spacing-md);
-                border: 1px solid var(--gray-300);
-                border-radius: var(--radius-md);
-                font-size: 14px;
-                background: var(--white);
-                transition: all 0.2s ease;
-            }
-
-            .form-control:focus {
-                outline: none;
-                border-color: var(--primary-600);
-                box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-            }
-
-            .form-checkbox {
-                display: flex;
-                align-items: center;
-                gap: var(--spacing-sm);
-            }
-
-            .checkbox-input {
-                width: 16px;
-                height: 16px;
-                border-radius: var(--radius-sm);
-            }
-
-            .checkbox-label {
-                font-size: 14px;
-                color: var(--gray-700);
-                cursor: pointer;
-            }
-
-            /* Button Styles from addresses page */
-            .btn {
-                display: inline-flex;
-                align-items: center;
-                gap: var(--spacing-xs);
-                padding: var(--spacing-sm) var(--spacing-md);
-                font-size: 14px;
-                font-weight: 500;
-                border-radius: var(--radius-md);
-                text-decoration: none;
-                transition: all 0.2s ease;
-                border: 1px solid;
-                cursor: pointer;
-            }
-
-            .btn-primary {
-                background: var(--primary-600);
-                border-color: var(--primary-600);
-                color: var(--white);
-            }
-
-            .btn-primary:hover {
-                background: var(--primary-700);
-                border-color: var(--primary-700);
-                color: var(--white);
-                text-decoration: none;
-            }
-
-            .btn-outline-primary {
-                background: transparent;
-                border-color: var(--primary-600);
-                color: var(--primary-600);
-            }
-
-            .btn-outline-primary:hover {
-                background: var(--primary-600);
-                color: var(--white);
-                text-decoration: none;
-            }
-
-            .btn-outline-secondary {
-                background: transparent;
-                border-color: var(--gray-300);
-                color: var(--gray-600);
-            }
-
-            .btn-outline-secondary:hover {
-                background: var(--gray-100);
-                color: var(--gray-700);
-                text-decoration: none;
-            }
-
-            /* Modal Content */
-            .modal-content {
-                border-radius: var(--radius-lg);
-                border: none;
-                box-shadow: var(--shadow-lg);
-            }
-
-            /* Responsive Design */
-            @media (max-width: 1024px) {
-                .form-grid {
-                    grid-template-columns: 1fr;
-                }
-
-                .form-grid-3 {
-                    grid-template-columns: 1fr;
-                }
-
-                .map-controls {
-                    flex-direction: column;
-                }
-            }
-
-            @media (max-width: 640px) {
-
-                .modal-body,
-                .modal-header,
-                .modal-footer {
-                    padding: var(--spacing-md);
-                }
-
-                .map-container {
-                    height: 300px;
-                }
             }
         }
     </style>
@@ -1599,7 +1506,7 @@
             }, 5000);
         }
 
-        // Map functionality from addresses page
+        // Map functionality
         let map;
         let marker;
         let geocoder;
@@ -1992,4 +1899,5 @@
             }
         });
     </script>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('buyer.dashboard.layout', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\laragon\www\djibmarket\resources\views/buyer/dashboard/checkout.blade.php ENDPATH**/ ?>

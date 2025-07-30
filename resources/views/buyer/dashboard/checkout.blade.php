@@ -1,5 +1,4 @@
-@extends('layouts.app.buyer')
-
+@extends('buyer.dashboard.layout')
 @section('title', 'Checkout')
 
 <!-- Leaflet CSS and JS for map functionality -->
@@ -8,7 +7,7 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
 <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
 
-@section('content')
+@section('dashboard-content')
     <!-- Breadcrumb -->
     <x-buyer.breadcrumb :items="[
         ['text' => 'Home', 'url' => route('buyer.home')],
@@ -1198,6 +1197,35 @@
             margin-top: var(--spacing-sm);
         }
 
+        /* Form Grid */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-md);
+        }
+
+        .form-grid-3 {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+
+        .form-divider {
+            height: 1px;
+            background: var(--gray-200);
+            margin: var(--spacing-xl) 0;
+        }
+
+        .checkbox-input {
+            width: 16px;
+            height: 16px;
+            border-radius: var(--radius-sm);
+        }
+
+        .checkbox-label {
+            font-size: 14px;
+            color: var(--gray-700);
+            cursor: pointer;
+        }
+
         /* Responsive Design */
         @media (max-width: 1024px) {
             .checkout-layout {
@@ -1213,6 +1241,18 @@
                 flex-direction: column;
                 align-items: stretch;
                 gap: var(--spacing-md);
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-grid-3 {
+                grid-template-columns: 1fr;
+            }
+
+            .map-controls {
+                flex-direction: column;
             }
         }
 
@@ -1245,12 +1285,18 @@
                 width: 100%;
             }
 
-            .map-controls {
+            .coupon-input-group {
                 flex-direction: column;
             }
 
-            .coupon-input-group {
-                flex-direction: column;
+            .modal-body,
+            .modal-header,
+            .modal-footer {
+                padding: var(--spacing-md);
+            }
+
+            .map-container {
+                height: 300px;
             }
         }
 
@@ -1262,272 +1308,6 @@
 
             to {
                 transform: rotate(360deg);
-            }
-
-            /* Modal Styles from addresses page */
-            .modal-header {
-                padding: var(--spacing-lg);
-                border-bottom: 1px solid var(--gray-200);
-            }
-
-            .modal-title {
-                font-size: 18px;
-                font-weight: 600;
-                color: var(--gray-900);
-                margin: 0;
-            }
-
-            .modal-body {
-                padding: var(--spacing-lg);
-            }
-
-            .modal-footer {
-                padding: var(--spacing-lg);
-                border-top: 1px solid var(--gray-200);
-                display: flex;
-                gap: var(--spacing-sm);
-                justify-content: flex-end;
-            }
-
-            /* Map Section */
-            .map-section {
-                margin-bottom: var(--spacing-xl);
-            }
-
-            .section-title {
-                font-size: 16px;
-                font-weight: 600;
-                color: var(--gray-900);
-                margin: 0 0 var(--spacing-md) 0;
-            }
-
-            .map-controls {
-                display: flex;
-                gap: var(--spacing-sm);
-                margin-bottom: var(--spacing-md);
-            }
-
-            .map-search-container {
-                position: relative;
-                flex: 1;
-            }
-
-            .map-search-icon {
-                position: absolute;
-                left: var(--spacing-sm);
-                top: 50%;
-                transform: translateY(-50%);
-                color: var(--gray-600);
-                font-size: 14px;
-            }
-
-            .map-search-input {
-                width: 100%;
-                padding: var(--spacing-sm) var(--spacing-sm) var(--spacing-sm) 2.5rem;
-                border: 1px solid var(--gray-300);
-                border-radius: var(--radius-md);
-                font-size: 14px;
-                background: var(--white);
-                transition: all 0.2s ease;
-            }
-
-            .map-search-input:focus {
-                outline: none;
-                border-color: var(--primary-600);
-                box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-            }
-
-            .map-container {
-                height: 400px;
-                width: 100%;
-                border-radius: var(--radius-md);
-                border: 1px solid var(--gray-300);
-                margin-bottom: var(--spacing-md);
-                overflow: hidden;
-            }
-
-            .location-info {
-                background: var(--gray-50);
-                border: 1px solid var(--gray-200);
-                border-radius: var(--radius-md);
-                padding: var(--spacing-md);
-                margin-bottom: var(--spacing-md);
-                display: none;
-            }
-
-            .location-info.show {
-                display: block;
-            }
-
-            .location-details {
-                color: var(--gray-700);
-                font-size: 14px;
-                line-height: 1.5;
-                margin-bottom: var(--spacing-sm);
-            }
-
-            .coordinates-display {
-                font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-                color: var(--gray-600);
-                font-size: 12px;
-            }
-
-            .map-help-text {
-                color: var(--gray-600);
-                font-size: 12px;
-                display: flex;
-                align-items: flex-start;
-                gap: var(--spacing-xs);
-            }
-
-            /* Form Styles */
-            .form-divider {
-                height: 1px;
-                background: var(--gray-200);
-                margin: var(--spacing-xl) 0;
-            }
-
-            .form-grid {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: var(--spacing-md);
-            }
-
-            .form-grid-3 {
-                grid-template-columns: 1fr 1fr 1fr;
-            }
-
-            .form-group {
-                display: flex;
-                flex-direction: column;
-                gap: var(--spacing-xs);
-                margin-bottom: var(--spacing-md);
-            }
-
-            .form-label {
-                font-size: 14px;
-                font-weight: 500;
-                color: var(--gray-700);
-            }
-
-            .form-control {
-                padding: var(--spacing-sm) var(--spacing-md);
-                border: 1px solid var(--gray-300);
-                border-radius: var(--radius-md);
-                font-size: 14px;
-                background: var(--white);
-                transition: all 0.2s ease;
-            }
-
-            .form-control:focus {
-                outline: none;
-                border-color: var(--primary-600);
-                box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-            }
-
-            .form-checkbox {
-                display: flex;
-                align-items: center;
-                gap: var(--spacing-sm);
-            }
-
-            .checkbox-input {
-                width: 16px;
-                height: 16px;
-                border-radius: var(--radius-sm);
-            }
-
-            .checkbox-label {
-                font-size: 14px;
-                color: var(--gray-700);
-                cursor: pointer;
-            }
-
-            /* Button Styles from addresses page */
-            .btn {
-                display: inline-flex;
-                align-items: center;
-                gap: var(--spacing-xs);
-                padding: var(--spacing-sm) var(--spacing-md);
-                font-size: 14px;
-                font-weight: 500;
-                border-radius: var(--radius-md);
-                text-decoration: none;
-                transition: all 0.2s ease;
-                border: 1px solid;
-                cursor: pointer;
-            }
-
-            .btn-primary {
-                background: var(--primary-600);
-                border-color: var(--primary-600);
-                color: var(--white);
-            }
-
-            .btn-primary:hover {
-                background: var(--primary-700);
-                border-color: var(--primary-700);
-                color: var(--white);
-                text-decoration: none;
-            }
-
-            .btn-outline-primary {
-                background: transparent;
-                border-color: var(--primary-600);
-                color: var(--primary-600);
-            }
-
-            .btn-outline-primary:hover {
-                background: var(--primary-600);
-                color: var(--white);
-                text-decoration: none;
-            }
-
-            .btn-outline-secondary {
-                background: transparent;
-                border-color: var(--gray-300);
-                color: var(--gray-600);
-            }
-
-            .btn-outline-secondary:hover {
-                background: var(--gray-100);
-                color: var(--gray-700);
-                text-decoration: none;
-            }
-
-            /* Modal Content */
-            .modal-content {
-                border-radius: var(--radius-lg);
-                border: none;
-                box-shadow: var(--shadow-lg);
-            }
-
-            /* Responsive Design */
-            @media (max-width: 1024px) {
-                .form-grid {
-                    grid-template-columns: 1fr;
-                }
-
-                .form-grid-3 {
-                    grid-template-columns: 1fr;
-                }
-
-                .map-controls {
-                    flex-direction: column;
-                }
-            }
-
-            @media (max-width: 640px) {
-
-                .modal-body,
-                .modal-header,
-                .modal-footer {
-                    padding: var(--spacing-md);
-                }
-
-                .map-container {
-                    height: 300px;
-                }
             }
         }
     </style>
@@ -1599,7 +1379,7 @@
             }, 5000);
         }
 
-        // Map functionality from addresses page
+        // Map functionality
         let map;
         let marker;
         let geocoder;

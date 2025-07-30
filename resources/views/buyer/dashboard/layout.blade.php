@@ -526,6 +526,13 @@
                             <span>My Cart</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="{{ route('checkout.index') }}"
+                            class="{{ request()->routeIs('checkout.index') ? 'active' : '' }}">
+                            <i class="ti ti-credit-card"></i>
+                            <span>Checkout</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
 

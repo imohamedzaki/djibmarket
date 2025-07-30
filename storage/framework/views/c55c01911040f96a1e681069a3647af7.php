@@ -527,6 +527,13 @@
                             <span>My Cart</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="<?php echo e(route('checkout.index')); ?>"
+                            class="<?php echo e(request()->routeIs('checkout.index') ? 'active' : ''); ?>">
+                            <i class="ti ti-credit-card"></i>
+                            <span>Checkout</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
 

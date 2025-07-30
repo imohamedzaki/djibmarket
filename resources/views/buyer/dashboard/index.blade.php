@@ -104,7 +104,8 @@
                 <div class="stat-body">
                     <h3 class="stat-number">{{ $stats['wishlist_items'] }}</h3>
                     <p class="stat-label">Wishlist Items</p>
-                    <span class="stat-change">{{ $stats['wishlist_items'] > 0 ? 'Ready to purchase' : 'Start saving favorites' }}</span>
+                    <span
+                        class="stat-change">{{ $stats['wishlist_items'] > 0 ? 'Ready to purchase' : 'Start saving favorites' }}</span>
                 </div>
             </div>
             <div class="stat-card-footer">
@@ -144,10 +145,12 @@
                                                 class="order-number">
                                                 #{{ $order->order_number ?? 'ORD-' . $order->id }}
                                             </a>
-                                            <span class="order-date">{{ $order->created_at->format('M d, Y \a\t g:i A') }}</span>
+                                            <span
+                                                class="order-date">{{ $order->created_at->format('M d, Y \a\t g:i A') }}</span>
                                         </div>
                                         <div class="order-status">
-                                            <span class="modern-status-badge status-{{ $order->status == 'delivered' ? 'success' : ($order->status == 'pending' ? 'warning' : ($order->status == 'canceled' ? 'danger' : 'info')) }}">
+                                            <span
+                                                class="modern-status-badge status-{{ $order->status == 'delivered' ? 'success' : ($order->status == 'pending' ? 'warning' : ($order->status == 'canceled' ? 'danger' : 'info')) }}">
                                                 <span class="status-dot"></span>
                                                 {{ ucfirst($order->status) }}
                                             </span>
@@ -155,22 +158,24 @@
                                     </div>
                                     <div class="order-item-body">
                                         <div class="order-products">
-                                            @foreach($order->orderItems->take(2) as $item)
-                                                @if($item->product)
+                                            @foreach ($order->orderItems->take(2) as $item)
+                                                @if ($item->product)
                                                     <div class="product-thumb">
-                                                        <img src="{{ $item->product->primary_image_url ?? asset('assets/imgs/template/product-placeholder.jpg') }}" 
-                                                             alt="{{ $item->product->title }}"
-                                                             onerror="this.src='{{ asset('assets/imgs/template/product-placeholder.jpg') }}'">
+                                                        <img src="{{ $item->product->primary_image_url ?? asset('assets/imgs/template/product-placeholder.jpg') }}"
+                                                            alt="{{ $item->product->title }}"
+                                                            onerror="this.src='{{ asset('assets/imgs/template/product-placeholder.jpg') }}'">
                                                     </div>
                                                 @endif
                                             @endforeach
-                                            @if($order->orderItems->count() > 2)
+                                            @if ($order->orderItems->count() > 2)
                                                 <div class="product-more">+{{ $order->orderItems->count() - 2 }}</div>
                                             @endif
                                         </div>
                                         <div class="order-details">
-                                            <span class="order-items">{{ $order->orderItems->count() }} {{ Str::plural('item', $order->orderItems->count()) }}</span>
-                                            <span class="order-total">{{ number_format($order->final_price, 0) }} DJF</span>
+                                            <span class="order-items">{{ $order->orderItems->count() }}
+                                                {{ Str::plural('item', $order->orderItems->count()) }}</span>
+                                            <span class="order-total">{{ number_format($order->final_price, 0) }}
+                                                DJF</span>
                                         </div>
                                     </div>
                                 </div>
@@ -185,7 +190,8 @@
                             </div>
                             <div class="empty-state-content">
                                 <h3 class="empty-title">No orders yet</h3>
-                                <p class="empty-description">When you place your first order, it will appear here. Start browsing our amazing products!</p>
+                                <p class="empty-description">When you place your first order, it will appear here. Start
+                                    browsing our amazing products!</p>
                                 <a href="{{ route('buyer.home') }}" class="modern-btn btn-primary">
                                     <i class="fas fa-shopping-bag"></i>
                                     <span>Start Shopping</span>
@@ -206,7 +212,8 @@
                             <h5 class="section-title">Recently Viewed</h5>
                             <span class="section-subtitle">Products you've browsed</span>
                         </div>
-                        <a href="{{ route('buyer.dashboard.browsing-history') }}" class="modern-btn btn-secondary btn-sm">
+                        <a href="{{ route('buyer.dashboard.browsing-history') }}"
+                            class="modern-btn btn-secondary btn-sm">
                             <span>View All</span>
                             <i class="fas fa-arrow-right"></i>
                         </a>
@@ -236,15 +243,19 @@
                                                 </a>
                                             </h6>
                                             <div class="browsing-item-meta">
-                                                @if($history->product->price)
-                                                    <span class="product-price">{{ number_format($history->product->price, 0) }} DJF</span>
+                                                @if ($history->product->price)
+                                                    <span
+                                                        class="product-price">{{ number_format($history->product->price, 0) }}
+                                                        DJF</span>
                                                 @endif
-                                                <span class="browsing-time">{{ $history->viewed_at->diffForHumans() }}</span>
+                                                <span
+                                                    class="browsing-time">{{ $history->viewed_at->diffForHumans() }}</span>
                                             </div>
                                         @else
                                             <h6 class="browsing-item-title unavailable">Product no longer available</h6>
                                             <div class="browsing-item-meta">
-                                                <span class="browsing-time">{{ $history->viewed_at->diffForHumans() }}</span>
+                                                <span
+                                                    class="browsing-time">{{ $history->viewed_at->diffForHumans() }}</span>
                                             </div>
                                         @endif
                                     </div>
@@ -268,7 +279,7 @@
             </div>
 
             <!-- Quick Actions Card -->
-            <div class="modern-card quick-actions-section">
+            <div class="modern-card quick-actions-section mt-4">
                 <div class="modern-card-header">
                     <div class="section-title-group">
                         <h5 class="section-title">Quick Actions</h5>
@@ -286,7 +297,7 @@
                                 <span class="quick-action-count">{{ $stats['addresses'] }} saved</span>
                             </div>
                         </a>
-                        
+
                         <a href="{{ route('buyer.dashboard.return-requests') }}" class="quick-action-item">
                             <div class="quick-action-icon">
                                 <i class="fas fa-undo-alt"></i>
@@ -296,7 +307,7 @@
                                 <span class="quick-action-count">{{ $stats['return_requests'] }} requests</span>
                             </div>
                         </a>
-                        
+
                         <a href="{{ route('buyer.dashboard.tracking') }}" class="quick-action-item">
                             <div class="quick-action-icon">
                                 <i class="fas fa-truck"></i>
@@ -304,6 +315,16 @@
                             <div class="quick-action-content">
                                 <span class="quick-action-title">Track Orders</span>
                                 <span class="quick-action-count">Live tracking</span>
+                            </div>
+                        </a>
+
+                        <a href="{{ route('checkout.index') }}" class="quick-action-item">
+                            <div class="quick-action-icon">
+                                <i class="fas fa-credit-card"></i>
+                            </div>
+                            <div class="quick-action-content">
+                                <span class="quick-action-title">Checkout</span>
+                                <span class="quick-action-count">Complete purchase</span>
                             </div>
                         </a>
                     </div>
@@ -1042,6 +1063,7 @@
         }
 
         @media (max-width: 640px) {
+
             .modern-dashboard-header,
             .modern-stats-grid,
             .modern-dashboard-grid {

@@ -46,7 +46,7 @@ class CheckoutController extends Controller
         $taxAmount = 0; // No tax for now
         $finalTotal = $subtotal + $shippingCost + $taxAmount;
 
-        return view('buyer.checkout.index', compact(
+        return view('buyer.dashboard.checkout', compact(
             'cartItems',
             'cartTotal',
             'cartCount',
