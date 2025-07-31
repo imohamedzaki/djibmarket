@@ -902,31 +902,31 @@
             const dropdownRect = dropdown.getBoundingClientRect();
             const viewportWidth = window.innerWidth;
             const viewportHeight = window.innerHeight;
-            
+
             // Default position: below the button, aligned to the right
             let top = buttonRect.bottom + 4;
             let left = buttonRect.right - 160; // dropdown min-width is 160px
-            
+
             // Check if it would go outside the right edge of the viewport
             if (left < 8) {
                 left = buttonRect.left; // Align to left of button instead
             }
-            
+
             // Check if it would go outside the left edge of the viewport
             if (left + 160 > viewportWidth - 8) {
                 left = viewportWidth - 160 - 8; // Keep within viewport with 8px margin
             }
-            
+
             // Check if it would go outside the bottom of the viewport
             if (top + 100 > viewportHeight - 8) { // Assuming max dropdown height of ~100px
                 top = buttonRect.top - 100 - 4; // Position above the button instead
             }
-            
+
             // Ensure it doesn't go above the viewport
             if (top < 8) {
                 top = 8;
             }
-            
+
             dropdown.style.top = `${top}px`;
             dropdown.style.left = `${left}px`;
         }
@@ -973,12 +973,12 @@
         function showCustomDialog(options) {
             const {
                 title = 'Confirm',
-                message = 'Are you sure?',
-                confirmText = 'Confirm',
-                cancelText = 'Cancel',
-                type = 'info',
-                onConfirm = () => {},
-                onCancel = () => {}
+                    message = 'Are you sure?',
+                    confirmText = 'Confirm',
+                    cancelText = 'Cancel',
+                    type = 'info',
+                    onConfirm = () => {},
+                    onCancel = () => {}
             } = options;
 
             // Remove existing dialogs
@@ -1152,7 +1152,8 @@
                                 // Show success message
                                 showCustomDialog({
                                     title: 'Order Cancelled',
-                                    message: data.message || 'Your order has been successfully cancelled.',
+                                    message: data.message ||
+                                        'Your order has been successfully cancelled.',
                                     confirmText: 'OK',
                                     type: 'success',
                                     onConfirm: function() {

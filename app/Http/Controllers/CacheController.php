@@ -18,15 +18,15 @@ class CacheController extends Controller
             \Illuminate\Support\Facades\Artisan::call('view:clear');
             \Illuminate\Support\Facades\Artisan::call('event:clear');
             \Illuminate\Support\Facades\Artisan::call('queue:clear');
+            \Illuminate\Support\Facades\Artisan::call('config:cache');
 
-            // Try to clear compiled services and packages
             try {
                 \Illuminate\Support\Facades\Artisan::call('clear-compiled');
             } catch (\Exception $e) {
                 // Ignore if command doesn't exist
             }
 
-            return redirect($previousUrl)->with('success', 'All caches cleared successfully!');
+            return redirect($previousUrl)->with('success', 'Emergency cache clear completed!');
         } catch (\Exception $e) {
             return redirect($previousUrl)->with('error', 'Error clearing caches: ' . $e->getMessage());
         }
@@ -44,6 +44,7 @@ class CacheController extends Controller
             \Illuminate\Support\Facades\Artisan::call('view:clear');
             \Illuminate\Support\Facades\Artisan::call('event:clear');
             \Illuminate\Support\Facades\Artisan::call('queue:clear');
+            \Illuminate\Support\Facades\Artisan::call('config:cache');
 
             try {
                 \Illuminate\Support\Facades\Artisan::call('clear-compiled');

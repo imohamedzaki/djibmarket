@@ -326,6 +326,203 @@
         /* gray-400 */
     }
 
+    /* Processing Sub-steps Styles */
+    .processing-substeps {
+        margin-top: 15px;
+        padding-left: 20px;
+        border-left: 2px solid #e5e7eb;
+    }
+
+    .processing-substep {
+        display: flex;
+        align-items: center;
+        margin-bottom: 12px;
+        padding: 8px 12px;
+        background: #f8f9fa;
+        border-radius: 6px;
+        border: 1px solid #e9ecef;
+        transition: all 0.3s ease;
+    }
+
+    .processing-substep:hover {
+        background: #e9ecef;
+        transform: translateX(5px);
+    }
+
+    .processing-substep.completed {
+        background: #d1fae5;
+        border-color: #10b981;
+    }
+
+    .processing-substep.completed .substep-icon {
+        background: #10b981;
+        color: white;
+    }
+
+    .processing-substep.pending {
+        background: #fef3c7;
+        border-color: #f59e0b;
+    }
+
+    .processing-substep.pending .substep-icon {
+        background: #f59e0b;
+        color: white;
+    }
+
+    .substep-icon {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+        margin-right: 10px;
+        background: #6c757d;
+        color: white;
+    }
+
+    .substep-content {
+        flex: 1;
+    }
+
+    .substep-title {
+        font-size: 13px;
+        font-weight: 500;
+        margin: 0;
+        color: #374151;
+    }
+
+    .substep-description {
+        font-size: 11px;
+        color: #6b7280;
+        margin: 0;
+    }
+
+    /* Enhanced Order Actions Styles */
+    .order-actions-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .order-actions-header {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgb(221 221 221 / 51%);
+        padding: 20px;
+    }
+
+    .order-actions-header h5 {
+        color: white;
+        margin: 0;
+        font-weight: 600;
+    }
+
+    .order-actions-body {
+        padding: 20px;
+        background: rgba(255, 255, 255, 0.95);
+    }
+
+    .action-button {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        padding: 15px 20px;
+        margin-bottom: 12px;
+        border: none;
+        border-radius: 10px;
+        font-weight: 500;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .action-button::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s ease;
+    }
+
+    .action-button:hover::before {
+        left: 100%;
+    }
+
+    .action-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .action-button.btn-danger {
+        background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+        color: white;
+    }
+
+    .action-button.btn-warning {
+        background: linear-gradient(135deg, #ffa726, #ff9800);
+        color: white;
+    }
+
+    .action-button.btn-info {
+        background: linear-gradient(135deg, #4fc3f7, #29b6f6);
+        color: white;
+    }
+
+    .action-button.btn-secondary {
+        background: linear-gradient(135deg, #9e9e9e, #757575);
+        color: white;
+    }
+
+    .action-button.btn-success {
+        background: linear-gradient(135deg, #66bb6a, #4caf50);
+        color: white;
+    }
+
+    .action-button .btn-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.2);
+        margin-right: 15px;
+    }
+
+    .action-button .btn-content {
+        flex: 1;
+        text-align: left;
+    }
+
+    .action-button .btn-title {
+        font-weight: 600;
+        margin-bottom: 2px;
+    }
+
+    .action-button .btn-description {
+        font-size: 12px;
+        opacity: 0.9;
+    }
+
+    .action-button .btn-arrow {
+        font-size: 18px;
+        opacity: 0.7;
+        transition: transform 0.3s ease;
+    }
+
+    .action-button:hover .btn-arrow {
+        transform: translateX(5px);
+    }
+
     @media (max-width: 768px) {
         .order-item .row {
             text-align: center;
@@ -341,6 +538,16 @@
 
         .tracking-step {
             padding-left: 15px;
+        }
+
+        .action-button {
+            padding: 12px 15px;
+        }
+
+        .action-button .btn-icon {
+            width: 35px;
+            height: 35px;
+            margin-right: 12px;
         }
     }
 </style>
@@ -396,6 +603,77 @@
             type: 'warning',
             onConfirm: function() {
                 window.open('https://wa.me/25377608558', '_blank');
+            }
+        });
+    }
+
+    function showOrderStatusDialog() {
+        const processingSteps = [{
+                title: 'Item Pickup',
+                description: 'Taking the item from the seller',
+                status: 'completed',
+                icon: 'fas fa-hand-holding-box'
+            },
+            {
+                title: 'Stock Management',
+                description: 'Putting the item in stock',
+                status: 'completed',
+                icon: 'fas fa-boxes'
+            },
+            {
+                title: 'Packaging',
+                description: 'Putting them in appropriate packaging',
+                status: 'pending',
+                icon: 'fas fa-box-open'
+            },
+            {
+                title: 'Quality Check',
+                description: 'Final quality inspection',
+                status: 'pending',
+                icon: 'fas fa-search'
+            }
+        ];
+
+        let stepsHtml = '';
+        processingSteps.forEach((step, index) => {
+            const statusClass = step.status === 'completed' ? 'completed' : 'pending';
+            const statusIcon = step.status === 'completed' ? 'fas fa-check' : 'fas fa-clock';
+
+            stepsHtml += `
+                <div class="processing-substep ${statusClass}" style="margin-bottom: 15px;">
+                    <div class="substep-icon">
+                        <i class="${step.icon}"></i>
+                    </div>
+                    <div class="substep-content">
+                        <div class="substep-title">${step.title}</div>
+                        <div class="substep-description">${step.description}</div>
+                    </div>
+                    <div style="margin-left: auto;">
+                        <i class="${statusIcon}" style="color: ${step.status === 'completed' ? '#10b981' : '#f59e0b'};"></i>
+                    </div>
+                </div>
+            `;
+        });
+
+        showCustomDialog({
+            title: 'Order Processing Status',
+            message: `
+                <div style="margin-bottom: 20px;">
+                    <p style="margin-bottom: 15px; color: #374151;">Your order is currently being processed. Here are the detailed steps:</p>
+                    ${stepsHtml}
+                </div>
+                <div style="background: #f3f4f6; padding: 15px; border-radius: 8px; margin-top: 20px;">
+                    <p style="margin: 0; font-size: 14px; color: #6b7280;">
+                        <i class="fas fa-info-circle me-2"></i>
+                        We'll notify you when your order is ready for shipment.
+                    </p>
+                </div>
+            `,
+            confirmText: 'Got it',
+            cancelText: 'Close',
+            type: 'info',
+            onConfirm: function() {
+                // Dialog will close automatically
             }
         });
     }
@@ -760,6 +1038,34 @@
                                     'delivered' => 'Your order has been successfully delivered.',
                                     'canceled' => 'The order has been canceled.',
                                 ];
+
+                                // Processing sub-steps
+                                $processingSubsteps = [
+                                    'pickup' => [
+                                        'title' => 'Item Pickup',
+                                        'description' => 'Taking the item from the seller',
+                                        'icon' => 'fas fa-hand-holding-box',
+                                        'status' => 'completed',
+                                    ],
+                                    'stock' => [
+                                        'title' => 'Stock Management',
+                                        'description' => 'Putting the item in stock',
+                                        'icon' => 'fas fa-boxes',
+                                        'status' => 'completed',
+                                    ],
+                                    'packaging' => [
+                                        'title' => 'Packaging',
+                                        'description' => 'Putting them in appropriate packaging',
+                                        'icon' => 'fas fa-box-open',
+                                        'status' => 'pending',
+                                    ],
+                                    'quality_check' => [
+                                        'title' => 'Quality Check',
+                                        'description' => 'Final quality inspection',
+                                        'icon' => 'fas fa-search',
+                                        'status' => 'pending',
+                                    ],
+                                ];
                             @endphp
 
                             @if ($order->status === 'canceled')
@@ -812,6 +1118,24 @@
                                                         <i class="fas fa-calendar-alt"></i>
                                                         Estimated delivery:
                                                         {{ $log->estimated_delivery_time->format('M d, Y') }}
+                                                    </div>
+                                                @endif
+
+                                                @if ($status === 'processing')
+                                                    <div class="processing-substeps">
+                                                        @foreach ($processingSubsteps as $key => $substep)
+                                                            <div class="processing-substep {{ $substep['status'] }}">
+                                                                <div class="substep-icon">
+                                                                    <i class="{{ $substep['icon'] }}"></i>
+                                                                </div>
+                                                                <div class="substep-content">
+                                                                    <div class="substep-title">{{ $substep['title'] }}
+                                                                    </div>
+                                                                    <div class="substep-description">
+                                                                        {{ $substep['description'] }}</div>
+                                                                </div>
+                                                            </div>
+                                                        @endforeach
                                                     </div>
                                                 @endif
                                             @else
@@ -884,31 +1208,94 @@
             </div>
 
             <!-- Order Actions -->
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0">Order Actions</h5>
+            <div class="card order-actions-card">
+                <div class="order-actions-header">
+                    <h5 class="mb-0" style="color:#212529;">
+                        <i class="fas fa-cogs me-2"></i>Order Actions
+                    </h5>
                 </div>
-                <div class="card-body">
+                <div class="order-actions-body">
                     @if ($order->canBeCanceled())
-                        <button type="button" class="btn btn-danger btn-block mb-2" onclick="showCancelOrderDialog()">
-                            <i class="fas fa-times"></i> Cancel Order
+                        <button type="button" class="action-button btn-danger" onclick="showCancelOrderDialog()">
+                            <div class="d-flex align-items-center">
+                                <div class="btn-icon">
+                                    <i class="fas fa-times"></i>
+                                </div>
+                                <div class="btn-content">
+                                    <div class="btn-title">Cancel Order</div>
+                                    <div class="btn-description">Cancel this order and request refund</div>
+                                </div>
+                            </div>
+                            <div class="btn-arrow">
+                                <i class="fas fa-chevron-right"></i>
+                            </div>
                         </button>
                     @endif
 
                     @if (in_array($order->status, ['delivered']))
-                        <button class="btn btn-warning btn-block" data-bs-toggle="modal"
+                        <button class="action-button btn-warning" data-bs-toggle="modal"
                             data-bs-target="#returnRequestModal">
-                            <i class="fas fa-undo"></i> Request Return
+                            <div class="d-flex align-items-center">
+                                <div class="btn-icon">
+                                    <i class="fas fa-undo"></i>
+                                </div>
+                                <div class="btn-content">
+                                    <div class="btn-title">Request Return</div>
+                                    <div class="btn-description">Return items and get refund</div>
+                                </div>
+                            </div>
+                            <div class="btn-arrow">
+                                <i class="fas fa-chevron-right"></i>
+                            </div>
                         </button>
                     @endif
 
-                    <a href="{{ route('buyer.dashboard.orders.invoice', $order) }}" class="btn btn-info btn-block">
-                        <i class="fas fa-download"></i> Download Invoice
+                    <a href="{{ route('buyer.dashboard.orders.invoice', $order) }}" class="action-button btn-info">
+                        <div class="d-flex align-items-center">
+                            <div class="btn-icon">
+                                <i class="fas fa-download"></i>
+                            </div>
+                            <div class="btn-content">
+                                <div class="btn-title">Download Invoice</div>
+                                <div class="btn-description">Get your order invoice PDF</div>
+                            </div>
+                        </div>
+                        <div class="btn-arrow">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
                     </a>
 
-                    <button class="btn btn-secondary btn-block" onclick="showWhatsAppDialog()">
-                        <i class="fab fa-whatsapp"></i> Contact Support
+                    <button class="action-button btn-secondary" onclick="showWhatsAppDialog()">
+                        <div class="d-flex align-items-center">
+                            <div class="btn-icon">
+                                <i class="fab fa-whatsapp"></i>
+                            </div>
+                            <div class="btn-content">
+                                <div class="btn-title">Contact Support</div>
+                                <div class="btn-description">Get help via WhatsApp</div>
+                            </div>
+                        </div>
+                        <div class="btn-arrow">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
                     </button>
+
+                    @if (in_array($order->status, ['pending', 'processing']))
+                        <button class="action-button btn-success" onclick="showOrderStatusDialog()">
+                            <div class="d-flex align-items-center">
+                                <div class="btn-icon">
+                                    <i class="fas fa-info-circle"></i>
+                                </div>
+                                <div class="btn-content">
+                                    <div class="btn-title">Order Status</div>
+                                    <div class="btn-description">Check detailed order progress</div>
+                                </div>
+                            </div>
+                            <div class="btn-arrow">
+                                <i class="fas fa-chevron-right"></i>
+                            </div>
+                        </button>
+                    @endif
                 </div>
             </div>
         </div>

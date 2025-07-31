@@ -12,10 +12,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ContactFormRequest;
 use Illuminate\Support\Facades\DB;
-use App\Services\CartService;
-use Illuminate\Support\Facades\Auth;
 
-class HomeController extends Controller
+class HomeControllerCopy extends Controller
 {
     public function index()
     {
@@ -26,16 +24,11 @@ class HomeController extends Controller
             ->take(12)
             ->get();
 
-        // Add cart status to new arrivals products
-        foreach ($newArrivals as $product) {
-            $product->is_in_cart = $this->isProductInCart($product->id);
-        }
-
         // Fetch best selling products (top 9 by total quantity sold)
         $bestSelling = $this->getBestSellingProducts(9);
 
-        // Fetch flash sales products (up to 8 from active flash sales)
-        $flashSalesProducts = $this->getFlashSalesProducts(8);
+        // Fetch flash sales products (top 3 from active flash sales)
+        $flashSalesProducts = $this->getFlashSalesProducts(3);
 
         // Fetch campaigns products (20 products from campaigns)
         $campaignsProducts = $this->getCampaignsProducts(20);
@@ -152,33 +145,21 @@ class HomeController extends Controller
     }
 
     /**
-     * Get flash sales products from active flash sales (randomly selected)
+     * Get flash sales products from active flash sales
      */
-    private function getFlashSalesProducts($limit = 8)
+    private function getFlashSalesProducts($limit = 3)
     {
-        // Get only currently active flash sales (not expired)
-        $activeFlashSales = FlashSale::where('status', FlashSale::STATUS_ACTIVE)
-            ->where('start_at', '<=', now())
-            ->where('end_at', '>', now()) // Changed from >= to > to exclude expired sales
+        // Get active flash sales with their products
+        $activeFlashSales = FlashSale::active()
             ->with(['products' => function ($query) {
-                $query->where('status', 'published')
+                $query->where('status', 'active')
                     ->with(['category', 'reviews']);
             }])
             ->get();
 
-        // If no active sales, return empty collection
-        if ($activeFlashSales->isEmpty()) {
-            return collect();
-        }
-
         $flashSalesProducts = collect();
 
         foreach ($activeFlashSales as $flashSale) {
-            // Double-check that flash sale hasn't expired
-            if ($flashSale->end_at <= now()) {
-                continue; // Skip expired flash sales
-            }
-
             foreach ($flashSale->products as $product) {
                 // Calculate discounted price from flash sale
                 $discountedPrice = $flashSale->getDiscountedPrice($product);
@@ -190,20 +171,13 @@ class HomeController extends Controller
                 $product->flash_sale_discount_type = $flashSale->discount_type;
                 $product->flash_sale_discount_value = $flashSale->discount_value;
                 $product->flash_sale_end_at = $flashSale->end_at;
-                $product->flash_sale_is_active = true; // Only active sales reach here
-
-                // Override the product's price_discounted with flash sale price for product card component
-                $product->price_discounted = $discountedPrice;
-
-                // Check if product is in cart
-                $product->is_in_cart = $this->isProductInCart($product->id);
 
                 $flashSalesProducts->push($product);
             }
         }
 
-        // Return unique products randomly selected (in case a product is in multiple flash sales)
-        return $flashSalesProducts->unique('id')->shuffle()->take($limit);
+        // Return unique products (in case a product is in multiple flash sales)
+        return $flashSalesProducts->unique('id')->take($limit);
     }
 
     /**
@@ -584,22 +558,5 @@ class HomeController extends Controller
         }
 
         return $activeAds;
-    }
-
-    /**
-     * Check if a product is in the user's cart
-     */
-    private function isProductInCart($productId)
-    {
-        $cartService = app(CartService::class);
-        $cartItems = $cartService->getCartItems();
-
-        foreach ($cartItems as $item) {
-            if ($item['product_id'] == $productId) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }
