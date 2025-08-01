@@ -74,8 +74,8 @@ class SellerProductController extends Controller
         // Add seller_id
         $validated['seller_id'] = $seller->id;
 
-        // Set price_discounted to 0 if it's null or empty
-        $validated['price_discounted'] = $validated['price_discounted'] ?? 0;
+        // Set price_discounted to null if it's 0 or empty
+        $validated['price_discounted'] = (!empty($validated['price_discounted']) && $validated['price_discounted'] > 0) ? $validated['price_discounted'] : null;
 
         // Create directories based on seller ID and name
         $sellerName = str_replace(' ', '_', strtolower($seller->name));
@@ -179,8 +179,8 @@ class SellerProductController extends Controller
 
         $validated = $request->validated();
 
-        // Set price_discounted to 0 if it's null or empty
-        $validated['price_discounted'] = $validated['price_discounted'] ?? 0;
+        // Set price_discounted to null if it's 0 or empty
+        $validated['price_discounted'] = (!empty($validated['price_discounted']) && $validated['price_discounted'] > 0) ? $validated['price_discounted'] : null;
 
         // Get the seller
         $seller = Auth::guard('seller')->user();
