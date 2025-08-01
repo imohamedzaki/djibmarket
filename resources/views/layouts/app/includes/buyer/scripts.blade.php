@@ -95,3 +95,5 @@
 
 @yield('js')
 @yield('scripts')
+@stack('js')
+@stack('scripts')

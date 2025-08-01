@@ -2,6 +2,7 @@
 <script src="{{ asset('assets/shared/js/bundle.js') }}"></script>
 <script src="{{ asset('assets/shared/js/scripts.js') }}"></script>
 <script src="{{ asset('assets/shared/js/charts/chart-lms.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
     // Prevent dropdown user from closing when clicking links inside
@@ -21,3 +22,5 @@
 
 @yield('js')
 @yield('scripts')
+@stack('scripts')
+@stack('js')

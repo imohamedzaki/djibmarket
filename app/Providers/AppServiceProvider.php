@@ -11,6 +11,8 @@ use App\Observers\CategoryObserver;
 use Illuminate\Support\Facades\View;
 use App\Models\EmailLog;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -27,6 +29,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        if (DB::getDriverName() === 'mysql') {
+            DB::statement("SET SESSION sql_mode=(SELECT REPLACE(@@sql_mode, 'ONLY_FULL_GROUP_BY', ''))");
+        }
+
         // Observer registration moved to EventServiceProvider
         BusinessActivity::observe(BusinessActivityObserver::class);
         Category::observe(CategoryObserver::class);

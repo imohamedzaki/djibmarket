@@ -15,3 +15,4 @@
 @yield('js')
 @yield('scripts')
 @stack('scripts')
+@stack('js')
