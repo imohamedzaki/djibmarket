@@ -591,6 +591,7 @@
                                     <tr>
                                         <th>Order ID</th>
                                         <th>Customer</th>
+                                        <th>Seller</th>
                                         <th>Items</th>
                                         <th>Total</th>
                                         <th>Status</th>
@@ -603,6 +604,18 @@
                                             <tr>
                                                 <td><strong>#{{ $order->order_number }}</strong></td>
                                                 <td>{{ $order->user->name ?? 'N/A' }}</td>
+                                                <td>
+                                                    @php
+                                                        $sellers = $order->orderItems->pluck('product.seller.name')->filter()->unique();
+                                                    @endphp
+                                                    @if($sellers->count() > 1)
+                                                        <span class="text-muted">Multiple Sellers</span>
+                                                    @elseif($sellers->count() == 1)
+                                                        {{ $sellers->first() }}
+                                                    @else
+                                                        <span class="text-muted">N/A</span>
+                                                    @endif
+                                                </td>
                                                 <td>{{ $order->order_items_count ?? 0 }} items</td>
                                                 <td>{{ number_format($order->final_price ?? 0, 2) }} DJF</td>
                                                 <td>
@@ -632,7 +645,7 @@
                                         @endforeach
                                     @else
                                         <tr>
-                                            <td colspan="6" class="text-center">No orders found</td>
+                                            <td colspan="7" class="text-center">No orders found</td>
                                         </tr>
                                     @endif
                                 </tbody>

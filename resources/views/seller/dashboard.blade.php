@@ -203,8 +203,8 @@
                     <div class="card-inner">
                         <div class="card-title-group align-start mb-4">
                             <div class="card-title">
-                                <h6 class="title mb-1">Top Product Categories</h6>
-                                <p>Best performing categories by sales volume.</p>
+                                <h6 class="title mb-1">Top Selling Categories</h6>
+                                <p>Categories ranked by total number of orders.</p>
                             </div>
                             <div class="card-tools">
                                 <div class="drodown">
@@ -212,41 +212,39 @@
                                         data-bs-toggle="dropdown"><em class="icon ni ni-more-h"></em></a>
                                     <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
                                         <ul class="link-list-opt no-bdr">
-                                            <li><a href="#" class="active"><span>By Sales</span></a></li>
-                                            <li><a href="#"><span>By Revenue</span></a></li>
-                                            <li><a href="#"><span>By Products</span></a></li>
+                                            <li><a href="#" class="active"><span>15 Days</span></a></li>
+                                            <li><a href="#"><span>30 Days</span></a></li>
+                                            <li><a href="#"><span>3 Months</span></a></li>
                                         </ul>
                                     </div>
                                 </div>
                             </div>
                         </div><!-- .card-title-group -->
-                        <div class="d-flex">
-                            <div class="h-250px mt-n2 flex-grow-1">
-                                <canvas class="course-progress-chart" id="courseProgress"></canvas>
-                            </div>
-                            <ul class="flex-shrink-0 gy-2">
-                                @if (isset($topCategories) && $topCategories->count() > 0)
+                        @if (isset($topCategories) && count($topCategories) > 0)
+                            <div class="d-flex">
+                                <div class="h-250px mt-n2 flex-grow-1">
+                                    <canvas class="course-progress-chart" id="courseProgress"></canvas>
+                                </div>
+                                <ul class="flex-shrink-0 gy-2">
                                     @foreach ($topCategories as $index => $category)
                                         <li class="align-center">
                                             <span class="dot dot-lg sq me-1"
                                                 data-bg="{{ ['#f98c45', '#9cabff', '#8feac5', '#6b79c8', '#79f1dc', '#FF65B6', '#6A29FF'][$index % 7] }}"></span>
-                                            <span>{{ $category->name ?? 'Uncategorized' }}
-                                                ({{ $category->total_sold ?? 0 }} sold)
-                                            </span>
+                                            <span>{{ $category->name }} ({{ $category->orders_count }} orders)</span>
                                         </li>
                                     @endforeach
-                                @else
-                                    <li class="align-center">
-                                        <span class="dot dot-lg sq me-1" data-bg="#f98c45"></span>
-                                        <span>No categories with sales yet</span>
-                                    </li>
-                                    <li class="align-center">
-                                        <span class="dot dot-lg sq me-1" data-bg="#9cabff"></span>
-                                        <span>Add products to see data</span>
-                                    </li>
-                                @endif
-                            </ul>
-                        </div><!-- .nk-coin-ovwg -->
+                                </ul>
+                            </div><!-- .nk-coin-ovwg -->
+                        @else
+                            <div class="text-center py-4">
+                                <div class="mb-3">
+                                    <em class="icon ni ni-pie-chart" style="font-size: 3rem; color: #526484;"></em>
+                                </div>
+                                <h6 class="text-muted mb-2">No Category Data</h6>
+                                <p class="text-soft small">Category sales data will appear here<br>once orders are placed.
+                                </p>
+                            </div>
+                        @endif
                     </div><!-- .card-inner -->
                 </div><!-- .card -->
             </div><!-- .col -->
@@ -309,72 +307,6 @@
                 </div><!-- .card -->
             </div><!-- .col -->
             <div class="col-md-6 col-xxl-4">
-                <div class="card card-full">
-                    <div class="card-inner-group">
-                        <div class="card-inner">
-                            <div class="card-title-group">
-                                <div class="card-title">
-                                    <h6 class="title">Recent Orders</h6>
-                                </div>
-                                <div class="card-tools">
-                                    <a href="{{ route('seller.products.index') }}" class="link">View All Orders</a>
-                                </div>
-                            </div>
-                        </div>
-                        @if (isset($recentOrders) && $recentOrders->count() > 0)
-                            @foreach ($recentOrders as $orderItem)
-                                <div class="card-inner card-inner-md">
-                                    <div class="review-item d-flex justify-content-between">
-                                        <div class="user-card">
-                                            <div class="user-avatar bg-primary-dim">
-                                                <span>{{ strtoupper(substr($orderItem->order->user->name ?? 'U', 0, 2)) }}</span>
-                                            </div>
-                                            <div class="user-info">
-                                                <span
-                                                    class="lead-text">{{ $orderItem->order->user->name ?? 'Customer' }}</span>
-                                                <span
-                                                    class="sub-text">{{ $orderItem->product->title ?? 'Product' }}</span>
-                                            </div>
-                                        </div>
-                                        <div class="review-status">
-                                            <div class="amount">
-                                                {{ number_format($orderItem->price * $orderItem->quantity) }} DJF</div>
-                                            <div class="count">Qty: {{ $orderItem->quantity }}</div>
-                                            <div class="status">
-                                                <span
-                                                    class="badge badge-{{ $orderItem->order->status == 'pending' ? 'warning' : 'success' }}">
-                                                    {{ ucfirst($orderItem->order->status) }}
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforeach
-                        @else
-                            <div class="card-inner card-inner-md">
-                                <div class="text-center py-4">
-                                    <em class="icon ni ni-bag text-muted" style="font-size: 3rem;"></em>
-                                    <h6 class="mt-2">No Orders Yet</h6>
-                                    <p class="text-muted">Start selling products to see orders here</p>
-                                    @if (Auth::guard('seller')->user()->status === 'pending')
-                                        <span class="d-inline-block" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                            title="Product creation is only available when your seller application has been accepted">
-                                            <button class="btn btn-primary btn-sm" disabled>
-                                                <em class="icon ni ni-lock"></em> Add Product (Locked)
-                                            </button>
-                                        </span>
-                                    @else
-                                        <a href="{{ route('seller.products.index') }}" class="btn btn-primary btn-sm">
-                                            <em class="icon ni ni-plus"></em> Add Product
-                                        </a>
-                                    @endif
-                                </div>
-                            </div>
-                        @endif
-                    </div>
-                </div><!-- .card -->
-            </div><!-- .col -->
-            <div class="col-md-6 col-xxl-4">
                 <div class="card h-100">
                     <div class="card-inner border-bottom">
                         <div class="card-title-group">
@@ -425,24 +357,79 @@
                     </ul>
                 </div><!-- .card -->
             </div><!-- .col -->
+
+            <!-- Top Buyers Section -->
+            <div class="col-md-6 col-xxl-4">
+                <div class="card card-full">
+                    <div class="card-inner-group">
+                        <div class="card-inner">
+                            <div class="card-title-group">
+                                <div class="card-title">
+                                    <h6 class="title">Top Buyers</h6>
+                                </div>
+                                <div class="card-tools">
+                                    <a href="#" class="link">View All</a>
+                                </div>
+                            </div>
+                        </div>
+                        @if (isset($topBuyers) && count($topBuyers) > 0)
+                            @foreach ($topBuyers as $buyer)
+                                <div class="card-inner card-inner-md">
+                                    <div class="review-item d-flex justify-content-between">
+                                        <div class="user-card">
+                                            <div
+                                                class="user-avatar bg-{{ ['primary', 'info', 'warning', 'pink'][$loop->index % 4] }}-dim">
+                                                <span>{{ strtoupper(substr($buyer->name ?? 'BU', 0, 2)) }}</span>
+                                            </div>
+                                            <div class="user-info">
+                                                <span class="lead-text">{{ $buyer->name ?? 'Unknown Buyer' }}</span>
+                                                <span class="sub-text">{{ $buyer->email ?? 'No email' }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="review-status">
+                                            <div class="buyer-stats text-end">
+                                                <div class="spent-amount text-success fw-bold">
+                                                    {{ number_format(($buyer->total_spent ?? 0) + 0) }} DJF</div>
+                                                <div class="orders-count text-muted">{{ $buyer->total_orders ?? 0 }}
+                                                    Orders</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @else
+                            <div class="card-inner card-inner-md">
+                                <div class="text-center text-muted">
+                                    <p>No buyer data available</p>
+                                </div>
+                            </div>
+                        @endif
+                    </div>
+                </div><!-- .card -->
+            </div><!-- .col -->
+
+
             <div class="col-md-6 col-xxl-8">
                 <div class="card h-100">
                     <div class="card-inner">
                         <div class="card-title-group align-start pb-3 g-2">
                             <div class="card-title card-title-sm">
                                 <h6 class="title">Monthly Orders Activity</h6>
-                                <p>Track your orders performance over time.</p>
+                                <p>Track your orders and total items sold over time.</p>
                             </div>
                             <div class="card-tools">
                                 <em class="card-hint icon ni ni-help" data-bs-toggle="tooltip" data-bs-placement="left"
-                                    title="Orders of this month"></em>
+                                    title="Orders count with total items quantity"></em>
                             </div>
                         </div>
                         <div class="analytic-au">
                             <div class="analytic-data-group analytic-au-group g-3">
                                 <div class="analytic-data analytic-au-data">
                                     <div class="title">Monthly</div>
-                                    <div class="amount">{{ number_format($monthlyOrdersStats['monthly'] ?? 0) }}</div>
+                                    <div class="sub-title text-soft small">[{{ now()->startOfMonth()->format('M d') }} - {{ now()->endOfMonth()->format('M d, Y') }}]</div>
+                                    <div class="amount">{{ number_format($monthlyOrdersStats['monthly'] ?? 0) }} 
+                                        <span class="small text-muted">({{ number_format($monthlyOrdersStats['monthly_items'] ?? 0) }} items)</span>
+                                    </div>
                                     <div class="change up">
                                         <em class="icon ni ni-arrow-long-up"></em>
                                         {{ ($monthlyOrdersStats['monthly'] ?? 0) > 0 ? 'Active' : 'No Orders' }}
@@ -450,7 +437,10 @@
                                 </div>
                                 <div class="analytic-data analytic-au-data">
                                     <div class="title">Weekly</div>
-                                    <div class="amount">{{ number_format($monthlyOrdersStats['weekly'] ?? 0) }}</div>
+                                    <div class="sub-title text-soft small">[{{ now()->startOfWeek()->format('M d') }} - {{ now()->endOfWeek()->format('M d, Y') }}]</div>
+                                    <div class="amount">{{ number_format($monthlyOrdersStats['weekly'] ?? 0) }} 
+                                        <span class="small text-muted">({{ number_format($monthlyOrdersStats['weekly_items'] ?? 0) }} items)</span>
+                                    </div>
                                     <div class="change {{ ($monthlyOrdersStats['weekly'] ?? 0) > 0 ? 'up' : 'down' }}">
                                         <em
                                             class="icon ni ni-arrow-long-{{ ($monthlyOrdersStats['weekly'] ?? 0) > 0 ? 'up' : 'down' }}"></em>
@@ -459,7 +449,9 @@
                                 </div>
                                 <div class="analytic-data analytic-au-data">
                                     <div class="title">Daily (Avg)</div>
-                                    <div class="amount">{{ number_format($monthlyOrdersStats['daily_avg'] ?? 0, 1) }}
+                                    <div class="sub-title text-soft small">[{{ now()->format('M d, Y') }}]</div>
+                                    <div class="amount">{{ number_format(($monthlyOrdersStats['daily_avg'] ?? 0) + 0) }}
+                                        <span class="small text-muted">orders</span>
                                     </div>
                                     <div class="change up">
                                         <em class="icon ni ni-arrow-long-up"></em>
@@ -557,6 +549,172 @@
                     </div>
                 </div><!-- .card -->
             </div><!-- .col -->
+
+            <!-- Popular Payment Methods Section -->
+            <div class="col-md-6 col-xxl-4">
+                <div class="card h-100">
+                    <div class="card-inner">
+                        <div class="card-title-group">
+                            <div class="card-title">
+                                <h6 class="title">Popular Payment Methods</h6>
+                                <p class="text-soft small">Most used payment methods by your customers</p>
+                            </div>
+                            <div class="card-tools">
+                                <div class="dropdown">
+                                    <a href="#" class="dropdown-toggle link link-light link-sm dropdown-indicator"
+                                        data-bs-toggle="dropdown">Last 30 Days</a>
+                                    <div class="dropdown-menu dropdown-menu-sm dropdown-menu-end">
+                                        <ul class="link-list-opt no-bdr">
+                                            <li><a href="#"><span>Last 7 Days</span></a></li>
+                                            <li><a href="#" class="active"><span>Last 30 Days</span></a></li>
+                                            <li><a href="#"><span>Last 90 Days</span></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="payment-methods-list">
+                            <div
+                                class="payment-method-item d-flex justify-content-between align-items-center mb-3 p-3 bg-light rounded">
+                                <div class="d-flex align-items-center">
+                                    <img src="{{ asset('assets/imgs/template/cacpay.png') }}" alt="CAC Pay"
+                                        style="max-height: 32px; margin-right: 12px;">
+                                    <div>
+                                        <div class="fw-medium">CAC Pay</div>
+                                        <div class="text-soft small">Digital wallet</div>
+                                    </div>
+                                </div>
+                                <div class="text-end">
+                                    <div class="text-success fw-bold">{{ $paymentMethodsStats['cacPayOrders'] ?? 0 }}
+                                        orders</div>
+                                    <div class="text-soft small">42.3%</div>
+                                </div>
+                            </div>
+                            <div
+                                class="payment-method-item d-flex justify-content-between align-items-center mb-3 p-3 bg-light rounded">
+                                <div class="d-flex align-items-center">
+                                    <img src="{{ asset('assets/imgs/template/waafi.png') }}" alt="Waafi"
+                                        style="max-height: 32px; margin-right: 12px;">
+                                    <div>
+                                        <div class="fw-medium">Waafi</div>
+                                        <div class="text-soft small">Mobile money</div>
+                                    </div>
+                                </div>
+                                <div class="text-end">
+                                    <div class="text-success fw-bold">{{ $paymentMethodsStats['waafiOrders'] ?? 0 }}
+                                        orders</div>
+                                    <div class="text-soft small">28.7%</div>
+                                </div>
+                            </div>
+                            <div
+                                class="payment-method-item d-flex justify-content-between align-items-center mb-3 p-3 bg-light rounded">
+                                <div class="d-flex align-items-center">
+                                    <img src="{{ asset('assets/imgs/template/dmoney.png') }}" alt="D Money"
+                                        style="max-height: 32px; margin-right: 12px;">
+                                    <div>
+                                        <div class="fw-medium">D Money</div>
+                                        <div class="text-soft small">Mobile payment</div>
+                                    </div>
+                                </div>
+                                <div class="text-end">
+                                    <div class="text-success fw-bold">{{ $paymentMethodsStats['dmoneyOrders'] ?? 0 }}
+                                        orders</div>
+                                    <div class="text-soft small">19.6%</div>
+                                </div>
+                            </div>
+                            <div
+                                class="payment-method-item d-flex justify-content-between align-items-center p-3 bg-light rounded">
+                                <div class="d-flex align-items-center">
+                                    <img src="{{ asset('assets/imgs/template/SabaPay.jpg') }}" alt="Saba Pay"
+                                        style="max-height: 32px; margin-right: 12px;">
+                                    <div>
+                                        <div class="fw-medium">Other Methods</div>
+                                        <div class="text-soft small">Saba Pay, BCI Pay, etc.</div>
+                                    </div>
+                                </div>
+                                <div class="text-end">
+                                    <div class="text-success fw-bold">
+                                        {{ $paymentMethodsStats['otherPaymentOrders'] ?? 0 }} orders</div>
+                                    <div class="text-soft small">9.4%</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- .col -->
+
+
+
+            <!-- Latest Orders Section -->
+            <div class="col-md-6 col-xxl-8">
+                <div class="card">
+                    <div class="card-inner">
+                        <div class="card-title-group">
+                            <div class="card-title">
+                                <h6 class="title">Latest Orders</h6>
+                                <p>Recent orders from your customers</p>
+                            </div>
+                            <div class="card-tools">
+                                <a href="#" class="link">View All Orders</a>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Customer</th>
+                                        <th>Items</th>
+                                        <th>Total</th>
+                                        <th>Status</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (isset($latestOrders) && count($latestOrders) > 0)
+                                        @foreach ($latestOrders as $order)
+                                            <tr>
+                                                <td><strong>#{{ $order->order_number }}</strong></td>
+                                                <td>{{ $order->user->name ?? 'N/A' }}</td>
+                                                <td>{{ $order->order_items_count ?? 0 }} items</td>
+                                                <td>{{ number_format(($order->final_price ?? 0) + 0) }} DJF</td>
+                                                <td>
+                                                    @switch($order->status)
+                                                        @case('completed')
+                                                            <span class="badge bg-success">Completed</span>
+                                                        @break
+
+                                                        @case('pending')
+                                                            <span class="badge bg-warning">Pending</span>
+                                                        @break
+
+                                                        @case('cancelled')
+                                                            <span class="badge bg-danger">Cancelled</span>
+                                                        @break
+
+                                                        @case('processing')
+                                                            <span class="badge bg-info">Processing</span>
+                                                        @break
+
+                                                        @default
+                                                            <span class="badge bg-secondary">{{ ucfirst($order->status) }}</span>
+                                                    @endswitch
+                                                </td>
+                                                <td>{{ $order->created_at->format('M d, Y') }}</td>
+                                            </tr>
+                                        @endforeach
+                                    @else
+                                        <tr>
+                                            <td colspan="6" class="text-center">No orders found</td>
+                                        </tr>
+                                    @endif
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- .col -->
+
         </div>
     </div>
 
@@ -592,32 +750,36 @@
             };
 
             const topCategoriesChartData = {
-                labels: categorySalesStats.map(item => item.name),
-                dataUnit: 'Sales',
-                stacked: true,
+                labels: @json($topCategories->pluck('name') ?? []),
+                dataUnit: 'Orders',
                 datasets: [{
-                    label: "Total Sold",
+                    label: "Orders Count",
                     backgroundColor: ["#f98c45", "#9cabff", "#8feac5", "#6b79c8", "#79f1dc", "#FF65B6",
                         "#6A29FF"
                     ],
-                    data: categorySalesStats.map(item => item.total_sales)
+                    data: @json($topCategories->pluck('orders_count') ?? []),
+                    borderWidth: 0
                 }]
             };
 
+            // Ensure we have data, create default if empty
             const monthlyOrdersActivityChartData = {
-                labels: currentMonthSalesData.map(item => new Date(item.date).toLocaleDateString('en-US', {
-                    month: 'short',
-                    day: 'numeric'
-                })),
+                labels: currentMonthSalesData.length > 0 ? 
+                    currentMonthSalesData.map(item => new Date(item.date).toLocaleDateString('en-US', {
+                        month: 'short',
+                        day: 'numeric'
+                    })) : ['No Data'],
                 dataUnit: 'Orders',
                 lineTension: .1,
                 datasets: [{
                     label: "Daily Orders",
                     color: "#9cabff",
                     background: "#9cabff",
-                    data: currentMonthSalesData.map(item => item.sales)
+                    data: currentMonthSalesData.length > 0 ? 
+                        currentMonthSalesData.map(item => item.sales) : [0]
                 }]
             };
+            
 
             const totalSalesChartData = {
                 labels: salesData.map(item => new Date(item.date).toLocaleDateString('en-US', {
@@ -712,14 +874,15 @@
                 });
             }
 
-            function categoryBarChart(selector, set_data) {
-                var $selector = selector ? $(selector) : $('.category-chart');
+            function categoryDoughnutChartForCategories(selector, set_data) {
+                var $selector = selector ? $(selector) : $('.course-progress-chart');
                 $selector.each(function() {
                     var chart = new Chart($(this)[0].getContext("2d"), {
-                        type: 'bar',
+                        type: 'doughnut',
                         data: set_data,
                         options: {
-                            indexAxis: 'y',
+                            responsive: true,
+                            maintainAspectRatio: false,
                             plugins: {
                                 legend: {
                                     display: false
@@ -728,15 +891,19 @@
                                     enabled: true,
                                     rtl: NioApp.State.isRTL,
                                     callbacks: {
-                                        label: (context) =>
-                                            `${context.parsed.x} ${set_data.dataUnit}`
+                                        label: function(tooltipItem) {
+                                            const label = set_data.labels[tooltipItem.dataIndex];
+                                            const value = set_data.datasets[0].data[tooltipItem
+                                                .dataIndex];
+                                            return label + ': ' + value + ' ' + set_data.dataUnit;
+                                        }
                                     },
-                                    backgroundColor: '#eff6ff',
+                                    backgroundColor: '#1c2b46',
                                     titleFont: {
                                         size: 13
                                     },
-                                    titleColor: '#6783b8',
-                                    bodyColor: '#9eaecf',
+                                    titleColor: '#fff',
+                                    bodyColor: '#fff',
                                     bodyFont: {
                                         size: 12
                                     },
@@ -744,20 +911,7 @@
                                     displayColors: false
                                 }
                             },
-                            maintainAspectRatio: false,
-                            scales: {
-                                y: {
-                                    display: false,
-                                    stacked: true,
-                                    ticks: {
-                                        beginAtZero: true
-                                    }
-                                },
-                                x: {
-                                    display: false,
-                                    stacked: true
-                                }
-                            }
+                            cutout: '70%'
                         }
                     });
                 });
@@ -907,7 +1061,12 @@
                 salesRevenueBarChart('#enrolement', salesRevenueChartData);
                 lineChart('#totalSells', totalSalesChartData);
                 lineChart('#weeklySells', totalRevenueChartData);
-                categoryBarChart('#courseProgress', topCategoriesChartData);
+
+                // Top Categories Chart - only initialize if there's data
+                @if (isset($topCategories) && count($topCategories) > 0)
+                    categoryDoughnutChartForCategories('#courseProgress', topCategoriesChartData);
+                @endif
+
                 ordersActivityBarChart('#analyticAuData', monthlyOrdersActivityChartData);
                 categoryDoughnutChart('#trafficSources', categoryPerformanceDoughnutData);
             });

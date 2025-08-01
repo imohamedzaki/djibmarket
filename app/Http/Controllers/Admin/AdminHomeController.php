@@ -28,8 +28,8 @@ class AdminHomeController extends Controller
             ->limit(7)
             ->get();
 
-        // Get latest orders with user and items count
-        $latestOrders = Order::with(['user'])
+        // Get latest orders with user, seller info and items count
+        $latestOrders = Order::with(['user', 'orderItems.product.seller'])
             ->withCount('orderItems as order_items_count')
             ->orderBy('created_at', 'desc')
             ->limit(10)

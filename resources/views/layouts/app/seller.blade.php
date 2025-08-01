@@ -54,7 +54,7 @@
     @include('layouts.app.includes.seller.regionModal')
     <!-- JavaScript -->
     @include('layouts.app.includes.seller.scripts')
-    @yield('scripts')
+
 </body>
 
 </html>

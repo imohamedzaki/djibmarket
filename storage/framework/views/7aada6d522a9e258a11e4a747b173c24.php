@@ -95,4 +95,6 @@
 
 <?php echo $__env->yieldContent('js'); ?>
 <?php echo $__env->yieldContent('scripts'); ?>
+<?php echo $__env->yieldPushContent('js'); ?>
+<?php echo $__env->yieldPushContent('scripts'); ?>
 <?php /**PATH C:\laragon\www\djibmarket\resources\views/layouts/app/includes/buyer/scripts.blade.php ENDPATH**/ ?>
