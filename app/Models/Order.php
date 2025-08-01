@@ -19,27 +19,22 @@ class Order extends Model
 
     protected $table = 'orders';
 
-    // Use encrypted id as route key instead of order_number for security
+    // Use order_number as route key for admin routes
     public function getRouteKeyName()
     {
-        return 'encrypted_id';
+        return 'order_number';
     }
 
-    // Generate encrypted ID for routes
-    public function getEncryptedIdAttribute()
+    // Generate slug based on order number
+    public function getSlugAttribute()
     {
-        return encrypt($this->id);
+        return $this->order_number;
     }
 
-    // Resolve route binding using encrypted ID
+    // Resolve route binding using order_number
     public function resolveRouteBinding($value, $field = null)
     {
-        try {
-            $id = decrypt($value);
-            return $this->where('id', $id)->first();
-        } catch (\Exception $e) {
-            return null;
-        }
+        return $this->where('order_number', $value)->first();
     }
 
     protected $fillable = [

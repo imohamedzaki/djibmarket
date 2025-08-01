@@ -39,7 +39,7 @@
                     <x-sidebar.single title="Sellers management" link="{{ route('admin.sellers.index') }}"
                         icon="ni-briefcase" />
                     <x-sidebar.single title="Buyers" link="{{ route('admin.buyers.index') }}" icon="ni-users-fill" />
-                    <x-sidebar.single title="Order Management" link="{{ route('admin.coming-soon') }}"
+                    <x-sidebar.single title="Order Management" link="{{ route('admin.orders.index') }}"
                         icon="ni-cart-fill" />
                     <x-sidebar.single title="Pending orders" link="{{ route('admin.coming-soon') }}"
                         icon="ni-list-check" />

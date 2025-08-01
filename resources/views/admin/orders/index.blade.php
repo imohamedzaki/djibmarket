@@ -1,0 +1,411 @@
+@extends('layouts.app.admin')
+@section('title', 'Order Management')
+@section('content')
+    <div class="nk-content-inner">
+        <div class="nk-content-body">
+            <div class="nk-block-head nk-block-head-sm">
+                <div class="nk-block-between">
+                    <div class="nk-block-head-content">
+                        <h3 class="nk-block-title page-title">Order Management</h3>
+                        <nav>
+                            <ul class="breadcrumb ">
+                                <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
+                                <li class="breadcrumb-item active">Orders</li>
+                            </ul>
+                        </nav>
+                    </div><!-- .nk-block-head-content -->
+                </div><!-- .nk-block-between -->
+            </div><!-- .nk-block-head -->
+
+            <div class="nk-block nk-block-lg">
+                <div class="nk-block-head">
+                    <div class="nk-block-head-content">
+                        <h4 class="nk-block-title">List of Orders</h4>
+                        <div class="nk-block-des">
+                            <p>Use the table below to view, edit, and manage customer orders.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card card-preview">
+                    <div class="card-inner">
+                        <table class="datatable-init nk-tb-list nk-tb-ulist" data-auto-responsive="false">
+                            <thead>
+                                <tr class="nk-tb-item nk-tb-head">
+                                    <th class="nk-tb-col nk-tb-col-check">
+                                        <div class="custom-control custom-control-sm custom-checkbox notext">
+                                            <input type="checkbox" class="custom-control-input" id="uid">
+                                            <label class="custom-control-label" for="uid"></label>
+                                        </div>
+                                    </th>
+                                    <th class="nk-tb-col"><span class="sub-text">Order #</span></th>
+                                    <th class="nk-tb-col tb-col-lg"><span class="sub-text">Customer</span></th>
+                                    <th class="nk-tb-col tb-col-md"><span class="sub-text">Items</span></th>
+                                    <th class="nk-tb-col tb-col-md"><span class="sub-text">Quantity</span></th>
+                                    <th class="nk-tb-col tb-col-lg"><span class="sub-text">Total Amount</span></th>
+                                    <th class="nk-tb-col tb-col-md"><span class="sub-text">Status</span></th>
+                                    <th class="nk-tb-col tb-col-md"><span class="sub-text">Date</span></th>
+                                    <th class="nk-tb-col nk-tb-col-tools text-end"><span class="sub-text">Actions</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @php
+                                    $avatarColors = ['primary', 'success', 'info', 'warning', 'danger', 'dark'];
+                                @endphp
+                                @forelse ($orders as $order)
+                                    @php
+                                        $colorIndex = $loop->index % count($avatarColors);
+                                        $avatarClass = 'bg-' . $avatarColors[$colorIndex] . '-dim';
+                                    @endphp
+                                    <tr class="nk-tb-item">
+                                        <td class="nk-tb-col nk-tb-col-check">
+                                            <div class="custom-control custom-control-sm custom-checkbox notext">
+                                                <input type="checkbox" class="custom-control-input"
+                                                    id="order-{{ $order->id }}">
+                                                <label class="custom-control-label"
+                                                    for="order-{{ $order->id }}"></label>
+                                            </div>
+                                        </td>
+                                        <td class="nk-tb-col">
+                                            <div class="user-card">
+                                                <div class="user-avatar {{ $avatarClass }} d-none d-sm-flex">
+                                                    <span>{{ strtoupper(substr($order->order_number, -2)) }}</span>
+                                                </div>
+                                                <div class="user-info">
+                                                    <span class="tb-lead">#{{ $order->order_number }}</span>
+                                                    <span class="tb-sub">ID: {{ $order->id }}</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="nk-tb-col tb-col-lg">
+                                            <div class="user-info">
+                                                <span class="tb-lead">{{ $order->user->name ?? 'Guest' }}</span>
+                                                <span class="tb-sub">{{ $order->user->email ?? 'N/A' }}</span>
+                                            </div>
+                                        </td>
+                                        <td class="nk-tb-col tb-col-md">
+                                            <span class="badge badge-dim bg-outline-info">{{ $order->order_items_count }} items</span>
+                                        </td>
+                                        <td class="nk-tb-col tb-col-md">
+                                            <span class="badge badge-dim bg-outline-primary">{{ $order->total_quantity ?? 0 }} qty</span>
+                                        </td>
+                                        <td class="nk-tb-col tb-col-lg">
+                                            <span class="tb-amount">{{ number_format(($order->final_price ?? 0) + 0) }} <span class="currency">DJF</span></span>
+                                        </td>
+                                        <td class="nk-tb-col tb-col-md">
+                                            @switch($order->status)
+                                                @case('pending')
+                                                    <span class="badge badge-dot bg-warning">Pending</span>
+                                                    @break
+                                                @case('processing')
+                                                    <span class="badge badge-dot bg-info">Processing</span>
+                                                    @break
+                                                @case('shipped')
+                                                    <span class="badge badge-dot bg-primary">Shipped</span>
+                                                    @break
+                                                @case('delivered')
+                                                    <span class="badge badge-dot bg-success">Delivered</span>
+                                                    @break
+                                                @case('completed')
+                                                    <span class="badge badge-dot bg-success">Completed</span>
+                                                    @break
+                                                @case('cancelled')
+                                                    <span class="badge badge-dot bg-danger">Cancelled</span>
+                                                    @break
+                                                @case('refunded')
+                                                    <span class="badge badge-dot bg-secondary">Refunded</span>
+                                                    @break
+                                                @default
+                                                    <span class="badge badge-dot bg-secondary">{{ ucfirst($order->status) }}</span>
+                                            @endswitch
+                                        </td>
+                                        <td class="nk-tb-col tb-col-md">
+                                            <span class="tb-sub">{{ $order->created_at->format('M d, Y') }}</span>
+                                        </td>
+                                        <td class="nk-tb-col nk-tb-col-tools">
+                                            <ul class="nk-tb-actions gx-1">
+                                                <li class="nk-tb-action-hidden">
+                                                    <a href="{{ route('admin.orders.show', $order->order_number) }}"
+                                                        class="btn btn-trigger btn-icon" data-bs-toggle="tooltip"
+                                                        data-bs-placement="top" title="Show Details">
+                                                        <em class="icon ni ni-eye"></em>
+                                                    </a>
+                                                </li>
+                                                <li class="nk-tb-action-hidden">
+                                                    <button type="button"
+                                                        class="btn btn-trigger btn-icon edit-order-button"
+                                                        data-bs-toggle="modal" data-order-number="{{ $order->order_number }}"
+                                                        data-bs-placement="top" title="Edit">
+                                                        <em class="icon ni ni-edit"></em>
+                                                    </button>
+                                                </li>
+                                                <li class="nk-tb-action-hidden">
+                                                    <button type="button"
+                                                        class="btn btn-trigger btn-icon text-warning status-order-button"
+                                                        data-bs-toggle="modal" data-bs-target="#statusOrderModal"
+                                                        data-order-number="{{ $order->order_number }}" data-number="{{ $order->order_number }}"
+                                                        data-current-status="{{ $order->status }}"
+                                                        data-status-url="{{ route('admin.orders.updateStatus', $order->order_number) }}"
+                                                        data-bs-placement="top" title="Change Status">
+                                                        <em class="icon ni ni-setting"></em>
+                                                    </button>
+                                                </li>
+                                                @if($order->status === 'cancelled')
+                                                <li class="nk-tb-action-hidden">
+                                                    <form action="{{ route('admin.orders.destroy', $order->order_number) }}" method="POST" style="display: inline;">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-trigger btn-icon text-danger"
+                                                            onclick="return confirm('Are you sure you want to delete this cancelled order?')"
+                                                            data-bs-placement="top" title="Delete">
+                                                            <em class="icon ni ni-trash"></em>
+                                                        </button>
+                                                    </form>
+                                                </li>
+                                                @endif
+                                            </ul>
+                                        </td>
+                                    </tr><!-- .nk-tb-item  -->
+                                @empty
+                                    <tr class="nk-tb-item">
+                                        <td class="nk-tb-col nk-tb-col-check"></td>
+                                        <td class="nk-tb-col text-center" colspan="7">
+                                            <span class="text-soft">No orders found.</span>
+                                        </td>
+                                        <td class="nk-tb-col nk-tb-col-tools"></td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div><!-- .card-preview -->
+            </div> <!-- nk-block -->
+        </div>
+    </div>
+
+    <!-- Edit Order Modal -->
+    <div class="modal fade" id="editOrderModal" data-bs-keyboard="true" tabindex="-1">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Order</h5>
+                    <a href="#" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <em class="icon ni ni-cross"></em>
+                    </a>
+                </div>
+                <div class="modal-body">
+                    <form action="" method="POST" id="editOrderForm" class="form-validate is-alter">
+                        @csrf
+                        @method('PUT')
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label" for="edit-order-status">Status</label>
+                                    <div class="form-control-wrap">
+                                        <select class="form-select" id="edit-order-status" name="status" required>
+                                            <option value="pending">Pending</option>
+                                            <option value="processing">Processing</option>
+                                            <option value="shipped">Shipped</option>
+                                            <option value="delivered">Delivered</option>
+                                            <option value="completed">Completed</option>
+                                            <option value="cancelled">Cancelled</option>
+                                            <option value="refunded">Refunded</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label" for="edit-order-customer">Customer</label>
+                                    <div class="form-control-wrap">
+                                        <input type="text" class="form-control" id="edit-order-customer" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label class="form-label" for="edit-order-address">Delivery Address</label>
+                                    <div class="form-control-wrap">
+                                        <textarea class="form-control" id="edit-order-address" name="delivery_address" rows="3"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label class="form-label" for="edit-order-notes">Notes</label>
+                                    <div class="form-control-wrap">
+                                        <textarea class="form-control" id="edit-order-notes" name="notes" rows="3"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-lg btn-primary submit-btn" id="updateOrderBtn">
+                                <span class="spinner d-none"><em
+                                        class="spinner-border spinner-border-sm"></em>&nbsp;</span>
+                                <span class="btn-text">Update Order</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer bg-light">
+                    <span class="sub-text">Modify the details of the order.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Status Change Modal -->
+    <div class="modal fade" id="statusOrderModal" data-bs-keyboard="true" tabindex="-1">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-warning">
+                    <h5 class="modal-title text-white">Change Order Status</h5>
+                    <a href="#" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <em class="icon ni ni-cross text-white"></em>
+                    </a>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to change the status of order <strong id="status-order-number"></strong>?</p>
+                    <p>Current status: <span id="current-status-display"></span></p>
+
+                    <form action="" method="POST" id="statusOrderForm">
+                        @csrf
+                        @method('PATCH')
+                        <div class="form-group">
+                            <label class="form-label" for="new-status">New Status</label>
+                            <div class="form-control-wrap">
+                                <select class="form-select" id="new-status" name="status" required>
+                                    <option value="pending">Pending</option>
+                                    <option value="processing">Processing</option>
+                                    <option value="shipped">Shipped</option>
+                                    <option value="delivered">Delivered</option>
+                                    <option value="completed">Completed</option>
+                                    <option value="cancelled">Cancelled</option>
+                                    <option value="refunded">Refunded</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer bg-light">
+                    <div class="d-flex justify-content-between w-100">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-warning submit-btn" id="confirmStatusOrderBtn">
+                            <span class="spinner d-none"><em class="spinner-border spinner-border-sm"></em>&nbsp;</span>
+                            <span class="btn-text">Change Status</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+
+@section('js')
+    <script>
+        $(document).ready(function() {
+            // Edit order button click
+            $(document).on('click', '.edit-order-button', function() {
+                var orderNumber = $(this).data('order-number');
+                var editModal = $('#editOrderModal');
+                var editForm = $('#editOrderForm');
+
+                editModal.find('.modal-body').addClass('loading');
+
+                $.ajax({
+                    url: `/admin/orders/${orderNumber}/edit-data`,
+                    method: 'GET',
+                    success: function(response) {
+                        console.log('Edit data fetched:', response);
+                        if (response.success) {
+                            var order = response.order;
+
+                            editForm.find('#edit-order-status').val(order.status);
+                            editForm.find('#edit-order-customer').val(order.user ? order.user.name + ' (' + order.user.email + ')' : 'Guest');
+                            editForm.find('#edit-order-address').val(order.delivery_address || '');
+                            editForm.find('#edit-order-notes').val(order.notes || '');
+                            editForm.attr('action', `/admin/orders/${order.order_number}`);
+
+                            editModal.find('.modal-body').removeClass('loading');
+                            editModal.modal('show');
+                        } else {
+                            console.error('Error fetching order data:', response.message);
+                            alert('Could not load order details. Please try again.');
+                            editModal.find('.modal-body').removeClass('loading');
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.error('AJAX error:', textStatus, errorThrown);
+                        alert('An error occurred while fetching order data.');
+                        editModal.find('.modal-body').removeClass('loading');
+                    }
+                });
+            });
+
+            // Status change button click
+            $(document).on('click', '.status-order-button', function() {
+                console.log('Status order button clicked');
+                var orderNumber = $(this).data('order-number');
+                var orderDisplay = $(this).data('number');
+                var currentStatus = $(this).data('current-status');
+                var statusUrl = $(this).data('status-url');
+
+                console.log('Status data:', orderNumber, orderDisplay, currentStatus, statusUrl);
+
+                $('#status-order-number').text('#' + orderDisplay);
+                $('#current-status-display').text(currentStatus.charAt(0).toUpperCase() + currentStatus
+                    .slice(1));
+                $('#statusOrderForm').attr('action', statusUrl);
+
+                // Set the current status as selected and enable all options first
+                var newStatusSelect = $('#new-status');
+                newStatusSelect.find('option').prop('disabled', false);
+                newStatusSelect.val(currentStatus);
+            });
+
+            // Confirm status change
+            $('#confirmStatusOrderBtn').on('click', function() {
+                var $this = $(this);
+                var form = $('#statusOrderForm');
+
+                console.log('Form action:', form.attr('action'));
+                console.log('Form data:', form.serialize());
+
+                $this.prop('disabled', true);
+                $this.find('.spinner').removeClass('d-none');
+                $this.find('.btn-text').text('Changing...');
+
+                form.submit();
+            });
+
+            // Form submissions
+            $('#editOrderForm').on('submit', function() {
+                var $submitBtn = $(this).find('.submit-btn');
+                $submitBtn.prop('disabled', true);
+                $submitBtn.find('.spinner').removeClass('d-none');
+                $submitBtn.find('.btn-text').text('Updating...');
+                return true;
+            });
+
+            // Reset status modal when closed
+            $('#statusOrderModal').on('hidden.bs.modal', function() {
+                var $submitBtn = $('#confirmStatusOrderBtn');
+                $submitBtn.prop('disabled', false);
+                $submitBtn.find('.spinner').addClass('d-none');
+                $submitBtn.find('.btn-text').text('Change Status');
+                $('#statusOrderForm')[0].reset();
+            });
+
+            // Reset edit modal when closed
+            $('#editOrderModal').on('hidden.bs.modal', function() {
+                var $submitBtn = $('#updateOrderBtn');
+                $submitBtn.prop('disabled', false);
+                $submitBtn.find('.spinner').addClass('d-none');
+                $submitBtn.find('.btn-text').text('Update Order');
+                $('#editOrderForm')[0].reset();
+                $(this).find('.modal-body').removeClass('loading');
+            });
+        });
+    </script>
+@endsection

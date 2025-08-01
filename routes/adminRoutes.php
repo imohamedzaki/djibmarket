@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\AdminNotificationBarController;
 use App\Http\Controllers\Admin\AdminAdController;
 use App\Http\Controllers\Admin\AdminBrandController;
 use App\Http\Controllers\Admin\AdminCategoryAdController;
+use App\Http\Controllers\Admin\OrderManagementController;
 
 Route::prefix('admin')->name('admin.')->group(function () {
     // Base admin route check - redirect appropriately based on auth status
@@ -56,6 +57,13 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('buyers/{buyer}/edit-data', [AdminBuyerController::class, 'getEditData'])->name('buyers.editData');
         // Route to update buyer status (enable/disable)
         Route::patch('buyers/{buyer}/status', [AdminBuyerController::class, 'updateStatus'])->name('buyers.updateStatus');
+
+        // Orders Resource Route using order_number as slug
+        Route::resource('orders', OrderManagementController::class)->parameters(['orders' => 'order:order_number'])->except(['create', 'store', 'edit']);
+        // AJAX route to get data for editing an order
+        Route::get('orders/{order:order_number}/edit-data', [OrderManagementController::class, 'getEditData'])->name('orders.editData');
+        // Route to update order status
+        Route::patch('orders/{order:order_number}/status', [OrderManagementController::class, 'updateStatus'])->name('orders.updateStatus');
 
         // Admin Profile Routes
         Route::get('profile', [AdminProfileController::class, 'showProfile'])->name('profile.show');
