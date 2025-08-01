@@ -136,26 +136,29 @@
                                         </tbody>
                                         <tfoot class="table-light">
                                             <tr>
-                                                <td colspan="5" class="text-end"><strong>Subtotal:</strong></td>
-                                                <td><strong>{{ number_format(($order->sub_total ?? 0) + 0) }} DJF</strong>
+                                                <td colspan="3" class="text-end"><strong>Subtotal:</strong></td>
+                                                <td colspan="3" style="text-align: right;">
+                                                    <strong>{{ number_format(($order->sub_total ?? 0) + 0) }} DJF</strong>
                                                 </td>
                                             </tr>
                                             @if ($order->discount_amount > 0)
                                                 <tr>
-                                                    <td colspan="5" class="text-end">Discount:</td>
-                                                    <td class="text-danger">
+                                                    <td colspan="3" class="text-end">Discount:</td>
+                                                    <td colspan="3" class="text-danger" style="text-align: right;">
                                                         -{{ number_format(($order->discount_amount ?? 0) + 0) }} DJF</td>
                                                 </tr>
                                             @endif
                                             @if ($order->delivery_fee > 0)
                                                 <tr>
-                                                    <td colspan="5" class="text-end">Delivery Fee:</td>
-                                                    <td>{{ number_format(($order->delivery_fee ?? 0) + 0) }} DJF</td>
+                                                    <td colspan="3" class="text-end">Delivery Fee:</td>
+                                                    <td colspan="3" style="text-align: right;">
+                                                        {{ number_format(($order->delivery_fee ?? 0) + 0) }}
+                                                        DJF</td>
                                                 </tr>
                                             @endif
                                             <tr class="border-top-2">
-                                                <td colspan="5" class="text-end"><strong>Total:</strong></td>
-                                                <td><strong
+                                                <td colspan="3" class="text-end"><strong>Total:</strong></td>
+                                                <td colspan="3" style="text-align: right;"><strong
                                                         class="text-primary fs-5">{{ number_format(($order->final_price ?? 0) + 0) }}
                                                         DJF</strong></td>
                                             </tr>
@@ -175,15 +178,16 @@
                                             <p>Track the progress of this order through its lifecycle</p>
                                         </div>
                                         <div class="card-tools">
-                                            <span class="badge badge-outline-light">{{ $order->statusLogs->count() }} {{ Str::plural('Update', $order->statusLogs->count()) }}</span>
+                                            <span class="badge badge-outline-light">{{ $order->statusLogs->count() }}
+                                                {{ Str::plural('Update', $order->statusLogs->count()) }}</span>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="timeline timeline-s2">
                                         @foreach ($order->statusLogs as $index => $log)
                                             <div class="timeline-item">
                                                 <div class="timeline-item-marker-wrap">
-                                                    <div class="timeline-item-marker 
+                                                    <div class="timeline-item-marker rounded-circle d-flex align-items-center justify-content-center
                                                         @switch($log->status)
                                                             @case('completed')
                                                             @case('delivered') 
@@ -207,29 +211,37 @@
                                                             @default 
                                                                 bg-light
                                                         @endswitch
-                                                    ">
+                                                    "
+                                                        style="width: 40px; height: 40px;">
                                                         @switch($log->status)
                                                             @case('completed')
                                                                 <em class="icon ni ni-check-circle-fill text-white"></em>
                                                             @break
+
                                                             @case('delivered')
                                                                 <em class="icon ni ni-truck text-white"></em>
                                                             @break
+
                                                             @case('shipped')
                                                                 <em class="icon ni ni-send text-white"></em>
                                                             @break
+
                                                             @case('processing')
                                                                 <em class="icon ni ni-loader text-white"></em>
                                                             @break
+
                                                             @case('cancelled')
                                                                 <em class="icon ni ni-cross-circle-fill text-white"></em>
                                                             @break
+
                                                             @case('refunded')
                                                                 <em class="icon ni ni-refund text-white"></em>
                                                             @break
+
                                                             @case('pending')
                                                                 <em class="icon ni ni-clock text-white"></em>
                                                             @break
+
                                                             @default
                                                                 <em class="icon ni ni-info text-dark"></em>
                                                         @endswitch
@@ -241,23 +253,33 @@
                                                             {{ ucfirst(str_replace('_', ' ', $log->status)) }}
                                                             @switch($log->status)
                                                                 @case('completed')
-                                                                    <span class="badge badge-sm badge-outline-success ms-1">Final</span>
+                                                                    <span
+                                                                        class="badge badge-sm badge-outline-success ms-1">Final</span>
                                                                 @break
+
                                                                 @case('delivered')
-                                                                    <span class="badge badge-sm badge-outline-success ms-1">Success</span>
+                                                                    <span
+                                                                        class="badge badge-sm badge-outline-success ms-1">Success</span>
                                                                 @break
+
                                                                 @case('cancelled')
-                                                                    <span class="badge badge-sm badge-outline-danger ms-1">Cancelled</span>
+                                                                    <span
+                                                                        class="badge badge-sm badge-outline-danger ms-1">Cancelled</span>
                                                                 @break
+
                                                                 @case('refunded')
-                                                                    <span class="badge badge-sm badge-outline-secondary ms-1">Refunded</span>
+                                                                    <span
+                                                                        class="badge badge-sm badge-outline-secondary ms-1">Refunded</span>
                                                                 @break
                                                             @endswitch
                                                         </h6>
                                                         <div class="timeline-item-time">
-                                                            <span class="text-soft">{{ $log->created_at->format('M d, Y') }}</span>
-                                                            <span class="text-soft">{{ $log->created_at->format('h:i A') }}</span>
-                                                            <span class="text-muted ms-2">({{ $log->created_at->diffForHumans() }})</span>
+                                                            <span
+                                                                class="text-soft">{{ $log->created_at->format('M d, Y') }}</span>
+                                                            <span
+                                                                class="text-soft">{{ $log->created_at->format('h:i A') }}</span>
+                                                            <span
+                                                                class="text-muted ms-2">({{ $log->created_at->diffForHumans() }})</span>
                                                         </div>
                                                     </div>
                                                     @if ($log->message)
@@ -270,7 +292,7 @@
                                                             <div class="d-flex align-items-center text-primary">
                                                                 <em class="icon ni ni-calendar me-1"></em>
                                                                 <span class="text-sm">
-                                                                    Estimated delivery: 
+                                                                    Estimated delivery:
                                                                     <strong>{{ \Carbon\Carbon::parse($log->estimated_delivery_time)->format('M d, Y') }}</strong>
                                                                 </span>
                                                             </div>
@@ -359,21 +381,21 @@
                                 <div class="card-title-group">
                                     <div class="card-title">
                                         <h6 class="title">Shipping Address</h6>
-                                        @if($order->shippingAddress)
+                                        @if ($order->shippingAddress)
                                             <p class="text-soft small">Linked to saved address</p>
                                         @else
                                             <p class="text-soft small">Manual address entry</p>
                                         @endif
                                     </div>
                                     <div class="card-tools">
-                                        @if($order->shippingAddress)
-                                            <span class="badge badge-outline-success">
-                                                <em class="icon ni ni-map-pin"></em>
+                                        @if ($order->shippingAddress)
+                                            <span class="badge badge-outline-success text-dark">
+                                                <em class="icon ni ni-map-pin text-success"></em>
                                                 Saved Address
                                             </span>
                                         @else
-                                            <span class="badge badge-outline-warning">
-                                                <em class="icon ni ni-edit"></em>
+                                            <span class="badge badge-outline-warning text-dark">
+                                                <em class="icon ni ni-edit text-warning"></em>
                                                 Manual Entry
                                             </span>
                                         @endif
@@ -393,33 +415,42 @@
                                                 <div class="address-header mb-2">
                                                     <h6 class="address-title mb-1">
                                                         {{ $order->shippingAddress->type ?? 'Shipping Address' }}
-                                                        @if($order->shippingAddress->is_default)
-                                                            <span class="badge badge-xs badge-outline-primary ms-1">Default</span>
+                                                        @if ($order->shippingAddress->is_default)
+                                                            <span
+                                                                class="badge badge-xs badge-outline-primary ms-1 text-dark">Default</span>
                                                         @endif
                                                     </h6>
-                                                    @if($order->shippingAddress->label)
-                                                        <span class="text-soft small">{{ $order->shippingAddress->label }}</span>
+                                                    @if ($order->shippingAddress->label)
+                                                        <span
+                                                            class="text-soft small">{{ $order->shippingAddress->label }}</span>
                                                     @endif
                                                 </div>
                                                 <address class="address-content mb-0">
-                                                    @if($order->shippingAddress->full_address)
+                                                    @if ($order->shippingAddress->full_address)
                                                         {{ $order->shippingAddress->full_address }}
                                                     @else
-                                                        @if($order->shippingAddress->street_address)
+                                                        @if ($order->shippingAddress->street_address)
                                                             {{ $order->shippingAddress->street_address }}<br>
                                                         @endif
-                                                        @if($order->shippingAddress->city || $order->shippingAddress->state)
-                                                            {{ $order->shippingAddress->city }}@if($order->shippingAddress->city && $order->shippingAddress->state), @endif{{ $order->shippingAddress->state }}<br>
+                                                        @if ($order->shippingAddress->city || $order->shippingAddress->state)
+                                                            {{ $order->shippingAddress->city }}@if ($order->shippingAddress->city && $order->shippingAddress->state)
+                                                                ,
+                                                            @endif
+                                                            {{ $order->shippingAddress->state }}<br>
                                                         @endif
-                                                        @if($order->shippingAddress->postal_code || $order->shippingAddress->country)
-                                                            {{ $order->shippingAddress->postal_code }}@if($order->shippingAddress->postal_code && $order->shippingAddress->country), @endif{{ $order->shippingAddress->country }}
+                                                        @if ($order->shippingAddress->postal_code || $order->shippingAddress->country)
+                                                            {{ $order->shippingAddress->postal_code }}@if ($order->shippingAddress->postal_code && $order->shippingAddress->country)
+                                                                ,
+                                                            @endif
+                                                            {{ $order->shippingAddress->country }}
                                                         @endif
                                                     @endif
                                                 </address>
-                                                @if($order->shippingAddress->phone)
+                                                @if ($order->shippingAddress->phone)
                                                     <div class="mt-2">
                                                         <span class="text-soft small">Phone: </span>
-                                                        <span class="fw-medium">{{ $order->shippingAddress->phone }}</span>
+                                                        <span
+                                                            class="fw-medium">{{ $order->shippingAddress->phone }}</span>
                                                     </div>
                                                 @endif
                                             </div>
@@ -450,10 +481,12 @@
                                 @if (!$order->shippingAddress && !$order->delivery_address)
                                     <div class="text-center py-3">
                                         <div class="mb-2">
-                                            <em class="icon ni ni-map-pin" style="font-size: 1.5rem; color: #526484;"></em>
+                                            <em class="icon ni ni-map-pin"
+                                                style="font-size: 1.5rem; color: #526484;"></em>
                                         </div>
                                         <h6 class="text-muted mb-1">No Shipping Address</h6>
-                                        <p class="text-soft small">No shipping address has been provided for this order.</p>
+                                        <p class="text-soft small">No shipping address has been provided for this order.
+                                        </p>
                                     </div>
                                 @endif
 
@@ -476,36 +509,45 @@
                                     <div class="mt-3">
                                         <div class="d-flex align-items-center justify-content-between mb-3">
                                             <span class="sub-text">Customer's Other Addresses</span>
-                                            <span class="badge badge-outline-light">{{ $order->user->addresses->count() }} {{ Str::plural('Address', $order->user->addresses->count()) }}</span>
+                                            <span class="badge badge-outline-light">{{ $order->user->addresses->count() }}
+                                                {{ Str::plural('Address', $order->user->addresses->count()) }}</span>
                                         </div>
                                         <div class="row g-2">
                                             @foreach ($order->user->addresses->take(3) as $address)
                                                 <div class="col-12">
-                                                    <div class="p-2 bg-light rounded border-start border-3 {{ $order->shippingAddress && $order->shippingAddress->id === $address->id ? 'border-primary bg-primary-dim' : 'border-light' }}">
+                                                    <div
+                                                        class="p-2 bg-light rounded border-start border-3 {{ $order->shippingAddress && $order->shippingAddress->id === $address->id ? 'border-primary bg-primary-dim' : 'border-light' }}">
                                                         <div class="d-flex align-items-center justify-content-between">
                                                             <div>
                                                                 <small class="text-muted fw-medium">
                                                                     {{ $address->type ?? 'Address' }}
-                                                                    @if($address->is_default)
-                                                                        <span class="badge badge-xs badge-outline-primary ms-1">Default</span>
+                                                                    @if ($address->is_default)
+                                                                        <span
+                                                                            class="badge badge-xs badge-outline-primary ms-1 text-dark">Default</span>
                                                                     @endif
-                                                                    @if($order->shippingAddress && $order->shippingAddress->id === $address->id)
-                                                                        <span class="badge badge-xs badge-primary ms-1">Used for Order</span>
+                                                                    @if ($order->shippingAddress && $order->shippingAddress->id === $address->id)
+                                                                        <span
+                                                                            class="badge badge-xs badge-primary ms-1 text-dark ">Used
+                                                                            for Order</span>
                                                                     @endif
                                                                 </small>
-                                                                <div class="text-sm">{{ Str::limit($address->full_address ?? $address->street_address, 60) }}</div>
+                                                                <div class="text-sm">
+                                                                    {{ Str::limit($address->full_address ?? $address->street_address, 60) }}
+                                                                </div>
                                                             </div>
-                                                            @if($order->shippingAddress && $order->shippingAddress->id === $address->id)
+                                                            @if ($order->shippingAddress && $order->shippingAddress->id === $address->id)
                                                                 <em class="icon ni ni-check-circle text-primary"></em>
                                                             @endif
                                                         </div>
                                                     </div>
                                                 </div>
                                             @endforeach
-                                            @if($order->user->addresses->count() > 3)
+                                            @if ($order->user->addresses->count() > 3)
                                                 <div class="col-12">
                                                     <div class="text-center py-2">
-                                                        <small class="text-muted">and {{ $order->user->addresses->count() - 3 }} more addresses...</small>
+                                                        <small class="text-muted">and
+                                                            {{ $order->user->addresses->count() - 3 }} more
+                                                            addresses...</small>
                                                     </div>
                                                 </div>
                                             @endif
@@ -558,34 +600,45 @@
                         <!-- Order Actions -->
                         <div class="card card-bordered mt-4">
                             <div class="card-inner">
-                                <div class="card-title-group">
+                                <div class="card-title-group mb-4">
                                     <div class="card-title">
                                         <h6 class="title">Order Actions</h6>
+                                        <p class="text-soft small">Manage this order</p>
                                     </div>
                                 </div>
-                                <div class="d-grid" style="gap: 10px;">
-                                    <button type="button" class="btn btn-warning edit-order-button"
-                                        data-order-number="{{ $order->order_number }}" data-bs-toggle="modal">
-                                        <em class="icon ni ni-edit"></em> Edit Order
-                                    </button>
-                                    <button type="button" class="btn btn-info status-order-button"
-                                        data-bs-toggle="modal" data-bs-target="#statusOrderModal"
-                                        data-order-number="{{ $order->order_number }}"
-                                        data-number="{{ $order->order_number }}"
-                                        data-current-status="{{ $order->status }}"
-                                        data-status-url="{{ route('admin.orders.updateStatus', $order->order_number) }}">
-                                        <em class="icon ni ni-setting"></em> Change Status
-                                    </button>
+                                <div class="row g-2">
+                                    <div class="col-12">
+                                        <button type="button" class="btn btn-outline-warning btn-block edit-order-button"
+                                            data-order-number="{{ $order->order_number }}" data-bs-toggle="modal">
+                                            <em class="icon ni ni-edit"></em>
+                                            <span>Edit Order Details</span>
+                                        </button>
+                                    </div>
+                                    <div class="col-12">
+                                        <button type="button" class="btn btn-outline-info btn-block status-order-button"
+                                            data-bs-toggle="modal" data-bs-target="#statusOrderModal"
+                                            data-order-number="{{ $order->order_number }}"
+                                            data-number="{{ $order->order_number }}"
+                                            data-current-status="{{ $order->status }}"
+                                            data-status-url="{{ route('admin.orders.updateStatus', $order->order_number) }}">
+                                            <em class="icon ni ni-setting"></em>
+                                            <span>Update Status</span>
+                                        </button>
+                                    </div>
                                     @if ($order->status === 'cancelled')
-                                        <form action="{{ route('admin.orders.destroy', $order->order_number) }}"
-                                            method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger w-100"
-                                                onclick="return confirm('Are you sure you want to delete this cancelled order?')">
-                                                <em class="icon ni ni-trash"></em> Delete Order
-                                            </button>
-                                        </form>
+                                        <div class="col-12">
+                                            <div class="dropdown-divider my-2"></div>
+                                            <form action="{{ route('admin.orders.destroy', $order->order_number) }}"
+                                                method="POST" class="d-block">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-outline-danger btn-block"
+                                                    onclick="return confirm('Are you sure you want to delete this cancelled order? This action cannot be undone.')">
+                                                    <em class="icon ni ni-trash"></em>
+                                                    <span>Delete Order</span>
+                                                </button>
+                                            </form>
+                                        </div>
                                     @endif
                                 </div>
                             </div>
@@ -697,4 +750,23 @@
             });
         });
     </script>
+
+
+@endsection
+
+@section('css')
+    <style>
+        .timeline-item:not(:last-child):before {
+            top: 24px;
+            left: 1.2rem;
+        }
+
+        .timeline-item-marker-wrap {
+            z-index: 2;
+        }
+
+        .timeline-item-content {
+            margin-left: 1rem;
+        }
+    </style>
 @endsection

@@ -57,11 +57,12 @@ class OrderManagementController extends Controller
     public function getEditData(Order $order)
     {
         try {
-            $order->loadMissing(['user', 'orderItems.product']);
+            $order->loadMissing(['user', 'user.addresses', 'shippingAddress', 'orderItems.product']);
             
             return response()->json([
                 'success' => true,
                 'order' => $order,
+                'userAddresses' => $order->user ? $order->user->addresses : [],
                 'statusOptions' => [
                     'pending' => 'Pending',
                     'processing' => 'Processing',
@@ -87,16 +88,32 @@ class OrderManagementController extends Controller
     {
         $request->validate([
             'status' => 'required|in:pending,processing,shipped,delivered,completed,cancelled,refunded',
-            'delivery_address' => 'nullable|string|max:500',
+            'shipping_address_id' => 'required|exists:user_addresses,id',
             'notes' => 'nullable|string|max:1000'
         ]);
 
         try {
+            $oldShippingAddressId = $order->shipping_address_id;
+            
             $order->update([
                 'status' => $request->status,
-                'delivery_address' => $request->delivery_address,
+                'shipping_address_id' => $request->shipping_address_id,
                 'notes' => $request->notes,
             ]);
+
+            // Log address change if shipping address was changed
+            if ($oldShippingAddressId != $request->shipping_address_id) {
+                $order->loadMissing('shippingAddress');
+                $addressTitle = $order->shippingAddress ? $order->shippingAddress->title : 'Address';
+                $addressFull = $order->shippingAddress ? $order->shippingAddress->full_address : 'Unknown address';
+                
+                OrderStatusLog::create([
+                    'order_id' => $order->id,
+                    'status' => $order->status,
+                    'message' => "Delivery address changed to: {$addressTitle} ({$addressFull})",
+                    'estimated_delivery_time' => null
+                ]);
+            }
 
             return redirect()->route('admin.orders.index')
                 ->with('success', 'Order updated successfully.');
