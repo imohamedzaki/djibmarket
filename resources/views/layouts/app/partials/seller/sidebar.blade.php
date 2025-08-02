@@ -31,11 +31,12 @@
                         icon="ni-ticket-fill" />
                     <x-sidebar.single title="Categories" link="{{ route('seller.categories.index') }}"
                         icon="ni-list-fill" />
-                    <x-sidebar.single title="Orders" link="{{ route('seller.coming-soon') }}" icon="ni-cart-fill" />
-                    <x-sidebar.single title="Return Requests" link="{{ route('seller.coming-soon') }}"
-                        icon="ni-reload" />
-                    <x-sidebar.single title="Order Deliveries" link="{{ route('seller.coming-soon') }}"
-                        icon="ni-truck" />
+                    <x-sidebar.single title="Order Management" link="{{ route('seller.orders.index') }}" icon="ni-cart-fill" />
+                    {{-- <x-sidebar.single title="Orders" link="{{ route('seller.coming-soon') }}" icon="ni-cart-fill" /> --}}
+                    {{-- <x-sidebar.single title="Return Requests" link="{{ route('seller.coming-soon') }}"
+                        icon="ni-reload" /> --}}
+                    {{-- <x-sidebar.single title="Order Deliveries" link="{{ route('seller.coming-soon') }}"
+                        icon="ni-truck" /> --}}
                     <x-sidebar.single title="Campaigns" link="{{ route('seller.campaigns.index') }}" icon="ni-flag" />
                     <x-sidebar.single title="Promotions" link="{{ route('seller.promotions.index') }}"
                         icon="ni-percent" />

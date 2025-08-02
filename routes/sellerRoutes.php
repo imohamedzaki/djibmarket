@@ -10,6 +10,7 @@ use App\Http\Controllers\Seller\SellerCampaignController;
 use App\Http\Controllers\Seller\SellerPromotionController;
 use App\Http\Controllers\Seller\SellerFlashSaleController;
 use App\Http\Controllers\Seller\SellerAdController;
+use App\Http\Controllers\Seller\SellerOrderController;
 use App\Http\Controllers\ComingSoonController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
@@ -183,6 +184,14 @@ Route::prefix('seller')->name('seller.')->group(function () {
             ->name('ads.resume');
         Route::get('ads-analytics', [SellerAdController::class, 'analytics'])
             ->name('ads.analytics');
+
+        // Order Management Routes
+        Route::get('orders', [SellerOrderController::class, 'index'])
+            ->name('orders.index');
+        Route::get('orders/{order}', [SellerOrderController::class, 'show'])
+            ->name('orders.show');
+        Route::patch('orders/{order}/status', [SellerOrderController::class, 'updateStatus'])
+            ->name('orders.updateStatus');
 
         // Coming Soon page for placeholder links
         Route::get('coming-soon', [ComingSoonController::class, 'index'])
