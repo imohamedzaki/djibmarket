@@ -153,6 +153,13 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::delete('category-ads/{categoryAd}/delete-image', [AdminCategoryAdController::class, 'deleteImage'])->name('category-ads.deleteImage');
         Route::patch('category-ads/{categoryAd}/status', [AdminCategoryAdController::class, 'updateStatus'])->name('category-ads.updateStatus');
 
+        // Analytics Routes
+        Route::prefix('analytics')->name('analytics.')->group(function () {
+            Route::get('/', [App\Http\Controllers\Admin\AnalyticsController::class, 'index'])->name('dashboard');
+            Route::get('/real-time-data', [App\Http\Controllers\Admin\AnalyticsController::class, 'realTimeData'])->name('real-time-data');
+            Route::get('/export', [App\Http\Controllers\Admin\AnalyticsController::class, 'export'])->name('export');
+        });
+
         // Coming Soon page for placeholder links
         Route::get('coming-soon', [ComingSoonController::class, 'indexAdmin'])
             ->name('coming-soon');

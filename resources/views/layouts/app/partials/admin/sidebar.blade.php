@@ -73,7 +73,7 @@
                         icon="ni-wallet-fill" />
                     <x-sidebar.single title="Email Management" link="{{ route('admin.emails.dashboard') }}"
                         icon="ni-emails" />
-                    <x-sidebar.single title="Analytics" link="{{ route('admin.coming-soon') }}"
+                    <x-sidebar.single title="Analytics" link="{{ route('admin.analytics.dashboard') }}"
                         icon="ni-growth-fill" />
                 </ul><!-- .nk-menu -->
             </div><!-- .nk-sidebar-menu -->
