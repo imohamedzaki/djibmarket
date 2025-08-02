@@ -14,21 +14,54 @@ class OrderManagementController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $orders = Order::with(['user', 'orderItems.product.seller'])
+        $status = $request->get('status');
+        $pageTitle = 'Order Management';
+        $pageDescription = 'Use the table below to view, edit, and manage customer orders.';
+        
+        $query = Order::with(['user', 'orderItems.product.seller', 'shippingAddress'])
             ->withCount('orderItems')
-            ->withSum('orderItems', 'quantity')
-            ->latest()
-            ->get();
+            ->withSum('orderItems', 'quantity');
+            
+        // Filter by status if provided
+        if ($status && $status !== 'all') {
+            if ($status === 'processing') {
+                $query->whereIn('status', ['accepted', 'processing']);
+                $pageTitle = 'Processing Orders';
+                $pageDescription = 'View and manage orders that are being processed.';
+            } elseif ($status === 'delivered') {
+                $query->whereIn('status', ['delivered', 'completed']);
+                $pageTitle = 'Delivered Orders';
+                $pageDescription = 'View orders that have been delivered to customers.';
+            } elseif ($status === 'pending') {
+                $query->where('status', 'pending');
+                $pageTitle = 'Pending Orders';
+                $pageDescription = 'View orders that are awaiting review and processing.';
+            } elseif ($status === 'shipped') {
+                $query->whereIn('status', ['shipped', 'delivered']);
+                $pageTitle = 'Order Deliveries';
+                $pageDescription = 'View and manage orders that have been shipped or delivered to customers.';
+            } else {
+                $query->where('status', $status);
+                $pageTitle = ucfirst($status) . ' Orders';
+                $pageDescription = "View orders with {$status} status.";
+            }
+        } elseif ($status === 'all') {
+            $pageTitle = 'All Orders';
+            $pageDescription = 'View and manage all customer orders regardless of status.';
+        }
+        
+        $orders = $query->latest()->get();
             
         // Add total_quantity attribute to each order
         $orders->each(function ($order) {
             $order->total_quantity = $order->order_items_sum_quantity ?? 0;
         });
             
-        return view('admin.orders.index', compact('orders'));
+        return view('admin.orders.index', compact('orders', 'pageTitle', 'pageDescription', 'status'));
     }
+
 
     /**
      * Display the specified resource.

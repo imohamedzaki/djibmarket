@@ -1,16 +1,17 @@
 @extends('layouts.app.admin')
-@section('title', 'Order Management')
+@section('title', $pageTitle ?? 'Order Management')
 @section('content')
     <div class="nk-content-inner">
         <div class="nk-content-body">
             <div class="nk-block-head nk-block-head-sm">
                 <div class="nk-block-between">
                     <div class="nk-block-head-content">
-                        <h3 class="nk-block-title page-title">Order Management</h3>
+                        <h3 class="nk-block-title page-title">{{ $pageTitle ?? 'Order Management' }}</h3>
                         <nav>
                             <ul class="breadcrumb ">
                                 <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Dashboard</a></li>
-                                <li class="breadcrumb-item active">Orders</li>
+                                <li class="breadcrumb-item active">{{ $status ? ucfirst($status) . ' Orders' : 'Orders' }}
+                                </li>
                             </ul>
                         </nav>
                     </div><!-- .nk-block-head-content -->
@@ -20,9 +21,10 @@
             <div class="nk-block nk-block-lg">
                 <div class="nk-block-head">
                     <div class="nk-block-head-content">
-                        <h4 class="nk-block-title">List of Orders</h4>
+                        <h4 class="nk-block-title">{{ $status ? ucfirst($status) . ' Orders' : 'List of Orders' }}</h4>
                         <div class="nk-block-des">
-                            <p>Use the table below to view, edit, and manage customer orders.</p>
+                            <p>{{ $pageDescription ?? 'Use the table below to view, edit, and manage customer orders.' }}
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -39,6 +41,9 @@
                                     </th>
                                     <th class="nk-tb-col"><span class="sub-text">Order #</span></th>
                                     <th class="nk-tb-col tb-col-lg"><span class="sub-text">Customer</span></th>
+                                    @if ($status === 'shipped')
+                                        <th class="nk-tb-col tb-col-md"><span class="sub-text">Delivery Address</span></th>
+                                    @endif
                                     <th class="nk-tb-col tb-col-md"><span class="sub-text">Items</span></th>
                                     <th class="nk-tb-col tb-col-md"><span class="sub-text">Quantity</span></th>
                                     <th class="nk-tb-col tb-col-lg"><span class="sub-text">Total Amount</span></th>
@@ -62,7 +67,8 @@
                                             <div class="custom-control custom-control-sm custom-checkbox notext">
                                                 <input type="checkbox" class="custom-control-input"
                                                     id="order-{{ $order->id }}">
-                                                <label class="custom-control-label" for="order-{{ $order->id }}"></label>
+                                                <label class="custom-control-label"
+                                                    for="order-{{ $order->id }}"></label>
                                             </div>
                                         </td>
                                         <td class="nk-tb-col">
@@ -82,6 +88,19 @@
                                                 <span class="tb-sub">{{ $order->user->email ?? 'N/A' }}</span>
                                             </div>
                                         </td>
+                                        @if ($status === 'shipped')
+                                            <td class="nk-tb-col tb-col-md">
+                                                @if ($order->shippingAddress)
+                                                    <div class="user-info">
+                                                        <span class="tb-lead">{{ $order->shippingAddress->title }}</span>
+                                                        <span
+                                                            class="tb-sub">{{ Str::limit($order->shippingAddress->full_address, 30) }}</span>
+                                                    </div>
+                                                @else
+                                                    <span class="text-soft">No address</span>
+                                                @endif
+                                            </td>
+                                        @endif
                                         <td class="nk-tb-col tb-col-md">
                                             <span class="badge badge-dim bg-outline-info">{{ $order->order_items_count }}
                                                 items</span>
@@ -130,7 +149,8 @@
                                                 @break
 
                                                 @default
-                                                    <span class="badge badge-dot bg-secondary">{{ ucfirst($order->status) }}</span>
+                                                    <span
+                                                        class="badge badge-dot bg-secondary">{{ ucfirst($order->status) }}</span>
                                             @endswitch
                                         </td>
                                         <td class="nk-tb-col tb-col-md">
@@ -188,9 +208,18 @@
                                     @empty
                                         <tr class="nk-tb-item">
                                             <td class="nk-tb-col nk-tb-col-check"></td>
-                                            <td class="nk-tb-col text-center" colspan="7">
-                                                <span class="text-soft">No orders found.</span>
+                                            <td class="nk-tb-col"></td>
+                                            <td class="nk-tb-col"></td>
+                                            @if ($status === 'shipped')
+                                                <td class="nk-tb-col"></td>
+                                            @endif
+                                            <td class="nk-tb-col text-center">
+                                                <span class="text-soft">No {{ $status ? $status . ' ' : '' }}orders found.</span>
                                             </td>
+                                            <td class="nk-tb-col"></td>
+                                            <td class="nk-tb-col"></td>
+                                            <td class="nk-tb-col"></td>
+                                            <td class="nk-tb-col"></td>
                                             <td class="nk-tb-col nk-tb-col-tools"></td>
                                         </tr>
                                     @endforelse
@@ -246,7 +275,8 @@
                                     <div class="form-group">
                                         <label class="form-label" for="edit-order-address-select">Delivery Address</label>
                                         <div class="form-control-wrap">
-                                            <select class="form-select select2-selection" id="edit-order-address-select" name="shipping_address_id" required>
+                                            <select class="form-select select2-selection" id="edit-order-address-select"
+                                                name="shipping_address_id" required>
                                                 <option value="">Select delivery address</option>
                                             </select>
                                         </div>
@@ -328,6 +358,66 @@
     @section('js')
         <script>
             $(document).ready(function() {
+                // Add status filter next to DataTable controls after DataTable is initialized
+                setTimeout(function() {
+                    // Create the status filter HTML
+                    var statusFilterHtml = `
+                        <div class="form-group mb-0 me-3">
+                            <div class="form-control-wrap">
+                                <select class="form-select" id="status-filter" style="width: 200px;">
+                                    <option value="all" {{ $status === 'all' || !$status ? 'selected' : '' }}>All Orders</option>
+                                    <option value="pending" {{ $status === 'pending' ? 'selected' : '' }}>Pending</option>
+                                    <option value="accepted" {{ $status === 'accepted' ? 'selected' : '' }}>Accepted</option>
+                                    <option value="processing" {{ $status === 'processing' ? 'selected' : '' }}>Processing</option>
+                                    <option value="shipped" {{ $status === 'shipped' ? 'selected' : '' }}>Shipped</option>
+                                    <option value="delivered" {{ $status === 'delivered' ? 'selected' : '' }}>Delivered</option>
+                                    <option value="completed" {{ $status === 'completed' ? 'selected' : '' }}>Completed</option>
+                                    <option value="cancelled" {{ $status === 'cancelled' ? 'selected' : '' }}>Cancelled</option>
+                                    <option value="refunded" {{ $status === 'refunded' ? 'selected' : '' }}>Refunded</option>
+                                </select>
+                            </div>
+                        </div>
+                    `;
+
+                    // Find the DataTable wrapper and add the filter to the top section
+                    var dtWrapper = $('.dataTables_wrapper');
+                    if (dtWrapper.length > 0) {
+                        var topSection = dtWrapper.find('.dataTables_length').parent();
+                        if (topSection.length > 0) {
+                            topSection.prepend(statusFilterHtml);
+                        }
+                    }
+
+                    // Set the correct selected value based on current status
+                    var currentStatus = '{{ $status }}';
+                    if (currentStatus) {
+                        $('#status-filter').val(currentStatus);
+                    } else {
+                        $('#status-filter').val('all');
+                    }
+
+                    // Initialize Select2 for status filter
+                    $('#status-filter').select2({
+                        placeholder: 'Filter by Status',
+                        allowClear: false,
+                        width: '200px'
+                    });
+
+                    // Handle status filter change
+                    $('#status-filter').on('change', function() {
+                        var selectedStatus = $(this).val();
+                        var currentUrl = new URL(window.location.href);
+
+                        if (selectedStatus && selectedStatus !== 'all') {
+                            currentUrl.searchParams.set('status', selectedStatus);
+                        } else {
+                            currentUrl.searchParams.delete('status');
+                        }
+
+                        // Reload the page with the new status parameter
+                        window.location.href = currentUrl.toString();
+                    });
+                }, 1000); // Wait for DataTable to initialize
                 // Edit order button click
                 $(document).on('click', '.edit-order-button', function() {
                     var orderNumber = $(this).data('order-number');
@@ -356,19 +446,28 @@
                                 // Clear and populate address select
                                 var addressSelect = $('#edit-order-address-select');
                                 addressSelect.empty();
-                                addressSelect.append('<option value="">Select delivery address</option>');
+                                addressSelect.append(
+                                    '<option value="">Select delivery address</option>');
 
                                 // Add user addresses to select
                                 if (userAddresses.length > 0) {
                                     userAddresses.forEach(function(address) {
                                         var fullAddress = '';
-                                        if (address.address_line_1) fullAddress += address.address_line_1;
-                                        if (address.address_line_2) fullAddress += (fullAddress ? ', ' : '') + address.address_line_2;
-                                        if (address.city) fullAddress += (fullAddress ? ', ' : '') + address.city;
-                                        if (address.state) fullAddress += (fullAddress ? ', ' : '') + address.state;
-                                        if (address.postal_code) fullAddress += (fullAddress ? ' ' : '') + address.postal_code;
+                                        if (address.address_line_1) fullAddress += address
+                                            .address_line_1;
+                                        if (address.address_line_2) fullAddress += (
+                                                fullAddress ? ', ' : '') + address
+                                            .address_line_2;
+                                        if (address.city) fullAddress += (fullAddress ?
+                                            ', ' : '') + address.city;
+                                        if (address.state) fullAddress += (fullAddress ?
+                                            ', ' : '') + address.state;
+                                        if (address.postal_code) fullAddress += (
+                                                fullAddress ? ' ' : '') + address
+                                            .postal_code;
 
-                                        var option = new Option(address.title || 'Address', address.id, false, false);
+                                        var option = new Option(address.title || 'Address',
+                                            address.id, false, false);
                                         $(option).data('title', address.title || 'Address');
                                         $(option).data('full_address', fullAddress);
                                         addressSelect.append(option);
@@ -382,12 +481,17 @@
                                     allowClear: true,
                                     templateResult: function(state) {
                                         if (!state.id) return state.text;
-                                        var title = $(state.element).data('title') || state.text;
-                                        var fullAddress = $(state.element).data('full_address') || '';
-                                        return $('<div><strong>' + title + '</strong><br><small>' + fullAddress + '</small></div>');
+                                        var title = $(state.element).data('title') ||
+                                            state.text;
+                                        var fullAddress = $(state.element).data(
+                                            'full_address') || '';
+                                        return $('<div><strong>' + title +
+                                            '</strong><br><small>' + fullAddress +
+                                            '</small></div>');
                                     },
                                     templateSelection: function(state) {
-                                        return $(state.element).data('title') || state.text;
+                                        return $(state.element).data('title') || state
+                                            .text;
                                     }
                                 });
 
@@ -474,7 +578,7 @@
                     $submitBtn.find('.btn-text').text('Update Order');
                     $('#editOrderForm')[0].reset();
                     $(this).find('.modal-body').removeClass('loading');
-                    
+
                     // Destroy Select2 instance to avoid conflicts
                     if ($('#edit-order-address-select').hasClass('select2-hidden-accessible')) {
                         $('#edit-order-address-select').select2('destroy');

@@ -58,6 +58,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // Route to update buyer status (enable/disable)
         Route::patch('buyers/{buyer}/status', [AdminBuyerController::class, 'updateStatus'])->name('buyers.updateStatus');
 
+        // Status-specific order routes (commented out - using filter dropdown instead)
+        // Route::get('orders/pending', [OrderManagementController::class, 'pending'])->name('orders.pending');
+        // Route::get('orders/processing', [OrderManagementController::class, 'processing'])->name('orders.processing');
+        // Route::get('orders/delivered', [OrderManagementController::class, 'delivered'])->name('orders.delivered');
+        // Route::get('orders/shipped', [OrderManagementController::class, 'shipped'])->name('orders.shipped');
+        
         // Orders Resource Route using order_number as slug
         Route::resource('orders', OrderManagementController::class)->parameters(['orders' => 'order:order_number'])->except(['create', 'store', 'edit']);
         // AJAX route to get data for editing an order

@@ -39,16 +39,19 @@
                     <x-sidebar.single title="Sellers management" link="{{ route('admin.sellers.index') }}"
                         icon="ni-briefcase" />
                     <x-sidebar.single title="Buyers" link="{{ route('admin.buyers.index') }}" icon="ni-users-fill" />
+
                     <x-sidebar.single title="Order Management" link="{{ route('admin.orders.index') }}"
                         icon="ni-cart-fill" />
-                    <x-sidebar.single title="Pending orders" link="{{ route('admin.coming-soon') }}"
+                    {{-- <x-sidebar.single title="Pending orders" link="{{ route('admin.orders.pending') }}"
                         icon="ni-list-check" />
-                    <x-sidebar.single title="Delivered orders" link="{{ route('admin.coming-soon') }}"
+                    <x-sidebar.single title="Delivered orders" link="{{ route('admin.orders.delivered') }}"
                         icon="ni-check-circle-fill" />
-                    <x-sidebar.single title="Order Deliveries" link="{{ route('admin.coming-soon') }}"
+                    <x-sidebar.single title="Processing Orders" link="{{ route('admin.orders.processing') }}"
+                        icon="ni-truck" />
+                    <x-sidebar.single title="Order Deliveries" link="{{ route('admin.orders.shipped') }}"
                         icon="ni-truck" />
                     <x-sidebar.single title="Return requests" link="{{ route('admin.coming-soon') }}"
-                        icon="ni-reload" />
+                        icon="ni-reload" /> --}}
                     <x-sidebar.single title="Campaigns Management" link="{{ route('admin.campaigns.index') }}"
                         icon="ni-flag" />
                     <x-sidebar.single title="Promotions Management" link="{{ route('admin.promotions.index') }}"
