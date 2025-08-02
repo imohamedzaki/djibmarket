@@ -6,34 +6,36 @@
     <div class="nk-content">
         <div class="container-fluid">
             <!-- Email Stats Cards -->
-            <div class="row g-gs">
+            <div class="row g-4 mb-4">
                 <!-- Today Stats -->
-                <div class="col-md-3">
-                    <div class="card card-bordered">
-                        <div class="card-inner">
-                            <div class="card-title-group align-start mb-2">
-                                <div class="card-title">
-                                    <h6 class="title">Today's Emails</h6>
+                <div class="col-lg-3 col-md-6">
+                    <div class="card stat-card border-0 shadow-sm h-100">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-start justify-content-between mb-3">
+                                <div class="stat-icon bg-primary bg-opacity-10 p-3 rounded-3">
+                                    <em class="icon ni ni-emails text-primary fs-4"></em>
                                 </div>
-                                <div class="card-tools">
-                                    <em class="card-hint icon ni ni-emails"></em>
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-light" data-bs-toggle="dropdown">
+                                        <em class="icon ni ni-more-h"></em>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="#">View Details</a>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="align-end flex-sm-wrap g-4 flex-md-nowrap">
-                                <div class="nk-sale-data">
-                                    <span class="amount">{{ $stats['today']['total'] }}</span>
-                                    <span class="sub-title">
-                                        <span class="change up text-success">
-                                            <em class="icon ni ni-arrow-up"></em>
-                                            {{ $stats['today']['sent'] }} sent
-                                        </span>
+                            <div class="stat-content">
+                                <h2 class="stat-number mb-1 fw-bold">{{ $stats['today']['total'] }}</h2>
+                                <p class="stat-label text-muted mb-2">Today's Emails</p>
+                                <div class="d-flex align-items-center">
+                                    <span class="badge bg-success bg-opacity-10 text-success me-2">
+                                        <em class="icon ni ni-arrow-up"></em>
+                                        {{ $stats['today']['sent'] }} sent
                                     </span>
                                 </div>
-                                <div class="nk-sales-ck">
-                                    <div class="progress progress-sm">
-                                        <div class="progress-bar bg-success" role="progressbar"
-                                            style="width: {{ $stats['today']['total'] > 0 ? ($stats['today']['sent'] / $stats['today']['total']) * 100 : 0 }}%">
-                                        </div>
+                                <div class="progress mt-3" style="height: 6px;">
+                                    <div class="progress-bar bg-success rounded" role="progressbar"
+                                        style="width: {{ $stats['today']['total'] > 0 ? ($stats['today']['sent'] / $stats['today']['total']) * 100 : 0 }}%">
                                     </div>
                                 </div>
                             </div>
@@ -42,25 +44,24 @@
                 </div>
 
                 <!-- Queued Emails -->
-                <div class="col-md-3">
-                    <div class="card card-bordered">
-                        <div class="card-inner">
-                            <div class="card-title-group align-start mb-2">
-                                <div class="card-title">
-                                    <h6 class="title">Queued</h6>
+                <div class="col-lg-3 col-md-6">
+                    <div class="card stat-card border-0 shadow-sm h-100">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-start justify-content-between mb-3">
+                                <div class="stat-icon bg-warning bg-opacity-10 p-3 rounded-3">
+                                    <em class="icon ni ni-clock text-warning fs-4"></em>
                                 </div>
-                                <div class="card-tools">
-                                    <em class="card-hint icon ni ni-clock"></em>
+                                <div class="stat-trend text-warning">
+                                    <em class="icon ni ni-clock-fill"></em>
                                 </div>
                             </div>
-                            <div class="align-end">
-                                <div class="nk-sale-data">
-                                    <span class="amount text-warning" id="queued-count">{{ $queuedCount }}</span>
-                                    <span class="sub-title">
-                                        <span class="change text-info">
-                                            <em class="icon ni ni-clock-fill"></em>
-                                            Pending
-                                        </span>
+                            <div class="stat-content">
+                                <h2 class="stat-number mb-1 fw-bold text-warning" id="queued-count">{{ $queuedCount }}</h2>
+                                <p class="stat-label text-muted mb-2">Queued Emails</p>
+                                <div class="d-flex align-items-center">
+                                    <span class="badge bg-warning bg-opacity-10 text-warning">
+                                        <em class="icon ni ni-clock"></em>
+                                        Waiting to process
                                     </span>
                                 </div>
                             </div>
@@ -69,26 +70,32 @@
                 </div>
 
                 <!-- Failed Emails -->
-                <div class="col-md-3">
-                    <div class="card card-bordered">
-                        <div class="card-inner">
-                            <div class="card-title-group align-start mb-2">
-                                <div class="card-title">
-                                    <h6 class="title">Failed Today</h6>
+                <div class="col-lg-3 col-md-6">
+                    <div class="card stat-card border-0 shadow-sm h-100">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-start justify-content-between mb-3">
+                                <div class="stat-icon bg-danger bg-opacity-10 p-3 rounded-3">
+                                    <em class="icon ni ni-cross-circle text-danger fs-4"></em>
                                 </div>
-                                <div class="card-tools">
-                                    <em class="card-hint icon ni ni-cross-circle"></em>
-                                </div>
+                                @if ($failedToday > 0)
+                                    <div class="stat-trend text-danger">
+                                        <em class="icon ni ni-alert-circle"></em>
+                                    </div>
+                                @endif
                             </div>
-                            <div class="align-end">
-                                <div class="nk-sale-data">
-                                    <span class="amount text-danger" id="failed-count">{{ $failedToday }}</span>
+                            <div class="stat-content">
+                                <h2 class="stat-number mb-1 fw-bold text-danger" id="failed-count">{{ $failedToday }}</h2>
+                                <p class="stat-label text-muted mb-2">Failed Today</p>
+                                <div class="d-flex align-items-center">
                                     @if ($failedToday > 0)
-                                        <span class="sub-title">
-                                            <span class="change down text-danger">
-                                                <em class="icon ni ni-alert-circle"></em>
-                                                Needs attention
-                                            </span>
+                                        <span class="badge bg-danger bg-opacity-10 text-danger">
+                                            <em class="icon ni ni-alert-circle"></em>
+                                            Needs attention
+                                        </span>
+                                    @else
+                                        <span class="badge bg-success bg-opacity-10 text-success">
+                                            <em class="icon ni ni-check"></em>
+                                            All good
                                         </span>
                                     @endif
                                 </div>
@@ -98,33 +105,37 @@
                 </div>
 
                 <!-- Success Rate -->
-                <div class="col-md-3">
-                    <div class="card card-bordered">
-                        <div class="card-inner">
-                            <div class="card-title-group align-start mb-2">
-                                <div class="card-title">
-                                    <h6 class="title">Success Rate</h6>
+                <div class="col-lg-3 col-md-6">
+                    <div class="card stat-card border-0 shadow-sm h-100">
+                        <div class="card-body p-4">
+                            <div class="d-flex align-items-start justify-content-between mb-3">
+                                <div class="stat-icon bg-success bg-opacity-10 p-3 rounded-3">
+                                    <em class="icon ni ni-check-circle text-success fs-4"></em>
                                 </div>
-                                <div class="card-tools">
-                                    <em class="card-hint icon ni ni-check-circle"></em>
+                                @php
+                                    $total = $stats['today']['total'];
+                                    $sent = $stats['today']['sent'];
+                                    $rate = $total > 0 ? round(($sent / $total) * 100, 1) : 0;
+                                @endphp
+                                <div class="stat-trend {{ $rate >= 90 ? 'text-success' : ($rate >= 70 ? 'text-warning' : 'text-danger') }}">
+                                    <em class="icon ni ni-{{ $rate >= 90 ? 'trending-up' : ($rate >= 70 ? 'minus' : 'trending-down') }}"></em>
                                 </div>
                             </div>
-                            <div class="align-end">
-                                <div class="nk-sale-data">
-                                    @php
-                                        $total = $stats['today']['total'];
-                                        $sent = $stats['today']['sent'];
-                                        $rate = $total > 0 ? round(($sent / $total) * 100, 1) : 0;
-                                    @endphp
-                                    <span
-                                        class="amount {{ $rate >= 90 ? 'text-success' : ($rate >= 70 ? 'text-warning' : 'text-danger') }}">
-                                        {{ $rate }}%
+                            <div class="stat-content">
+                                <h2 class="stat-number mb-1 fw-bold {{ $rate >= 90 ? 'text-success' : ($rate >= 70 ? 'text-warning' : 'text-danger') }}">
+                                    {{ $rate }}%
+                                </h2>
+                                <p class="stat-label text-muted mb-2">Success Rate</p>
+                                <div class="d-flex align-items-center">
+                                    <span class="badge {{ $rate >= 90 ? 'bg-success' : ($rate >= 70 ? 'bg-warning' : 'bg-danger') }} bg-opacity-10 {{ $rate >= 90 ? 'text-success' : ($rate >= 70 ? 'text-warning' : 'text-danger') }}">
+                                        <em class="icon ni ni-{{ $rate >= 90 ? 'check' : ($rate >= 70 ? 'clock' : 'alert-circle') }}"></em>
+                                        Last 24 hours
                                     </span>
-                                    <span class="sub-title">
-                                        <span class="change">
-                                            Last 24 hours
-                                        </span>
-                                    </span>
+                                </div>
+                                <div class="progress mt-3" style="height: 6px;">
+                                    <div class="progress-bar {{ $rate >= 90 ? 'bg-success' : ($rate >= 70 ? 'bg-warning' : 'bg-danger') }} rounded" role="progressbar"
+                                        style="width: {{ $rate }}%">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -481,9 +492,96 @@
 
     @section('css')
         <style>
-            .card-bordered {
-                height: 100%;
+            .stat-card {
+                transition: all 0.3s ease;
+                border-radius: 15px !important;
+                position: relative;
+                overflow: hidden;
             }
+            
+            .stat-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
+            }
+            
+            .stat-icon {
+                transition: all 0.3s ease;
+            }
+            
+            .stat-card:hover .stat-icon {
+                transform: scale(1.1);
+            }
+            
+            .stat-number {
+                font-size: 2.5rem;
+                line-height: 1;
+                font-weight: 700 !important;
+            }
+            
+            .stat-label {
+                font-size: 0.875rem;
+                font-weight: 500;
+                letter-spacing: 0.5px;
+                text-transform: uppercase;
+            }
+            
+            .stat-trend {
+                opacity: 0.7;
+                transition: all 0.3s ease;
+            }
+            
+            .stat-card:hover .stat-trend {
+                opacity: 1;
+            }
+            
+            .progress {
+                border-radius: 10px;
+                background-color: rgba(0,0,0,0.05);
+            }
+            
+            .progress-bar {
+                border-radius: 10px;
+                transition: width 0.6s ease;
+            }
+            
+            .badge {
+                font-size: 0.75rem;
+                padding: 0.5rem 0.75rem;
+                border-radius: 8px;
+                font-weight: 500;
+            }
+            
+            @media (max-width: 768px) {
+                .stat-number {
+                    font-size: 2rem;
+                }
+                
+                .stat-card {
+                    margin-bottom: 1rem;
+                }
+            }
+            
+            /* Animation for loading */
+            .stat-card .card-body {
+                animation: fadeInUp 0.6s ease forwards;
+            }
+            
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            
+            /* Stagger animation for each card */
+            .stat-card:nth-child(1) .card-body { animation-delay: 0.1s; }
+            .stat-card:nth-child(2) .card-body { animation-delay: 0.2s; }
+            .stat-card:nth-child(3) .card-body { animation-delay: 0.3s; }
+            .stat-card:nth-child(4) .card-body { animation-delay: 0.4s; }
         </style>
     @endsection
 
