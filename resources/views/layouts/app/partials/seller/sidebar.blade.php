@@ -46,7 +46,7 @@
                         icon="ni-card-view" />
                     <x-sidebar.single title="Reviews" link="{{ route('seller.coming-soon') }}" icon="ni-star-fill" />
 
-                    <x-sidebar.single title="Analytics" link="{{ route('seller.coming-soon') }}"
+                    <x-sidebar.single title="Analytics" link="{{ route('seller.analytics') }}"
                         icon="ni-growth-fill" />
                 </ul><!-- .nk-menu -->
             </div><!-- .nk-sidebar-menu -->
