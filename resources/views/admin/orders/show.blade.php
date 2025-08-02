@@ -52,6 +52,10 @@
                                                 <span class="badge badge-dot bg-warning">Pending</span>
                                             @break
 
+                                            @case('accepted')
+                                                <span class="badge badge-dot bg-info">Accepted</span>
+                                            @break
+
                                             @case('processing')
                                                 <span class="badge badge-dot bg-info">Processing</span>
                                             @break
@@ -196,6 +200,7 @@
                                                             @case('shipped') 
                                                                 bg-primary
                                                             @break
+                                                            @case('accepted')
                                                             @case('processing') 
                                                                 bg-info
                                                             @break
@@ -224,6 +229,10 @@
 
                                                             @case('shipped')
                                                                 <em class="icon ni ni-send text-white"></em>
+                                                            @break
+
+                                                            @case('accepted')
+                                                                <em class="icon ni ni-check-circle text-white"></em>
                                                             @break
 
                                                             @case('processing')
@@ -260,6 +269,11 @@
                                                                 @case('delivered')
                                                                     <span
                                                                         class="badge badge-sm badge-outline-success ms-1">Success</span>
+                                                                @break
+
+                                                                @case('accepted')
+                                                                    <span
+                                                                        class="badge badge-sm badge-outline-info ms-1">Accepted</span>
                                                                 @break
 
                                                                 @case('cancelled')

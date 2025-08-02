@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\SendOrderStatusChangeEmail;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\OrderStatusLog;
@@ -65,6 +66,7 @@ class OrderManagementController extends Controller
                 'userAddresses' => $order->user ? $order->user->addresses : [],
                 'statusOptions' => [
                     'pending' => 'Pending',
+                    'accepted' => 'Accepted',
                     'processing' => 'Processing',
                     'shipped' => 'Shipped',
                     'delivered' => 'Delivered',
@@ -87,19 +89,25 @@ class OrderManagementController extends Controller
     public function update(Request $request, Order $order)
     {
         $request->validate([
-            'status' => 'required|in:pending,processing,shipped,delivered,completed,cancelled,refunded',
+            'status' => 'required|in:pending,accepted,processing,shipped,delivered,completed,cancelled,refunded',
             'shipping_address_id' => 'required|exists:user_addresses,id',
             'notes' => 'nullable|string|max:1000'
         ]);
 
         try {
             $oldShippingAddressId = $order->shipping_address_id;
+            $oldStatus = $order->status;
             
             $order->update([
                 'status' => $request->status,
                 'shipping_address_id' => $request->shipping_address_id,
                 'notes' => $request->notes,
             ]);
+
+            // Send email notification if status changed
+            if ($oldStatus !== $request->status) {
+                SendOrderStatusChangeEmail::dispatch($order, $oldStatus, $request->status);
+            }
 
             // Log address change if shipping address was changed
             if ($oldShippingAddressId != $request->shipping_address_id) {
@@ -129,7 +137,7 @@ class OrderManagementController extends Controller
     public function updateStatus(Request $request, Order $order)
     {
         $request->validate([
-            'status' => 'required|in:pending,processing,shipped,delivered,completed,cancelled,refunded'
+            'status' => 'required|in:pending,accepted,processing,shipped,delivered,completed,cancelled,refunded'
         ]);
 
         try {
@@ -139,9 +147,13 @@ class OrderManagementController extends Controller
             // Update order status
             $order->update(['status' => $newStatus]);
 
+            // Send email notification
+            SendOrderStatusChangeEmail::dispatch($order, $oldStatus, $newStatus);
+
             // Create status log entry
             $statusMessages = [
                 'pending' => 'Order is pending review and processing.',
+                'accepted' => 'Order has been accepted and will be processed soon.',
                 'processing' => 'Order is being processed and prepared for shipping.',
                 'shipped' => 'Order has been shipped and is on its way to the destination.',
                 'delivered' => 'Order has been successfully delivered to the customer.',

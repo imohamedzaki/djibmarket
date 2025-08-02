@@ -19,6 +19,7 @@
                                 <div class="form-control-wrap">
                                     <select class="form-select" id="edit-order-status" name="status" required>
                                         <option value="pending">Pending</option>
+                                        <option value="accepted">Accepted</option>
                                         <option value="processing">Processing</option>
                                         <option value="shipped">Shipped</option>
                                         <option value="delivered">Delivered</option>
@@ -92,6 +93,7 @@
                         <div class="form-control-wrap">
                             <select class="form-select" id="new-status" name="status" required>
                                 <option value="pending">Pending</option>
+                                <option value="accepted">Accepted</option>
                                 <option value="processing">Processing</option>
                                 <option value="shipped">Shipped</option>
                                 <option value="delivered">Delivered</option>
